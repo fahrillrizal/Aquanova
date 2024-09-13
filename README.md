@@ -27,7 +27,7 @@
 
 5.Run
 
-    php artisan migrate:fresh --seed
+    php artisan migrate:fresh
 
 6.Run npm install
 
