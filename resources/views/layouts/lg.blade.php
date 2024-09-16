@@ -34,7 +34,7 @@
   confirmPasswordToggle.addEventListener("click", () => {
     if (confirmPasswordInput.type === "password") {
       confirmPasswordInput.type = "text";
-      confirmPasswordToggle.name   
+      confirmPasswordToggle.name 
  = "eye-outline";
     } else {
       confirmPasswordInput.type = "password";
