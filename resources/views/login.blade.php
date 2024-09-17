@@ -46,11 +46,11 @@
                     </div>
                     <a href="{{ route('google.login') }}" class="flex items-center justify-center w-full py-2 bg-white border border-gray-300 text-gray-600 rounded-lg shadow-md hover:bg-gray-100 mb-4">
                         <img src="https://www.google.com/favicon.ico" alt="Google Icon" class="w-5 h-5 mr-2">
-                        Masuk dengan Google
+                        Login with Google
                     </a>
-                    <button type="submit" class="w-full py-2 bg-white border border-gray-300 text-gray-600 rounded-lg shadow-md hover:bg-gray-100">Masuk</button>
+                    <button type="submit" class="w-full py-2 bg-white border border-gray-300 text-gray-600 rounded-lg shadow-md hover:bg-gray-100">Login</button>
                 </form>
-                <p class="mt-6 text-center text-gray-600">Belum memiliki akun? <a href="{{ route('regis') }}" class="text-blue-500 hover:underline">Daftar disini</a></p>
+                <p class="mt-6 text-center text-gray-600">Don't have an account? <a href="{{ route('regis') }}" class="text-blue-500 hover:underline">Register here</a></p>
             </div>
         </div>
     </div>

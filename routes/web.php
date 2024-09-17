@@ -19,4 +19,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('auth/redirect', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/callback', [GoogleController::class, 'handleGoogleCallback']);
 
-
+Route::get('/profile', function () {
+    return view('profile');
+});
