@@ -1,4 +1,4 @@
-@extends('layouts.lg') <!-- Menggunakan layout yang sudah ada -->
+@extends('layouts.lg')
 @section('content')
     <div class="bg-gray-100 flex h-screen">
         <!-- Left Side: Image and Title (Visible on large screens) -->

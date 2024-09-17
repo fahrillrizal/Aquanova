@@ -13,20 +13,19 @@ class AuthController extends Controller
     // Menampilkan formulir pendaftaran
     public function showRegisterForm()
     {
-        return view('regis'); // View 'register.blade.php' di dalam folder 'views'
+        return view('regis');
     }
 
     // Menangani pendaftaran pengguna baru
     public function regis(Request $request)
     {
-        // Validasi data yang masuk
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            // 'password' => 'required|string|min:8|confirmed|regex:/^(?=.*[A-Z])(?=.*[0-9]).*$/', iki regex hapusen comment e lek fix lek testing ojok, ribet
         ]);
 
-        // Membuat pengguna baru
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -36,14 +35,13 @@ class AuthController extends Controller
         // Kirim notifikasi email
         // $user->notify(new UserRegisteredMail($user));
 
-        // Redirect ke halaman login setelah berhasil mendaftar
-        return redirect()->route('login')->with('success', 'Registration successful. Please check your email and login.');
+        return redirect()->route('profile')->with('success', 'Registration successful. Please check your email and login.');
     }
 
     // Menampilkan formulir login
     public function showLoginForm()
     {
-        return view('login'); // View 'login.blade.php' di dalam folder 'views'
+        return view('login');
     }
 
     // Menangani login pengguna
@@ -57,14 +55,10 @@ class AuthController extends Controller
 
         // Coba untuk login
         if (Auth::attempt($credentials)) {
-            // Regenerasi sesi untuk mencegah serangan session fixation
             $request->session()->regenerate();
-
-            // Redirect ke halaman dashboard atau halaman yang diinginkan
             return redirect()->intended('dashboard')->with('success', 'You are logged in!');
         }
 
-        // Jika login gagal, kembalikan ke halaman login dengan pesan error
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
@@ -78,6 +72,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('success', 'You have been logged out.');
+        return redirect('/login')->with('success', 'You have been logged out.');
     }
 }
