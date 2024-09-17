@@ -6,14 +6,14 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-// use App\Notifications\UserRegisteredMail;
+use App\Notifications\UserRegisteredNotification;
 
 class AuthController extends Controller
 {
     // Menampilkan formulir pendaftaran
     public function showRegisterForm()
     {
-        return view('regis'); // View 'register.blade.php' di dalam folder 'views'
+        return view('regis'); // View 'regis.blade.php' di dalam folder 'views'
     }
 
     // Menangani pendaftaran pengguna baru
@@ -23,7 +23,15 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => [
+                'required',
+                'string',
+                'min:8', // Minimal 8 karakter
+                'confirmed',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/', // Aturan regex
+            ],
+        ], [
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
         ]);
 
         // Membuat pengguna baru
@@ -34,7 +42,7 @@ class AuthController extends Controller
         ]);
 
         // Kirim notifikasi email
-        // $user->notify(new UserRegisteredMail($user));
+        $user->notify(new UserRegisteredNotification($user));
 
         // Redirect ke halaman login setelah berhasil mendaftar
         return redirect()->route('login')->with('success', 'Registration successful. Please check your email and login.');
