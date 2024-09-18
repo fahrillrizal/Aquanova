@@ -6,7 +6,7 @@ use App\Http\Controllers\Auth\GoogleController;
 
 
 Route::get('/', function () {
-    return view('tes');
+    return view('home');
 });
 Route::get('/regis', [AuthController::class, 'showRegisterForm'])->name('regis');
 Route::post('/regis', [AuthController::class, 'regis']);

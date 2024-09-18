@@ -9,7 +9,7 @@
             <p class="text-[32px] text-gray-700">where water quality meets <br> innovation</p>
         </div>
         <!-- Image Section -->
-        <img src="{{ asset('assets/Subtract.png') }}" alt="Water Innovation Image" class="rounded-[60px] ml-20 object-cover w-full h-[95%]">
+        <img src="{{ asset('assets/img/png/Subtract.png') }}" alt="Water Innovation Image" class="rounded-[60px] ml-20 object-cover w-full h-[95%]">
     </div>
 
     <!-- Right Side: Register Form -->

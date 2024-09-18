@@ -7,7 +7,7 @@
                 <h1 class="text-7xl bg-gradient-to-r from-[#6FCDF7] to-[#D3E2FF] bg-clip-text text-transparent font-semibold mb-4">AquaNova</h1>
                 <p class="text-[32px] text-gray-700">where water quality meets <br> innovation</p>
             </div>
-            <img src="{{ asset('assets/Subtract.png') }}" alt="Water Innovation Image" class="rounded-[60px] ml-20 object-cover w-full h-[95%]">
+            <img src="{{ asset('assets/img/png/Subtract.png') }}" alt="Water Innovation Image" class="rounded-[60px] ml-20 object-cover w-full h-[95%]">
         </div>
         
         <!-- Right Side: Login Form -->
