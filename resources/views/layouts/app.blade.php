@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font embed Montserrat Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <!-- CropperJs -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
     <style>
         #scroll-up {
             background-color: #6CA2BA;
@@ -27,6 +29,18 @@
         #scroll-up:hover {
             background-color: #4a90a2;
         }
+
+        .cropper-crop-box {
+            border-radius: 50%;
+        }
+
+        .cropper-face {
+            border-radius: 50%;
+        }
+
+        .cropper-view-box {
+            border-radius: 50%;
+        }
     </style>
 </head>
 
@@ -35,26 +49,17 @@
     <nav class="fixed top-0 left-0 w-full px-8 py-4 text-sm font-medium bg-white bg-opacity-20 backdrop-blur-sm z-10">
         <div class="container mx-auto flex justify-between items-center">
             <div class="card border-2 border-blue-200 rounded-lg w-24 h-12 flex justify-center items-center">
-<<<<<<< HEAD
-                <h3 class="p-2 bg-gradient-to-r from-[#6FCDF7] to-[#D3E2FF] bg-clip-text text-transparent font-bold">
-                    Aquanova
-=======
                 <h3 class="p-2 bg-gradient-to-r from-[#6FCDF7] to-[#D3E2FF] bg-clip-text text-transparent font-bold">AquaNova
->>>>>>> 496340e0e039b54a8d52f3b711af21bc3a673b4d
                 </h3>
             </div>
             <ul class="flex space-x-16">
-                <li><a href="#">Home</a></li>
+                <li><a href="/">Home</a></li>
                 @auth
                     <li><a href="#">Monitoring</a></li>
                 @endauth
                 <li><a href="#">Recomendation</a></li>
                 @guest
-<<<<<<< HEAD
-                    <li><a href="#">Login</a></li>
-=======
                 <li><a href="{{ route('login') }}">Login</a></li>
->>>>>>> 496340e0e039b54a8d52f3b711af21bc3a673b4d
                 @endguest
             </ul>
         </div>
@@ -83,15 +88,16 @@
             <p>&copy; 2024 AquaNova. All rights reserved.</p>
         </div>
     </footer>
-    
+
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const scrollUpButton = document.getElementById("scroll-up");
 
             window.addEventListener("scroll", function() {
-                if (window.scrollY > 10) { //ubahen seng 10 bebas wes pokok pas
+                if (window.scrollY > 100) {
                     scrollUpButton.style.display = "block";
                 } else {
                     scrollUpButton.style.display = "none";

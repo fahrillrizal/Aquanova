@@ -15,19 +15,19 @@
     </h1>
 
     <!-- Profile Image and Info Section -->
-    <div class="relative flex items-center space-x-4">
+    <div class="">
         <!-- Profile Image -->
-        <div class="relative w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 rounded-full border-4 border-white overflow-hidden">
+        <div class="relative w-10 h-10 sm:w-[100px] sm:h-[100px] lg:w-40 lg:h-40 top-0 sm:top-[-40px] sm:left-[50px] md:top-[-170px] md:left-[50px] lg:top-[-140px] lg:left-[120px] rounded-full border-4 border-white overflow-hidden">
             <img src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/profile.png') }}" alt="Profile Image" class="w-full h-full object-cover rounded-full">
+            <button onclick="openModal('editPhotoModal')" class="absolute bottom-2 right-2 bg-white p-1 rounded-full border border-gray-300 shadow">
+                <ion-icon name="pencil-outline" class="text-blue-500 hover:text-blue-600"></ion-icon>
+            </button>
         </div>
 
         <!-- User Information -->
-        <div class="relative">
-            <h2 class="text-lg lg:text-2xl font-bold">{{ Auth::user()->name }}</h2>
-            <button onclick="openModal('editPhotoModal')">
-                <ion-icon name="pencil-outline" class="text-blue-500 hover:text-blue-600"></ion-icon> Edit
-            </button>
-            <p class="text-sm lg:text-base text-gray-500">{{ Auth::user()->email }}</p>
+        <div class="relative text-xs sm:mt-[-215px] sm:ml-[170px] lg:left-[180px] lg:top-[10px]">
+            <h2 class="text- sm:text-lg lg:text-2xl font-bold">{{ Auth::user()->name }}</h2>
+            <p class="text-sm sm:text-sm lg:text-base text-gray-500">{{ Auth::user()->email }}</p>
         </div>
     </div>
 </div>
@@ -84,32 +84,28 @@
     <div class="bg-white p-6 rounded-lg shadow-lg">
         <h2 class="text-lg font-bold mb-4">Edit Profile Photo</h2>
 
-        <!-- Profile Image -->
-        <div class="relative w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 mx-auto rounded-full border-4 border-gray-300 overflow-hidden mb-4">
-            <img src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/profile.png') }}" alt="Profile Image" class="w-full h-full object-cover rounded-full">
+        <!-- Image Preview for Cropping -->
+        <div class="relative w-24 h-24 mx-auto overflow-hidden mb-4">
+            <img id="photoPreview" src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/profile.png') }}" alt="Profile Image" class="w-full h-full object-cover">
         </div>
 
-        <!-- Buttons for Change/Delete -->
+        <!-- Buttons for Cropping -->
         <div class="flex justify-center space-x-4 mb-4">
-            <form action="{{ route('profile.photo.change') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <label for="photo" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md cursor-pointer">Change</label>
-                <input type="file" id="photo" name="photo" class="hidden" onchange="this.form.submit()">
-            </form>
-
+            <input type="file" id="photoInput" class="hidden" accept=".jpeg, .png, .jpg, .heic">
+            <label for="photoInput" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md cursor-pointer">Choose Photo</label>
             @if(Auth::user()->foto)
             <form action="{{ route('profile.photo.delete') }}" method="POST">
                 @csrf
                 <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md">Delete</button>
             </form>
             @endif
+            <button id="savePhotoButton" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded shadow-md hidden" onclick="cropImage()">Save</button>
         </div>
         <div class="mt-4 text-center">
             <button class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded" onclick="closeModal('editPhotoModal')">Cancel</button>
         </div>
     </div>
 </div>
-
 
 <!-- Edit Profile Modal -->
 <div id="editProfileModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center">
@@ -175,5 +171,107 @@
     function closeModal(modalId) {
         document.getElementById(modalId).classList.add('hidden');
     }
+
+    let cropper;
+    const input = document.getElementById('photoInput');
+    const image = document.getElementById('photoPreview');
+    const saveButton = document.getElementById('savePhotoButton');
+
+    input.addEventListener('change', function(e) {
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                image.src = event.target.result;
+                if (cropper) {
+                    cropper.destroy();
+                }
+                cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 2,
+                    autoCropArea: 1,
+                    background: false,
+                    cropBoxResizable: false,
+                    minContainerWidth: 100,
+                    minContainerHeight: 100,
+                });
+                saveButton.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function cropImage() {
+        if (!cropper) {
+            console.error('Cropper not initialized');
+            return;
+        }
+
+        const canvas = cropper.getCroppedCanvas({
+            width: 300,
+            height: 300,
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high'
+        });
+
+        canvas.toBlob(function(blob) {
+            const formData = new FormData();
+            formData.append('photo', blob, 'profile.jpg');
+            formData.append('_token', '{{ csrf_token() }}');
+            fetch('{{ route("profile.photo.change") }}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Update all profile images on the page with the new image URL
+                        const profileImages = document.querySelectorAll('.profile-image');
+                        profileImages.forEach(img => {
+                            img.src = data.imageUrl + '?t=' + new Date().getTime();
+                        });
+                        // showAlert('success', 'Profile photo updated successfully');
+                        closeModal('editPhotoModal');
+
+                        // Update the main profile image
+                        const mainProfileImage = document.querySelector('.relative.w-10.h-10 img');
+                        if (mainProfileImage) {
+                            mainProfileImage.src = data.imageUrl + '?t=' + new Date().getTime();
+                        }
+
+                        // Auto-refresh the page after a short delay
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1000); // 1000 milliseconds = 1 second
+                    } else {
+                        showAlert('error', 'Failed to update profile photo');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showAlert('error', 'An error occurred while updating the profile photo');
+                });
+        }, 'image/jpeg');
+    }
+
+    // function showAlert(type, message) {
+    //     const alertElement = document.createElement('div');
+    //     alertElement.textContent = message;
+    //     alertElement.className = `alert alert-${type} fixed top-4 right-4 p-4 rounded shadow-lg z-50`;
+    //     if (type === 'success') {
+    //         alertElement.classList.add('bg-green-500', 'text-white');
+    //     } else {
+    //         alertElement.classList.add('bg-red-500', 'text-white');
+    //     }
+    //     document.body.appendChild(alertElement);
+
+    //     setTimeout(() => {
+    //         alertElement.remove();
+    //     }, 3000);
+    // }
 </script>
 @endsection

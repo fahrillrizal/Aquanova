@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    public function profile(){
+    public function profile()
+    {
         $user = Auth::user();
         return view('profile', compact('user'));
     }
@@ -29,7 +30,7 @@ class ProfileController extends Controller
     public function updatePP(Request $request)
     {
         $request->validate([
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $user = Auth::user();
@@ -44,7 +45,7 @@ class ProfileController extends Controller
         $user->foto = $filename;
         $user->save();
 
-        return redirect()->back()->with('status', 'Foto profil berhasil diubah.');
+        return response()->json(['status' => 'success']);
     }
 
     public function hapusPP()
