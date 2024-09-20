@@ -9,7 +9,7 @@
             <p class="text-[32px] text-gray-700">where water quality meets <br> innovation</p>
         </div>
         <!-- Image Section -->
-        <img src="{{ asset('assets/Subtract.png') }}" alt="Water Innovation Image" class="rounded-[60px] ml-20 object-cover w-full h-[95%]">
+        <img src="{{ asset('assets/img/png/Subtract.png') }}" alt="Water Innovation Image" class="rounded-[60px] ml-20 object-cover w-full h-[95%]">
     </div>
 
     <!-- Right Side: Register Form -->
@@ -60,7 +60,7 @@
                 <!-- Google Login Button -->
                 <a href="{{ route('google.login') }}" class="flex items-center justify-center w-full py-2 bg-white border border-gray-300 text-gray-600 rounded-lg shadow-md hover:bg-gray-100 mb-4">
                     <img src="https://www.google.com/favicon.ico" alt="Google Icon" class="w-5 h-5 mr-2">
-                    Masuk dengan Google
+                    Login with Google
                 </a>
 
                 <!-- Submit Button -->

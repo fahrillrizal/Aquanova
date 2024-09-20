@@ -22,14 +22,13 @@ class GoogleController extends Controller
         $existingUser = User::where('email', $user->getEmail())->first();
         
         if ($existingUser) {
-            // Masuk pengguna jika sudah ada
             Auth::login($existingUser);
         } else {
             // Buat pengguna baru jika belum ada
             $newUser = User::create([
                 'name' => $user->getName(),
                 'email' => $user->getEmail(),
-                'password' => bcrypt('password'), // Set default password or handle accordingly
+                'password' => bcrypt('password'),
             ]);
 
             Auth::login($newUser);

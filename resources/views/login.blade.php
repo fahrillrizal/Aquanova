@@ -1,4 +1,4 @@
-@extends('layouts.lg') <!-- Menggunakan layout yang sudah ada -->
+@extends('layouts.lg')
 @section('content')
     <div class="bg-gray-100 flex h-screen">
         <!-- Left Side: Image and Title (Visible on large screens) -->
@@ -7,7 +7,7 @@
                 <h1 class="text-7xl bg-gradient-to-r from-[#6FCDF7] to-[#D3E2FF] bg-clip-text text-transparent font-semibold mb-4">AquaNova</h1>
                 <p class="text-[32px] text-gray-700">where water quality meets <br> innovation</p>
             </div>
-            <img src="{{ asset('assets/Subtract.png') }}" alt="Water Innovation Image" class="rounded-[60px] ml-20 object-cover w-full h-[95%]">
+            <img src="{{ asset('assets/img/png/Subtract.png') }}" alt="Water Innovation Image" class="rounded-[60px] ml-20 object-cover w-full h-[95%]">
         </div>
         
         <!-- Right Side: Login Form -->
@@ -42,15 +42,15 @@
                             <input type="checkbox" id="remember" name="remember" class="text-blue-500 mr-2">
                             <label for="remember" class="text-gray-600">Remember Me</label>
                         </div>
-                        <a href="#" class="text-blue-500 hover:underline">Forgot password?</a>
+                        <a href="{{ route('password.request') }}" class="text-blue-500 hover:underline">Forgot password?</a>
                     </div>
                     <a href="{{ route('google.login') }}" class="flex items-center justify-center w-full py-2 bg-white border border-gray-300 text-gray-600 rounded-lg shadow-md hover:bg-gray-100 mb-4">
                         <img src="https://www.google.com/favicon.ico" alt="Google Icon" class="w-5 h-5 mr-2">
-                        Masuk dengan Google
+                        Login with Google
                     </a>
-                    <button type="submit" class="w-full py-2 bg-white border border-gray-300 text-gray-600 rounded-lg shadow-md hover:bg-gray-100">Masuk</button>
+                    <button type="submit" class="w-full py-2 bg-white border border-gray-300 text-gray-600 rounded-lg shadow-md hover:bg-gray-100">Login</button>
                 </form>
-                <p class="mt-6 text-center text-gray-600">Belum memiliki akun? <a href="{{ route('regis') }}" class="text-blue-500 hover:underline">Daftar disini</a></p>
+                <p class="mt-6 text-center text-gray-600">Don't have an account? <a href="{{ route('regis') }}" class="text-blue-500 hover:underline">Register here</a></p>
             </div>
         </div>
     </div>
