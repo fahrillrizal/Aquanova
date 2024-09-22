@@ -49,7 +49,8 @@
     <nav class="fixed top-0 left-0 w-full px-8 py-4 text-sm font-medium bg-white bg-opacity-20 backdrop-blur-sm z-10">
         <div class="container mx-auto flex justify-between items-center">
             <div class="card border-2 border-blue-200 rounded-lg w-24 h-12 flex justify-center items-center">
-                <h3 class="p-2 bg-gradient-to-r from-[#6FCDF7] to-[#D3E2FF] bg-clip-text text-transparent font-bold">AquaNova
+                <h3 class="p-2 bg-gradient-to-r from-[#6FCDF7] to-[#D3E2FF] bg-clip-text text-transparent font-bold">
+                    AquaNova
                 </h3>
             </div>
             <ul class="flex space-x-16">
@@ -59,7 +60,7 @@
                 @endauth
                 <li><a href="#">Recomendation</a></li>
                 @guest
-                <li><a href="{{ route('login') }}">Login</a></li>
+                    <li><a href="{{ route('login') }}">Login</a></li>
                 @endguest
             </ul>
         </div>
@@ -111,6 +112,30 @@
                 });
             });
         });
+
+        // dropdown profile
+            // Ambil elemen tombol dan dropdown menu
+            const menuButton = document.getElementById('menu-button');
+        const dropdownMenu = menuButton.nextElementSibling;
+
+        // Fungsi untuk menampilkan atau menyembunyikan menu dropdown
+        menuButton.addEventListener('click', () => {
+            const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+
+            // Toggle atribut aria-expanded dan tampilan dropdown
+            menuButton.setAttribute('aria-expanded', !isExpanded);
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        // Menyembunyikan dropdown jika klik di luar area
+        window.addEventListener('click', (e) => {
+            if (!menuButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                menuButton.setAttribute('aria-expanded', 'false');
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+    </script>
+
     </script>
 </body>
 

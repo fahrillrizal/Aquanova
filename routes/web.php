@@ -9,6 +9,9 @@ use App\Http\Controllers\Auth\PasswordController;
 // Rute utama
 Route::get('/', fn() => view('home'));
 
+// Rute Recomendation
+Route::get('/recom', fn() => view('recom'));
+
 // Rute Registrasi
 Route::get('/regis', [AuthController::class, 'showRegisterForm'])->name('regis');
 Route::post('/regis', [AuthController::class, 'regis']);
