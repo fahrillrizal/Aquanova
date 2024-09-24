@@ -85,12 +85,10 @@
     <div class="bg-white p-6 rounded-lg shadow-lg">
         <h2 class="text-lg font-bold mb-4">Edit Profile Photo</h2>
 
-        <!-- Image Preview for Cropping -->
         <div class="relative w-24 h-24 mx-auto overflow-hidden mb-4">
             <img id="photoPreview" src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/profile.png') }}" alt="Profile Image" class="w-full h-full object-cover">
         </div>
 
-        <!-- Buttons for Cropping -->
         <div class="flex justify-center space-x-4 mb-4">
             <input type="file" id="photoInput" class="hidden" accept=".jpeg, .png, .jpg, .heic">
             <label for="photoInput" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md cursor-pointer">Choose Photo</label>
@@ -230,12 +228,11 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        // Update all profile images on the page with the new image URL
                         const profileImages = document.querySelectorAll('.profile-image');
                         profileImages.forEach(img => {
                             img.src = data.imageUrl + '?t=' + new Date().getTime();
                         });
-                        // showAlert('success', 'Profile photo updated successfully');
+            
                         closeModal('editPhotoModal');
 
                         // Update the main profile image
@@ -247,7 +244,7 @@
                         // Auto-refresh the page after a short delay
                         setTimeout(() => {
                             location.reload();
-                        }, 1000); // 1000 milliseconds = 1 second
+                        }, 1000);
                     } else {
                         showAlert('error', 'Failed to update profile photo');
                     }

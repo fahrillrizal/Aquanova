@@ -9,7 +9,7 @@ class data extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'nama', 'tgl', 'suhu', 'ph', 'o2', 'salinitas', 'saran'];
+    protected $fillable = ['user_id', 'nama', 'tgl', 'suhu', 'ph', 'o2', 'salinitas', 'hasil', 'saran'];
 
     public function user()
     {

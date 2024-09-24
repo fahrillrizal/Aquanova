@@ -16,11 +16,12 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('nama');
             $table->date('tgl');
-            $table->double('suhu');
+            $table->float('suhu');
             $table->integer('ph');
-            $table->double('o2');
-            $table->double('salinitas');
-            $table->string('saran');
+            $table->float('o2');
+            $table->float('salinitas');
+            $table->tinyInteger('hasil');//0=baik, 1=netral, 2=buruk buat badge
+            $table->string('saran')->nullable();
             $table->timestamps();
         });
     }

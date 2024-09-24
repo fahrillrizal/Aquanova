@@ -4,12 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- import cdn Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font embed Montserrat Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <!-- CropperJs -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+    <!-- Flowbite -->
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+    <!-- Apexcharts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
         #scroll-up {
             background-color: #6CA2BA;
@@ -56,16 +61,16 @@
             <ul class="flex space-x-16">
                 <li><a href="/">Home</a></li>
                 @auth
-                <li><a href="#">Monitoring</a></li>
+                    <li><a href="{{ route('monitoring') }}">Monitoring</a></li>
                 @endauth
-                <li><a href="#">Recomendation</a></li>
+                <li><a href="{{ route('recom') }}">Recomendation</a></li>
                 @guest
                     <li><a href="{{ route('login') }}">Login</a></li>
                 @endguest
             </ul>
         </div>
     </nav>
-    <main class="mx-8 mt-2 flex-grow">
+    <main class="mx-8 mt-20 flex-grow">
         <div class="mb-96">
             @yield('content')
         </div>
@@ -96,6 +101,7 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const scrollUpButton = document.getElementById("scroll-up");

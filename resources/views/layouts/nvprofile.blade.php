@@ -56,11 +56,11 @@
             <ul class="flex space-x-16">
                 <li><a href="/">Home</a></li>
                 @auth
-                    <li><a href="#">Monitoring</a></li>
+                <li><a href="{{ route('monitoring') }}">Monitoring</a></li>
                 @endauth
-                <li><a href="#">Recomendation</a></li>
+                <li><a href="{{ route('recom') }}">Recomendation</a></li>
                 @guest
-                    <li><a href="{{ route('login') }}">Login</a></li>
+                <li><a href="{{ route('login') }}">Login</a></li>
                 @endguest
             </ul>
         </div>
@@ -114,8 +114,8 @@
         });
 
         // dropdown profile
-            // Ambil elemen tombol dan dropdown menu
-            const menuButton = document.getElementById('menu-button');
+        // Ambil elemen tombol dan dropdown menu
+        const menuButton = document.getElementById('menu-button');
         const dropdownMenu = menuButton.nextElementSibling;
 
         // Fungsi untuk menampilkan atau menyembunyikan menu dropdown

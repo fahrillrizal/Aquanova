@@ -26,10 +26,10 @@ class AuthController extends Controller
                 'string',
                 'min:8', // Minimal 8 karakter
                 'confirmed',
-                // 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/', // Aturan regex
+                'regex:/^(?=.*[A-Z])(?=.*[0-9]).*$/', // Aturan regex
             ],
         ], [
-            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter dan one number.',
         ]);
 
         $user = User::create([
@@ -39,7 +39,7 @@ class AuthController extends Controller
         ]);
 
 
-        return redirect()->route('profile')->with('success', 'Registration successful. Please check your email and login.');
+        return redirect()->route('/login')->with('success', 'Registration successful. Please check your email and login.');
     }
 
     // Menampilkan formulir login
