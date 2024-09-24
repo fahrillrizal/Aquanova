@@ -35,7 +35,7 @@
                     <div class="mb-4 relative">
                         <label for="password" class="block text-gray-600 mb-1">Password</label>
                         <input type="password" id="password" name="password" class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:border-blue-500" placeholder="••••••••" required>
-                        <ion-icon name="eye-off-outline" id="password-toggle" class="absolute text-sky-400 right-3 top-12 -translate-y-1/2 transform origin-center cursor-pointer"></ion-icon>
+                        <ion-icon name="eye-off-outline" id="password-toggle1" class="absolute text-sky-400 right-3 top-12 -translate-y-1/2 transform origin-center cursor-pointer"></ion-icon>
                     </div>
                     <div class="mb-4 flex items-center justify-between">
                         <div class="flex items-center">

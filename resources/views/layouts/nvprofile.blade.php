@@ -44,7 +44,7 @@
     </style>
 </head>
 
-<body class="font-['Montserrat']">
+<body class="font-['Montserrat'] overflow-x-hidden">
     <!-- Navigation -->
     <nav class="fixed top-0 left-0 w-full px-8 py-4 text-sm font-medium bg-white bg-opacity-20 backdrop-blur-sm z-10">
         <div class="container mx-auto flex justify-between items-center">
@@ -56,7 +56,7 @@
             <ul class="flex space-x-16">
                 <li><a href="/">Home</a></li>
                 @auth
-                <li><a href="#">Monitoring</a></li>
+                    <li><a href="#">Monitoring</a></li>
                 @endauth
                 <li><a href="#">Recomendation</a></li>
                 @guest
@@ -65,7 +65,7 @@
             </ul>
         </div>
     </nav>
-    <main class="mx-8 mt-2 flex-grow">
+    <main class="mx-8 mt-24 flex-grow">
         <div class="mb-96">
             @yield('content')
         </div>
@@ -76,7 +76,7 @@
     </button>
 
     <!-- Footer -->
-    <footer class="relative text-center">
+    <footer class="relative text-center lg:mt-0">
         <div>
             <svg class="h-24 w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"
                 preserveAspectRatio="none">
@@ -85,11 +85,8 @@
                 </path>
             </svg>
         </div>
-        <div class="h-36 absolute w-36 ml-64">
-                <img src="{{ asset('assets/logo.png') }}" class="mt-1" alt="">
-        </div>
-        <div class="bg-[#6CA2BA] text-white text-sm py-24">
-            <p class="text-center">&copy; 2024 AquaNova. All rights reserved.</p>
+        <div class="bg-[#6CA2BA] text-white text-sm text-center py-24">
+            <p>&copy; 2024 AquaNova. All rights reserved.</p>
         </div>
     </footer>
 

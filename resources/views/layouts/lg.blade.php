@@ -14,7 +14,7 @@
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <script>
   // Target the first password input and toggle icon
-  const passwordInput1 = document.getElementById("password1");
+  const passwordInput1 = document.getElementById("password");
   const passwordToggle1 = document.getElementById("password-toggle1");
 
   passwordToggle1.addEventListener("click", () => {
@@ -28,7 +28,7 @@
   });
 
   // Target the second (confirm password) input and toggle icon (similar logic)
-  const confirmPasswordInput = document.getElementById("confirm-password");
+  const confirmPasswordInput = document.getElementById("password_confirmation");
   const confirmPasswordToggle = document.getElementById("password-toggle2");
 
   confirmPasswordToggle.addEventListener("click", () => {
