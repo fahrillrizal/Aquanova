@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/photo/change', [ProfileController::class, 'updatePP'])->name('profile.photo.change');
     Route::post('/profile/photo/delete', [ProfileController::class, 'hapusPP'])->name('profile.photo.delete');
-    Route::post('/profile/password/change', [ProfileController::class, 'updatePassword'])->name('password.change');
+    Route::post('/profile/password/change', [ProfileController::class, 'updatePassword'])->name('password.update');
     Route::get('/monitoring', [DataController::class, 'index'])->name('monitoring');
     Route::post('/data', [DataController::class, 'store'])->name('data.store');
     Route::get('/data/{id}', [DataController::class, 'show'])->name('data.show');

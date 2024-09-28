@@ -17,7 +17,7 @@
             <div class="flex justify-between items-center pb-4 mb-4 border-b border-white-200">
                 <div class="flex flex-col items-center justify-center text-center flex-grow">
                     <div class="flex items-center justify-center">
-                        <h5 class="leading-none text-2xl font-bold text-[#2E2E30] pb-1">Temperature</h5>
+                        <h5 id="chart-title" class="leading-none text-2xl font-bold text-[#2E2E30] pb-1">Temperature</h5>
                         <ion-icon name="arrow-down-outline" style="color: #314CFF; font-size: 1.2rem; margin-left: 8px;"></ion-icon>
                     </div>
                     <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Average time temp spent per day</p>
@@ -73,7 +73,7 @@
                     <div class="flex items-center">
                         Temperature (°C)
                         <a href="#" id="sort-temperature">
-                            <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http:
                                 <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
                             </svg>
                         </a>
@@ -92,7 +92,7 @@
                     <div class="flex items-center">
                         Status
                         <a href="#" id="sort-status">
-                            <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http:
                                 <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
                             </svg>
                         </a>
@@ -228,7 +228,7 @@
 
     <div id="modal-backdrop" class="fixed inset-0 bg-black opacity-50 hidden"></div>
 </div>
-
+<script src="../js/filter.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const userSelectedDateInput = document.getElementById('user-selected-date');
@@ -251,20 +251,20 @@
         let currentDeleteId = null;
         let currentEditData = {};
 
-        // Sorting
+        
         let temperatureSortDirection = 'asc';
         let statusSortDirection = 'asc';
 
         function sortTable(column, direction) {
-            const rows = Array.from(dataTable.querySelectorAll('tr:not(.no-data)')).slice(1); // Skip header row and no-data row
+            const rows = Array.from(dataTable.querySelectorAll('tr:not(.no-data)')).slice(1); 
 
             rows.sort((a, b) => {
                 const aValue = a.querySelector(`td:nth-child(${column})`).textContent.trim();
                 const bValue = b.querySelector(`td:nth-child(${column})`).textContent.trim();
 
-                if (column === 4) { // Assuming column 4 is temperature
+                if (column === 4) { 
                     return direction === 'asc' ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(aValue);
-                } else if (column === 8) { // Assuming column 8 is status
+                } else if (column === 8) { 
                     return direction === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
                 }
             });
@@ -302,7 +302,7 @@
             svg.style.transform = direction === 'asc' ? 'rotate(0deg)' : 'rotate(180deg)';
         }
 
-        // Add Data
+        
         addDataBtn.addEventListener('click', function() {
             addDataModal.classList.remove('hidden');
             modalBackdrop.classList.remove('hidden');
@@ -338,7 +338,7 @@
             }
         });
 
-        // Search and filter
+        
         function updateTableVisibility() {
             const query = searchBar.value.toLowerCase();
             const selectedDate = userSelectedDateInput.value;
@@ -356,7 +356,7 @@
                 if (isVisible) {
                     anyVisible = true;
                     visibleCount++;
-                    row.querySelector('td:first-child').textContent = visibleCount; // Update row index
+                    row.querySelector('td:first-child').textContent = visibleCount; 
                 }
             });
 
@@ -370,7 +370,7 @@
                     noDataRow = dataTable.insertRow();
                     noDataRow.className = 'no-data';
                     const cell = noDataRow.insertCell();
-                    cell.colSpan = 10; // Adjust based on your table columns
+                    cell.colSpan = 10; 
                     cell.className = 'py-4 text-center text-gray-500';
                 }
                 noDataRow.style.display = '';
@@ -380,13 +380,13 @@
             }
         }
 
-        // Event listeners search & date filter
+        
         searchBar.addEventListener('input', updateTableVisibility);
         userSelectedDateInput.addEventListener('change', updateTableVisibility);
 
         updateTableVisibility();
 
-        // Modal Edit Data
+        
         window.openEditModal = function(data) {
             currentEditData = data;
             document.getElementById('edit_nama').value = data.nama;
@@ -408,7 +408,7 @@
         editForm.addEventListener('submit', async function(event) {
             event.preventDefault();
             const formData = new FormData(editForm);
-            const url = editForm.action + '/' + currentEditData.id; 
+            const url = editForm.action + '/' + currentEditData.id;
 
             try {
                 const response = await fetch(url, {
@@ -421,7 +421,7 @@
 
                 if (response.ok) {
                     alert('Data successfully updated.');
-                    location.reload(); 
+                    location.reload();
                 } else {
                     throw new Error('Failed to update data.');
                 }
@@ -430,9 +430,9 @@
             }
         });
 
-        // Modal Confirmation Delete
+        
         window.openDeleteConfirmation = function(id) {
-            currentDeleteId = id; 
+            currentDeleteId = id;
             deleteConfirmationModal.classList.remove('hidden');
             modalBackdrop.classList.remove('hidden');
         };
@@ -453,7 +453,7 @@
 
                 if (response.ok) {
                     alert('Data successfully deleted.');
-                    location.reload(); 
+                    location.reload();
                 } else {
                     throw new Error('Failed to delete data.');
                 }
@@ -555,7 +555,6 @@
         colors: ["#DAF0FB"],
         series: [{
             name: "Temperature",
-            color: "#DAF0FB",
             data: [{
                     x: "Mon",
                     y: 231
@@ -583,87 +582,171 @@
                 {
                     x: "Sun",
                     y: 111
-                },
+                }
             ],
         }],
         chart: {
             type: "bar",
             height: "320px",
-            fontFamily: "Inter, sans-serif",
-            toolbar: {
-                show: false,
-            },
         },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: "70%",
-                borderRadiusApplication: "end",
-                borderRadius: 8,
-            },
-        },
-        tooltip: {
-            shared: true,
-            intersect: false,
-            style: {
-                fontFamily: "Inter, sans-serif",
-            },
-        },
-        states: {
-            hover: {
-                filter: {
-                    type: "darken",
-                    value: 1,
+    };
+
+    const phOptions = {
+        colors: ["#FDD835"],
+        series: [{
+            name: "pH",
+            data: [{
+                    x: "Mon",
+                    y: 6.5
                 },
-            },
-        },
-        stroke: {
-            show: true,
-            width: 0,
-            colors: ["transparent"],
-        },
-        grid: {
-            show: false,
-            strokeDashArray: 4,
-            padding: {
-                left: 2,
-                right: 2,
-                top: -14
-            },
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        legend: {
-            show: false,
-        },
-        xaxis: {
-            floating: false,
-            labels: {
-                show: true,
-                style: {
-                    fontFamily: "Inter, sans-serif",
-                    cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                {
+                    x: "Tue",
+                    y: 7.1
+                },
+                {
+                    x: "Wed",
+                    y: 6.8
+                },
+                {
+                    x: "Thu",
+                    y: 7.0
+                },
+                {
+                    x: "Fri",
+                    y: 7.3
+                },
+                {
+                    x: "Sat",
+                    y: 6.7
+                },
+                {
+                    x: "Sun",
+                    y: 7.2
                 }
-            },
-            axisBorder: {
-                show: false,
-            },
-            axisTicks: {
-                show: false,
-            },
+            ],
+        }],
+        chart: {
+            type: "bar",
+            height: "320px",
         },
-        yaxis: {
-            show: false,
+    };
+
+    const oxygenOptions = {
+        colors: ["#66BB6A"],
+        series: [{
+            name: "Oxygen",
+            data: [{
+                    x: "Mon",
+                    y: 8.1
+                },
+                {
+                    x: "Tue",
+                    y: 7.8
+                },
+                {
+                    x: "Wed",
+                    y: 8.0
+                },
+                {
+                    x: "Thu",
+                    y: 7.5
+                },
+                {
+                    x: "Fri",
+                    y: 8.2
+                },
+                {
+                    x: "Sat",
+                    y: 7.9
+                },
+                {
+                    x: "Sun",
+                    y: 8.4
+                }
+            ],
+        }],
+        chart: {
+            type: "bar",
+            height: "320px",
         },
-        fill: {
-            opacity: 1,
+    };
+
+    const salinityOptions = {
+        colors: ["#42A5F5"],
+        series: [{
+            name: "Salinity",
+            data: [{
+                    x: "Mon",
+                    y: 35
+                },
+                {
+                    x: "Tue",
+                    y: 34
+                },
+                {
+                    x: "Wed",
+                    y: 36
+                },
+                {
+                    x: "Thu",
+                    y: 33
+                },
+                {
+                    x: "Fri",
+                    y: 34
+                },
+                {
+                    x: "Sat",
+                    y: 35
+                },
+                {
+                    x: "Sun",
+                    y: 36
+                }
+            ],
+        }],
+        chart: {
+            type: "bar",
+            height: "320px",
         },
+    };
+
+    let activeChart;
+
+    function renderChart(chartOptions) {
+        if (activeChart) {
+            activeChart.destroy();
+        }
+        activeChart = new ApexCharts(document.getElementById("column-chart"), chartOptions);
+        activeChart.render();
     }
 
-    if (document.getElementById("column-chart") && typeof ApexCharts !== 'undefined') {
-        const temperatureChart = new ApexCharts(document.getElementById("column-chart"), temperatureOptions);
-        temperatureChart.render();
+    function updateChartDetails(title, description) {
+        document.getElementById('chart-title').innerText = title;
+        document.getElementById('chart-description').innerText = description;
     }
+
+    const chartBtns = document.querySelectorAll('.chart-btn');
+    chartBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const chartType = btn.getAttribute('data-chart');
+            if (chartType === 'temperature') {
+                renderChart(temperatureOptions);
+                updateChartDetails('Temperature', 'Average time temp spent per day');
+            } else if (chartType === 'ph') {
+                renderChart(phOptions);
+                updateChartDetails('pH', 'Average pH level throughout the week');
+            } else if (chartType === 'oxygen') {
+                renderChart(oxygenOptions);
+                updateChartDetails('Oxygen', 'Average oxygen levels throughout the week');
+            } else if (chartType === 'salinity') {
+                renderChart(salinityOptions);
+                updateChartDetails('Salinity', 'Average salinity levels throughout the week');
+            }
+        });
+    });
+
+    renderChart(temperatureOptions);
+    updateChartDetails('Temperature', 'Average time temp spent per day');
 </script>
 @endsection
