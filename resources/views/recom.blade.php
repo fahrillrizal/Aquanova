@@ -2,16 +2,16 @@
 
 @section('content')
         <!-- content -->
-        <main class="my-32">
+        <main class="md:my-32 my-24">
             <!-- tagline -->
             <h3
-                class="flex justify-center items-center text-4xl font-semibold mb-10 bg-gradient-to-r from-[#6FCDF7] to-[#D3E2FF] bg-clip-text text-transparent">
+                class="md:flex md:justify-center md:items-center text-left text-4xl font-semibold mb-10 bg-gradient-to-r from-[#6FCDF7] to-[#D3E2FF] bg-clip-text text-transparent">
                 The Best Guide for Successful Fish Farming</h3>
-            <p class="flex justify-center items-center text-center text-lg font-regular my-10 text-gray-500">Collection of
+            <p class="md:flex md:justify-center md:items-center md:text-center text-left text-lg font-regular my-10 text-gray-500">Collection of
                 articles addressing common challenges in fish farming, <br> providing practical solutions to enhance both
                 productivity and water quality</p>
             <!-- search -->
-            <form class="max-w-md mx-auto">
+            <form id="searchBar" class="max-w-md mx-auto">
                 <label for="default-search"
                     class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                 <div class="relative">
@@ -23,23 +23,23 @@
                         </svg>
                     </div>
                     <input type="search" id="default-search"
-                        class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-xl bg-gray-50 focus:ring-1 focus:outline-none focus:border-blue-100 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-xl bg-gray-50 focus:ring-1 focus:outline-none focus:border-blue-100"
                         placeholder="article" required />
                     <button type="submit"
-                        class="text-white absolute end-2.5 bottom-2.5 bg-blue-300 hover:bg-gray-300 focus:ring-1 focus:outline-none focus:ring-blue-300 font-medium rounded-xl text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                        class="text-white absolute end-2.5 bottom-2.5 bg-blue-300 hover:bg-gray-300 focus:ring-1 focus:outline-none focus:ring-blue-300 font-medium rounded-xl text-sm px-4 py-2">Search</button>
                 </div>
             </form>
             <!-- end search -->
     
             <!-- article -->
             <section class="flex justify-center item-center">
-                <div class="grid grid-cols-4 gap-24 my-24">
+                <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-24 my-24">
                     <!-- card 1 -->
                     <div class="-mb-10">
                         <h5 class="mb-4 font-semibold text-lg max-w-72 text-gray-700">Cara Menaikkan pH Air Kolam Ikan agar
                             Budidaya Tetap
                             Lancar</h5>
-                        <img src="https://wpheadless.efishery.com/wp-content/uploads/2022/12/ph-air-kolam-ikan-2048x1365.webp" alt=""
+                        <img src="https://wpheadless.efishery.com/wp-content/uploads/2022/12/cara-menaikkan-ph-air.webp" alt=""
                             class="w-72 h-52 object-cover rounded-2xl shadow-sm transition delay-100 hover:scale-105 duration-200 ease-in-out">
                         <button
                             class=" flex justify-center items-center text-center w-28 h-8 mt-4 rounded-2xl border border-blue-200 bg-blue-50 text-blue-400 hover:bg-blue-200">
