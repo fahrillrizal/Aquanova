@@ -10,9 +10,9 @@
 
     <!-- "My Profile" Title -->
     <h1 class="absolute top-6 right-4 sm:top-12 sm:right-4 md:top-5 md:right-10 lg:top-[140px] lg:right-[140px] xl:top-12 xl:right-20 text-sky-400 font-bold"
-    style="font-size: clamp(20px, 4vw, 60px);">
-    My Profile
-</h1>
+        style="font-size: clamp(20px, 4vw, 60px);">
+        My Profile
+    </h1>
 
 
     <!-- Profile Image and Info Section -->
@@ -79,86 +79,131 @@
     </div>
 </div>
 
-<!-- Modals -->
-<!-- Edit Photo Modal -->
-<div id="editPhotoModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center">
-    <div class="bg-white p-6 rounded-lg shadow-lg">
-        <h2 class="text-lg font-bold mb-4">Edit Profile Photo</h2>
-
-        <div class="relative w-24 h-24 mx-auto overflow-hidden mb-4">
-            <img id="photoPreview" src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/profile.png') }}" alt="Profile Image" class="w-full h-full object-cover">
-        </div>
-
-        <div class="flex justify-center space-x-4 mb-4">
-            <input type="file" id="photoInput" class="hidden" accept=".jpeg, .png, .jpg, .heic">
-            <label for="photoInput" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md cursor-pointer">Choose Photo</label>
-            @if(Auth::user()->foto)
-            <form action="{{ route('profile.photo.delete') }}" method="POST">
-                @csrf
-                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md">Delete</button>
-            </form>
-            @endif
-            <button id="savePhotoButton" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded shadow-md hidden" onclick="cropImage()">Save</button>
-        </div>
-        <div class="mt-4 text-center">
-            <button class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded" onclick="closeModal('editPhotoModal')">Cancel</button>
+<!-- Modals Edit Profile -->
+<div id="editProfileModal" tabindex="-1" aria-hidden="true" class="hidden fixed top-0 left-0 z-50 w-full h-full flex items-center justify-center">
+    <div class="fixed inset-0 bg-black bg-opacity-50"></div>
+    <div class="relative p-4 w-full max-w-md max-h-full z-10">
+        <div class="relative bg-white rounded-lg shadow white:bg-white-700">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl text-center font-semibold text-dark-900 dark:text-dark">
+                    Edit Profile
+                </h3>
+            </div>
+            <div class="p-4 md:p-5">
+                <form action="{{ route('profile.update') }}" method="POST">
+                    @csrf
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" name="full_name" value="{{ Auth::user()->full_name }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Nick Name</label>
+                        <input type="text" name="nickname" value="{{ Auth::user()->name }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Address</label>
+                        <input type="text" name="address" value="{{ Auth::user()->address }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Phone Number</label>
+                        <input type="text" name="hp" value="{{ Auth::user()->hp }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" onclick="closeModal('editProfileModal')" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Save Changes</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Edit Profile Modal -->
-<div id="editProfileModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center">
-    <div class="bg-white p-6 rounded-lg shadow-lg">
-        <h2 class="text-lg font-bold mb-4">Edit Profile</h2>
-        <form action="{{ route('profile.update') }}" method="POST">
-            @csrf
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Full Name</label>
-                <input type="text" name="full_name" value="{{ Auth::user()->full_name }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+<!-- modals Edit Profile Image-->
+<div id="editPhotoModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 z-50 items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full flex shadow">
+    <div class="fixed inset-0 bg-black bg-opacity-50"></div>
+    <div class="relative p-4 w-full max-w-md max-h-full z-10">
+        <div class="relative bg-white rounded-lg shadow white:bg-white-700">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-dark-600">
+                <h3 class="text-xl font-semibold text-dark-900 dark:text-dark">
+                    Edit Profile Image
+                </h3>
+                <button type="button" class="end-2.5 text-dark-400 bg-transparent hover:bg-white-200 hover:text-white-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" onclick="closeModal('editPhotoModal')">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
             </div>
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Nick Name</label>
-                <input type="text" name="nickname" value="{{ Auth::user()->name }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+            <div class="p-4 md:p-5">
+                <form class="space-y-4" action="#">
+                    <div class="relative w-24 h-24 mx-auto overflow-hidden mb-4">
+                        <img id="photoPreview" src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/profile.png') }}" alt="Profile Image" class="w-full h-full object-cover">
+                    </div>
+                    <div id="fileButtons" class="flex flex-col items-center mb-4">
+                        <input type="file" id="photoInput" class="hidden" accept=".jpeg, .png, .jpg, .heic">
+                        <label for="photoInput" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md cursor-pointer mb-3">Choose Photo</label>
+                        @if(Auth::user()->foto)
+                        <form action="{{ route('profile.photo.delete') }}" method="POST" class="mt-6">
+                            @csrf
+                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md">Delete</button>
+                        </form>
+                        @endif
+                    </div>
+                    <div id="actionButtons" class="flex justify-center space-x-4 mb-4 hidden">
+                        <button id="cancelPhotoButton" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md" onclick="cancelPhoto()">Cancel</button>
+                        <button id="savePhotoButton" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded shadow-md" onclick="cropImage()">Save</button>
+                    </div>
+
+                </form>
             </div>
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Address</label>
-                <input type="text" name="address" value="{{ Auth::user()->address }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
-            </div>
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Phone Number</label>
-                <input type="text" name="hp" value="{{ Auth::user()->hp }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
-            </div>
-            <div class="flex justify-end space-x-4">
-                <button type="button" onclick="closeModal('editProfileModal')" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">Cancel</button>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Save Changes</button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
+</div>
+</div>
 
-<!-- Change Password Modal -->
-<div id="changePasswordModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center">
-    <div class="bg-white p-6 rounded-lg shadow-lg">
-        <h2 class="text-lg font-bold mb-4">Change Password</h2>
-        <form action="{{ route('password.update') }}" method="POST">
-            @csrf
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Current Password</label>
-                <input type="password" name="current_password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+<!-- Baru Change Password Modal -->
+<div id="changePasswordModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 z-50 items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full flex shadow">
+    <div class="fixed inset-0 bg-black bg-opacity-50"></div>
+    <div class="relative p-4 w-full max-w-md max-h-full z-10">
+        <div class="relative bg-white rounded-lg shadow white:bg-white-700">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-dark-600">
+                <h3 class="text-xl font-semibold text-dark-900 dark:text-dark">
+                    Edit Profile Image
+                </h3>
+                <button type="button" class="end-2.5 text-dark-400 bg-transparent hover:bg-white-200 hover:text-white-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" onclick="closeModal('changePasswordModal')">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
             </div>
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">New Password</label>
-                <input type="password" name="new_password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+            <div class="p-4 md:p-5">
+                <form action="{{ route('password.update') }}" method="POST">
+                    @csrf
+                    <div class="mb-4 relative">
+                        <label class="block text-sm font-medium text-gray-700">Current Password</label>
+                        <input type="password" id="current_password" name="current_password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="••••••••" autocomplete="off">
+                        <ion-icon name="eye-off-outline" id="password-toggle1" class="absolute text-sky-400 right-3 top-12 -translate-y-1/2 transform origin-center cursor-pointer"></ion-icon>
+                    </div>
+                    <div class="mb-4 relative">
+                        <label class="block text-sm font-medium text-gray-700">New Password</label>
+                        <input type="password" id="new_password" name="new_password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="••••••••" autocomplete="off">
+                        <ion-icon name="eye-off-outline" id="password-toggle2" class="absolute text-sky-400 right-3 top-12 -translate-y-1/2 transform origin-center cursor-pointer"></ion-icon>
+                    </div>
+                    <div class="mb-4 relative">
+                        <label class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+                        <input type="password" id="new_password_confirmation" name="new_password_confirmation" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="••••••••" autocomplete="off">
+                        <ion-icon name="eye-off-outline" id="password-toggle3" class="absolute text-sky-400 right-3 top-12 -translate-y-1/2 transform origin-center cursor-pointer"></ion-icon>
+                    </div>
+
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" onclick="closeModal('changePasswordModal')" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Save Changes</button>
+                    </div>
+                </form>
             </div>
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Confirm New Password</label>
-                <input type="password" name="new_password_confirmation" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
-            </div>
-            <div class="flex justify-end space-x-4">
-                <button type="button" onclick="closeModal('changePasswordModal')" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">Cancel</button>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Save Changes</button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
@@ -175,6 +220,8 @@
     const input = document.getElementById('photoInput');
     const image = document.getElementById('photoPreview');
     const saveButton = document.getElementById('savePhotoButton');
+    const actionButtons = document.getElementById('actionButtons');
+    const fileButtons = document.getElementById('fileButtons');
 
     input.addEventListener('change', function(e) {
         const files = e.target.files;
@@ -195,7 +242,9 @@
                     minContainerWidth: 100,
                     minContainerHeight: 100,
                 });
-                saveButton.classList.remove('hidden');
+
+                fileButtons.classList.add('hidden');
+                actionButtons.classList.remove('hidden');
             };
             reader.readAsDataURL(file);
         }
@@ -232,7 +281,7 @@
                         profileImages.forEach(img => {
                             img.src = data.imageUrl + '?t=' + new Date().getTime();
                         });
-            
+
                         closeModal('editPhotoModal');
 
                         // Update the main profile image
@@ -256,6 +305,23 @@
         }, 'image/jpeg');
     }
 
+    function cancelPhoto() {
+        // Reset the photo input and preview
+        input.value = '';
+        image.src = "{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/profile.png') }}"; // Reset to default image
+
+        // Show file buttons and hide action buttons
+        fileButtons.classList.remove('hidden');
+        actionButtons.classList.add('hidden');
+
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
+    }
+
+
+
     // function showAlert(type, message) {
     //     const alertElement = document.createElement('div');
     //     alertElement.textContent = message;
@@ -271,5 +337,44 @@
     //         alertElement.remove();
     //     }, 3000);
     // }
+</script>
+<script>
+    const currentPasswordInput = document.getElementById("current_password");
+    const currentPasswordToggle = document.getElementById("password-toggle1");
+
+    currentPasswordToggle.addEventListener("click", () => {
+        if (currentPasswordInput.type === "password") {
+            currentPasswordInput.type = "text";
+            currentPasswordToggle.setAttribute("name", "eye-outline");
+        } else {
+            currentPasswordInput.type = "password";
+            currentPasswordToggle.setAttribute("name", "eye-off-outline");
+        }
+    });
+
+    const newPasswordInput = document.getElementById("new_password");
+    const newPasswordToggle = document.getElementById("password-toggle2");
+
+    newPasswordToggle.addEventListener("click", () => {
+        if (newPasswordInput.type === "password") {
+            newPasswordInput.type = "text";
+            newPasswordToggle.setAttribute("name", "eye-outline");
+        } else {
+            newPasswordInput.type = "password";
+            newPasswordToggle.setAttribute("name", "eye-off-outline");
+        }
+    });
+    const confirmPasswordInput = document.getElementById("new_password_confirmation");
+    const confirmPasswordToggle = document.getElementById("password-toggle3");
+
+    confirmPasswordToggle.addEventListener("click", () => {
+        if (confirmPasswordInput.type === "password") {
+            confirmPasswordInput.type = "text";
+            confirmPasswordToggle.setAttribute("name", "eye-outline");
+        } else {
+            confirmPasswordInput.type = "password";
+            confirmPasswordToggle.setAttribute("name", "eye-off-outline");
+        }
+    });
 </script>
 @endsection
