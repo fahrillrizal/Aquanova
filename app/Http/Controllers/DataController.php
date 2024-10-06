@@ -12,36 +12,78 @@ class DataController extends Controller
     {
         $search = $request->input('search');
         $sort = $request->input('sort', 'tgl');
-        $data = Data::where('user_id', auth()->id());
-        $minDate = (clone $data)->min('tgl');
+        $dataQuery = Data::where('user_id', auth()->id());
 
         if ($request->has('month')) {
             $month = $request->input('month');
-            $data->whereMonth('tgl', Carbon::parse($month)->month)
+            $dataQuery->whereMonth('tgl', Carbon::parse($month)->month)
                 ->whereYear('tgl', Carbon::parse($month)->year);
         }
 
         if ($search) {
-            $data->where('nama', 'like', "%{$search}%");
+            $dataQuery->where('nama', 'like', "%{$search}%");
         }
 
         if ($sort) {
             $direction = 'asc';
-            if (strpos($sort, '-') == 0) {
+            if (strpos($sort, '-') === 0) {
                 $direction = 'desc';
                 $sort = substr($sort, 1);
             }
-
-            if ($sort === 'hasil') {
-                $data->orderBy('hasil', $direction);
-            } elseif (in_array($sort, ['tgl', 'suhu', 'ph', 'o2', 'salinitas'])) {
-                $data->orderBy($sort, $direction);
+            if (in_array($sort, ['tgl', 'suhu', 'ph', 'o2', 'salinitas', 'hasil'])) {
+                $dataQuery->orderBy($sort, $direction);
             }
         }
 
-        $data = $data->paginate(10);
+        $data = $dataQuery->paginate(10);
+        $dailyData = $dataQuery->get();
 
-        return view('monitoring', compact('data'));
+        Carbon::setLocale('id');
+
+        $daysOfWeek = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+
+        $groupedData = [
+            'temperature' => array_fill_keys($daysOfWeek, []),
+            'ph' => array_fill_keys($daysOfWeek, []),
+            'oxygen' => array_fill_keys($daysOfWeek, []),
+            'salinity' => array_fill_keys($daysOfWeek, []),
+            'quality' => [],
+        ];
+
+        $monthYear = null;
+
+        foreach ($dailyData as $entry) {
+            $date = Carbon::parse($entry->tgl);
+            $dateFormatted = $date->format('Y-m-d');
+            $dayOfWeek = $date->isoFormat('dddd');
+
+            if ($monthYear === null) {
+                $monthYear = $date->isoFormat('MMMM YYYY');
+            }
+
+            $groupedData['temperature'][$dayOfWeek][] = $entry->suhu;
+            $groupedData['ph'][$dayOfWeek][] = $entry->ph;
+            $groupedData['oxygen'][$dayOfWeek][] = $entry->o2;
+            $groupedData['salinity'][$dayOfWeek][] = $entry->salinitas;
+
+            $groupedData['quality'][$dateFormatted] = [
+                'temperature' => $entry->suhu,
+                'ph' => $entry->ph,
+                'oxygen' => $entry->o2,
+                'salinity' => $entry->salinitas,
+                'score' => $entry->hasil,
+            ];
+        }
+
+        $groupedData = [
+            'temperature' => array_map(fn($data) => count($data) ? array_sum($data) / count($data) : null, $groupedData['temperature']),
+            'ph' => array_map(fn($data) => count($data) ? array_sum($data) / count($data) : null, $groupedData['ph']),
+            'oxygen' => array_map(fn($data) => count($data) ? array_sum($data) / count($data) : null, $groupedData['oxygen']),
+            'salinity' => array_map(fn($data) => count($data) ? array_sum($data) / count($data) : null, $groupedData['salinity']),
+            'quality' => $groupedData['quality'],
+        ];
+
+        return view('monitoring', compact('data', 'groupedData', 'monthYear'));
     }
 
     public function store(Request $request)
@@ -56,12 +98,32 @@ class DataController extends Controller
         ]);
 
         $hasil = 0;
-        if (($request->o2 < 4 || $request->o2 > 8) || ($request->suhu < 28 || $request->suhu > 30) || ($request->salinitas < 0 || $request->salinitas > 30) || ($request->ph < 6 || $request->ph > 8)) {
-            $hasil = 2;
+        $saran = '';
+
+        if (($request->o2 < 4 || $request->o2 > 8) ||
+            ($request->suhu < 28 || $request->suhu > 30) ||
+            ($request->salinitas < 0 || $request->salinitas > 30) ||
+            ($request->ph < 6 || $request->ph > 8)
+        ) {
+            $hasil = 2; // Buruk
+            if ($request->ph < 6 || $request->ph > 8) {
+                $saran .= 'pH kurang dari standar. ';
+            }
+            if ($request->suhu < 28 || $request->suhu > 30) {
+                $saran .= 'Suhu kurang dari standar. ';
+            }
+            if ($request->o2 < 4 || $request->o2 > 8) {
+                $saran .= 'Oksigen kurang dari standar. ';
+            }
+            if ($request->salinitas < 0 || $request->salinitas > 30) {
+                $saran .= 'Salinitas kurang dari standar. ';
+            }
         } elseif ($request->o2 == 4 && $request->suhu == 28 && $request->salinitas == 0 && $request->ph == 6) {
-            $hasil = 1;
-        }  else {
-            $hasil = 0; 
+            $hasil = 0; // Netral
+            $saran = 'Semua parameter dalam batas netral.';
+        } else {
+            $hasil = 1; // Baik
+            $saran = 'Semua parameter dalam batas standar.';
         }
 
         Data::create([
@@ -73,6 +135,7 @@ class DataController extends Controller
             'o2' => $request->o2,
             'salinitas' => $request->salinitas,
             'hasil' => $hasil,
+            'saran' => $saran,
         ]);
 
         return redirect()->route('monitoring')->with('success', 'Data added successfully.');
@@ -85,7 +148,7 @@ class DataController extends Controller
     }
 
     public function update(Request $request, $id)
-    {        
+    {
         $request->validate([
             'nama' => 'required|string|max:255',
             'tgl' => 'required|date',
@@ -94,30 +157,49 @@ class DataController extends Controller
             'o2' => 'required|numeric',
             'salinitas' => 'required|numeric',
         ]);
-        
+
         $data = Data::findOrFail($id);
-        
+
         $hasil = 0;
-        
+        $saran = '';
+
         if (($request->o2 < 4 || $request->o2 > 8) ||
             ($request->suhu < 28 || $request->suhu > 30) ||
             ($request->salinitas < 0 || $request->salinitas > 30) ||
             ($request->ph < 6 || $request->ph > 8)
         ) {
-            $hasil = 2;
+            $hasil = 2; // Buruk
+            if ($request->ph < 6 || $request->ph > 8) {
+                $saran .= 'pH kurang dari standar. ';
+            }
+            if ($request->suhu < 28 || $request->suhu > 30) {
+                $saran .= 'Suhu kurang dari standar. ';
+            }
+            if ($request->o2 < 4 || $request->o2 > 8) {
+                $saran .= 'Oksigen kurang dari standar. ';
+            }
+            if ($request->salinitas < 0 || $request->salinitas > 30) {
+                $saran .= 'Salinitas kurang dari standar. ';
+            }
         } elseif ($request->o2 == 4 && $request->suhu == 28 && $request->salinitas == 0 && $request->ph == 6) {
-            $hasil = 1;
+            $hasil = 0; // Netral
+            $saran = 'Semua parameter dalam batas netral.';
         } else {
-            $hasil = 0; 
+            $hasil = 1; // Baik
+            $saran = 'Semua parameter dalam batas standar.';
         }
-        
+
         try {
-            $data->update(array_merge($request->all(), ['hasil' => $hasil]));
+            $updateData = array_merge($request->all(), ['hasil' => $hasil, 'saran' => $saran]);
+            $data->update($updateData);
+
+            \Log::info('Updated data:', $updateData);
+
+            return redirect()->route('monitoring')->with('success', 'Data updated successfully.');
         } catch (\Exception $e) {
+            \Log::error('Update failed: ' . $e->getMessage());
             return redirect()->route('monitoring')->with('error', 'Failed to update data: ' . $e->getMessage());
         }
-        
-        return redirect()->route('monitoring')->with('success', 'Data updated successfully.');
     }
 
     public function destroy($id)

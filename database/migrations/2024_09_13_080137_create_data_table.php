@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('ph');
             $table->float('o2');
             $table->float('salinitas');
-            $table->tinyInteger('hasil');//0=baik, 1=netral, 2=buruk buat badge
+            $table->tinyInteger('hasil')->comment('0 = Netral, 1 = Baik, 2 = Buruk');
             $table->string('saran')->nullable();
             $table->timestamps();
         });

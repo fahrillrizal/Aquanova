@@ -39,7 +39,7 @@ class AuthController extends Controller
         ]);
 
 
-        return redirect()->route('/login')->with('success', 'Registration successful. Please check your email and login.');
+        return redirect()->route('login')->with('success', 'Registration successful. Please check your email and login.');
     }
 
     // Menampilkan formulir login
@@ -76,6 +76,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with('success', 'You have been logged out.');
+        return redirect('login')->with('success', 'You have been logged out.');
     }
 }

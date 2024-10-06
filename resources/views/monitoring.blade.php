@@ -6,7 +6,7 @@
         <div class="max-w-full w-full bg-white rounded-lg shadow  p-4 md:p-6 mb-6">
             <div class="flex flex-col items-center mb-5">
                 <h5 class="leading-none text-3xl font-bold text-[#2E2E30] pb-2 text-center">Water Quality Overview</h5>
-                <p class="text-base font-normal text-gray-500 dark:text-gray-400 text-center">2024</p>
+                <p class="text-base font-normal text-gray-500 dark:text-gray-400 text-center">{{ $monthYear }}</p>
             </div>
             <div id="data-labels-chart" style="height: 400px;"></div>
         </div>
@@ -74,7 +74,7 @@
                         Temperature (°C)
                         <a href="#" id="sort-temperature">
                             <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http:
-                                <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
+                                <path d=" M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
                             </svg>
                         </a>
                     </div>
@@ -93,7 +93,7 @@
                         Status
                         <a href="#" id="sort-status">
                             <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http:
-                                <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
+                                <path d=" M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
                             </svg>
                         </a>
                     </div>
@@ -228,7 +228,7 @@
 
     <div id="modal-backdrop" class="fixed inset-0 bg-black opacity-50 hidden"></div>
 </div>
-<script src="../js/filter.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const userSelectedDateInput = document.getElementById('user-selected-date');
@@ -251,20 +251,19 @@
         let currentDeleteId = null;
         let currentEditData = {};
 
-        
         let temperatureSortDirection = 'asc';
         let statusSortDirection = 'asc';
 
         function sortTable(column, direction) {
-            const rows = Array.from(dataTable.querySelectorAll('tr:not(.no-data)')).slice(1); 
+            const rows = Array.from(dataTable.querySelectorAll('tr:not(.no-data)')).slice(1);
 
             rows.sort((a, b) => {
                 const aValue = a.querySelector(`td:nth-child(${column})`).textContent.trim();
                 const bValue = b.querySelector(`td:nth-child(${column})`).textContent.trim();
 
-                if (column === 4) { 
+                if (column === 4) {
                     return direction === 'asc' ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(aValue);
-                } else if (column === 8) { 
+                } else if (column === 8) {
                     return direction === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
                 }
             });
@@ -302,7 +301,7 @@
             svg.style.transform = direction === 'asc' ? 'rotate(0deg)' : 'rotate(180deg)';
         }
 
-        
+
         addDataBtn.addEventListener('click', function() {
             addDataModal.classList.remove('hidden');
             modalBackdrop.classList.remove('hidden');
@@ -338,7 +337,7 @@
             }
         });
 
-        
+
         function updateTableVisibility() {
             const query = searchBar.value.toLowerCase();
             const selectedDate = userSelectedDateInput.value;
@@ -356,7 +355,7 @@
                 if (isVisible) {
                     anyVisible = true;
                     visibleCount++;
-                    row.querySelector('td:first-child').textContent = visibleCount; 
+                    row.querySelector('td:first-child').textContent = visibleCount;
                 }
             });
 
@@ -370,7 +369,7 @@
                     noDataRow = dataTable.insertRow();
                     noDataRow.className = 'no-data';
                     const cell = noDataRow.insertCell();
-                    cell.colSpan = 10; 
+                    cell.colSpan = 10;
                     cell.className = 'py-4 text-center text-gray-500';
                 }
                 noDataRow.style.display = '';
@@ -380,13 +379,11 @@
             }
         }
 
-        
         searchBar.addEventListener('input', updateTableVisibility);
         userSelectedDateInput.addEventListener('change', updateTableVisibility);
 
         updateTableVisibility();
 
-        
         window.openEditModal = function(data) {
             currentEditData = data;
             document.getElementById('edit_nama').value = data.nama;
@@ -400,11 +397,6 @@
             modalBackdrop.classList.remove('hidden');
         };
 
-        closeEditModalBtn.addEventListener('click', function() {
-            editDataModal.classList.add('hidden');
-            modalBackdrop.classList.add('hidden');
-        });
-
         editForm.addEventListener('submit', async function(event) {
             event.preventDefault();
             const formData = new FormData(editForm);
@@ -412,10 +404,11 @@
 
             try {
                 const response = await fetch(url, {
-                    method: 'PUT',
+                    method: 'POST',
                     body: formData,
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'X-HTTP-Method-Override': 'PUT'
                     }
                 });
 
@@ -430,7 +423,6 @@
             }
         });
 
-        
         window.openDeleteConfirmation = function(id) {
             currentDeleteId = id;
             deleteConfirmationModal.classList.remove('hidden');
@@ -465,86 +457,88 @@
 </script>
 
 <script>
+    const groupedData = @json($groupedData);
+
+    const sortedQualityData = Object.entries(groupedData.quality)
+        .sort(([dateA], [dateB]) => new Date(dateA) - new Date(dateB))
+        .map(([date, values]) => ({
+            x: date,
+            y: values.score,
+            temperature: values.temperature,
+            ph: values.ph,
+            oxygen: values.oxygen,
+            salinity: values.salinity
+        }));
+
     const waterQualityOptions = {
-        dataLabels: {
-            enabled: true,
-            style: {
-                cssClass: 'text-xs text-white font-medium'
-            },
-        },
-        grid: {
-            show: false,
-            strokeDashArray: 4,
-            padding: {
-                left: 16,
-                right: 16,
-                top: -50
-            },
-        },
         series: [{
-                name: "April",
-                data: [150, 141, 145, 152, 135, 125],
-                color: "#1A56DB",
-            },
-            {
-                name: "May",
-                data: [64, 41, 76, 41, 113, 173],
-                color: "#7E3BF2",
-            },
-        ],
+            name: "Water Quality",
+            data: sortedQualityData
+        }],
         chart: {
-            height: "100%",
-            type: "area",
-            fontFamily: "Inter, sans-serif",
-            dropShadow: {
-                enabled: false,
-            },
-            toolbar: {
-                show: false,
-            },
-        },
-        tooltip: {
-            enabled: true,
-            x: {
-                show: false,
-            },
-        },
-        legend: {
-            show: true
-        },
-        fill: {
-            type: "gradient",
-            gradient: {
-                opacityFrom: 0.55,
-                opacityTo: 0,
-                shade: "#1C64F2",
-                gradientToColors: ["#1C64F2"],
-            },
-        },
-        stroke: {
-            width: 6,
-        },
-        xaxis: {
-            categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February'],
-            labels: {
-                show: false,
-            },
-            axisBorder: {
-                show: false,
-            },
-            axisTicks: {
-                show: false,
-            },
-        },
-        yaxis: {
-            show: false,
-            labels: {
-                formatter: function(value) {
-                    return '$' + value;
-                }
+            height: 350,
+            type: 'line',
+            zoom: {
+                enabled: false
             }
         },
-    }
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'stepline'
+        },
+        title: {
+            text: 'Water Quality Trend',
+            align: 'left'
+        },
+        grid: {
+            row: {
+                colors: ['#f3f3f3', 'transparent'],
+                opacity: 0.5
+            },
+        },
+        xaxis: {
+            categories: Object.keys(groupedData.quality),
+        },
+        yaxis: {
+            tickAmount: 3,
+            labels: {
+                formatter: function(val) {
+                    if (val === 1) return "Baik"; 
+                    if (val === 0) return "Netral"; 
+                    if (val === 2) return "Buruk"; 
+                    return "";
+                }
+            },
+            min: 0,
+            max: 2 
+        },
+        tooltip: {
+            custom: function({
+                series,
+                seriesIndex,
+                dataPointIndex,
+                w
+            }) {
+                const data = w.config.series[seriesIndex].data[dataPointIndex];
+                const quality = data.y === 0 ? "Netral" : (data.y === 1 ? "Baik" : "Buruk");
+                return `
+            <div class="arrow_box">
+                <p><b>Date:</b> ${data.x}</p>
+                <p><b>Quality:</b> ${quality}</p>
+                <p><b>Temperature:</b> ${data.temperature.toFixed(2)}°C</p>
+                <p><b>pH:</b> ${data.ph.toFixed(2)}</p>
+                <p><b>Oxygen:</b> ${data.oxygen.toFixed(2)} mg/L</p>
+                <p><b>Salinity:</b> ${data.salinity.toFixed(2)} ppt</p>
+            </div>
+        `;
+            }
+        },
+        markers: {
+            size: 5,
+        },
+    };
 
     if (document.getElementById("data-labels-chart") && typeof ApexCharts !== 'undefined') {
         const waterQualityChart = new ApexCharts(document.getElementById("data-labels-chart"), waterQualityOptions);
@@ -555,35 +549,12 @@
         colors: ["#DAF0FB"],
         series: [{
             name: "Temperature",
-            data: [{
-                    x: "Mon",
-                    y: 231
-                },
-                {
-                    x: "Tue",
-                    y: 122
-                },
-                {
-                    x: "Wed",
-                    y: 63
-                },
-                {
-                    x: "Thu",
-                    y: 421
-                },
-                {
-                    x: "Fri",
-                    y: 122
-                },
-                {
-                    x: "Sat",
-                    y: 323
-                },
-                {
-                    x: "Sun",
-                    y: 111
-                }
-            ],
+            data: Object.keys(groupedData.temperature).map(function(day) {
+                return {
+                    x: day,
+                    y: groupedData.temperature[day]
+                };
+            }),
         }],
         chart: {
             type: "bar",
@@ -595,35 +566,12 @@
         colors: ["#FDD835"],
         series: [{
             name: "pH",
-            data: [{
-                    x: "Mon",
-                    y: 6.5
-                },
-                {
-                    x: "Tue",
-                    y: 7.1
-                },
-                {
-                    x: "Wed",
-                    y: 6.8
-                },
-                {
-                    x: "Thu",
-                    y: 7.0
-                },
-                {
-                    x: "Fri",
-                    y: 7.3
-                },
-                {
-                    x: "Sat",
-                    y: 6.7
-                },
-                {
-                    x: "Sun",
-                    y: 7.2
-                }
-            ],
+            data: Object.keys(groupedData.ph).map(function(day) {
+                return {
+                    x: day,
+                    y: groupedData.ph[day]
+                };
+            }),
         }],
         chart: {
             type: "bar",
@@ -635,35 +583,12 @@
         colors: ["#66BB6A"],
         series: [{
             name: "Oxygen",
-            data: [{
-                    x: "Mon",
-                    y: 8.1
-                },
-                {
-                    x: "Tue",
-                    y: 7.8
-                },
-                {
-                    x: "Wed",
-                    y: 8.0
-                },
-                {
-                    x: "Thu",
-                    y: 7.5
-                },
-                {
-                    x: "Fri",
-                    y: 8.2
-                },
-                {
-                    x: "Sat",
-                    y: 7.9
-                },
-                {
-                    x: "Sun",
-                    y: 8.4
-                }
-            ],
+            data: Object.keys(groupedData.oxygen).map(function(day) {
+                return {
+                    x: day,
+                    y: groupedData.oxygen[day]
+                };
+            }),
         }],
         chart: {
             type: "bar",
@@ -675,35 +600,12 @@
         colors: ["#42A5F5"],
         series: [{
             name: "Salinity",
-            data: [{
-                    x: "Mon",
-                    y: 35
-                },
-                {
-                    x: "Tue",
-                    y: 34
-                },
-                {
-                    x: "Wed",
-                    y: 36
-                },
-                {
-                    x: "Thu",
-                    y: 33
-                },
-                {
-                    x: "Fri",
-                    y: 34
-                },
-                {
-                    x: "Sat",
-                    y: 35
-                },
-                {
-                    x: "Sun",
-                    y: 36
-                }
-            ],
+            data: Object.keys(groupedData.salinity).map(function(day) {
+                return {
+                    x: day,
+                    y: groupedData.salinity[day]
+                };
+            }),
         }],
         chart: {
             type: "bar",
