@@ -71,12 +71,12 @@
                 @guest
                     <li><a href="{{ route('login') }}">Login</a></li>
                 @endguest
-
+                @auth
                 <li>
                     <div class="relative" data-twe-dropdown-ref>
                         <!-- Profile Image that toggles dropdown -->
                         <a href="javascript:void(0)" id="profileDropdown">
-                            <img src="assets/img/png/profile.png" alt="Profile" class="w-10 h-10">
+                            <img src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/img/png/profile.png') }}" alt="Profile" class="w-10 h-10">
                         </a>
 
                         <!-- Dropdown Menu -->
@@ -85,7 +85,7 @@
                             aria-labelledby="dropdownMenuButton1h" data-twe-dropdown-menu-ref>
                             <h6
                                 class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-black/50 focus:bg-zinc-200/60 focus:outline-none dark:bg-surface-dark dark:text-white/50">
-                                Angelicav.
+                                {{ Auth::user()->name }}
                             </h6>
                             <li class="flex justify-center items-center">
                                 <a class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
@@ -101,6 +101,7 @@
                         </ul>
                     </div>
                 </li>
+                @endauth
                 {{-- end --}}
             </ul>
         </div>
@@ -118,15 +119,17 @@
                 @endguest
 
                 {{-- <!-- Profile Dropdown for Mobile --> --}}
+                @auth
                 <li>
                     <a href="javascript:void(0)" class="flex items-center">
-                        <img src="assets/img/png/profile.png" alt="Profile" class="w-10 h-10 mr-2"> Angelicav.
+                        <img src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/img/png/profile.png') }}" alt="Profile" class="w-10 h-10 mr-2"> {{ Auth::user()->name }}
                     </a>
                     <ul class="pl-10">
                         <li><a href="#" class="block py-1 text-sm">Profile</a></li>
                         <li><a href="#" class="block py-1 text-sm">Logout</a></li>
                     </ul>
                 </li>
+                @endauth
             </ul>
         </div>
     </nav>
@@ -151,7 +154,6 @@
                 </path>
             </svg>
         </div>
-<<<<<<< HEAD
         <div class="bg-[#082F49] py-10 text-left text-white">
             <div class="grid-1 mx-32 grid gap-16 md:grid-cols-1 lg:grid-cols-3">
                 <!-- TW Elements section -->
@@ -168,13 +170,13 @@
                         <a href="#home">Home</a>
                     </p>
                     <p class="mb-4">
-                        <a href="#!">Monitoring</a>
+                        <a href="{{ route('monitoring') }}">Monitoring</a>
                     </p>
                     <p class="mb-4">
-                        <a href="#!">Recomendation</a>
+                        <a href="{{ route('recom') }}">Recomendation</a>
                     </p>
                     <p class="mb-4">
-                        <a href="#!">Profile</a>
+                        <a href="{{ route('profile') }}">Profile</a>
                     </p>
                 </div>
 
@@ -203,7 +205,7 @@
                                     d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
                             </svg>
                         </span>
-                        info@example.com
+                        aquanova.app@gmail.com
                     </p>
                     <p class="mb-4 flex items-center justify-start">
                         <span class="me-3 [&>svg]:h-5 [&>svg]:w-5">
@@ -227,10 +229,6 @@
                     </p>
                 </div>
             </div>
-=======
-        <div class="h-36 absolute w-36 ml-64">
-                <img src="{{ asset('assets/logo.png') }}" class="mt-1" alt="">
->>>>>>> 85c6410aa5b25b1dd7528d1f715677bbcfbcb255
         </div>
         <div class="bg-[#082F49] text-white text-sm text-center py-4">
             <p>&copy; 2024 AquaNova. All rights reserved.</p>
