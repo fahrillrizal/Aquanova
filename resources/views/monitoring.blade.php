@@ -27,12 +27,17 @@
         </div>
     </div>
 
-    <div class="flex overflow-x-auto space-x-4 mb-7 py-2">
-        <button class="chart-btn px-4 py-2 border border-gray-400 rounded-lg" data-chart="temperature">Temperature</button>
-        <button class="chart-btn px-4 py-2 border border-gray-400 rounded-lg" data-chart="ph">pH</button>
-        <button class="chart-btn px-4 py-2 border border-gray-400 rounded-lg" data-chart="oxygen">Oxygen</button>
-        <button class="chart-btn px-4 py-2 border border-gray-400 rounded-lg" data-chart="salinity">Salinity</button>
-    </div>
+    <div class="flex overflow-x-auto mb-7 py-2 space-x-4 snap-x snap-mandatory sm:justify-center" id="scroll-container">
+    <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="temperature">Temperature</button>
+    <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="ph">pH</button>
+    <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="oxygen">Oxygen</button>
+    <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="salinity">Salinity</button>
+</div>
+
+
+
+
+
 
     <div class="flex justify-between items-center mb-4">
         <!-- Group for Date Filter and Search Bar -->
@@ -48,18 +53,18 @@
         </div>
 
         <!-- Add Data Button -->
-         <!-- Mobile Button -->
-        <div class="fixed bottom-0 left-0 right-0 bg-white shadow-lg p-1 z-50"> 
-            <button id="add-data-btn" class="w-full bg-[#8C63DA] text-white p-1 rounded">
-                <ion-icon name="add-outline"></ion-icon> Add Data
-            </button>
-        </div>
-        <!-- Desktop Button -->
-        <div class="hidden sm:block">
-            <button id="add-data-btn-desktop" class="bg-[#8C63DA] text-white p-2 rounded">
-                <ion-icon name="add-outline"></ion-icon> Add Data
-            </button>
-        </div>
+        <div class="fixed bottom-0 left-0 right-0 bg-white shadow-lg p-1 z-50 sm:hidden"> 
+    <button id="add-data-btn" class="w-full bg-[#8C63DA] text-white p-1 rounded">
+        <ion-icon name="add-outline"></ion-icon> Add Data
+    </button>
+</div>
+
+<!-- Desktop Button -->
+<div class="hidden sm:block">
+    <button id="add-data-btn-desktop" class="bg-[#8C63DA] text-white p-2 rounded">
+        <ion-icon name="add-outline"></ion-icon> Add Data
+    </button>
+</div>
 
     </div>
 
@@ -238,6 +243,9 @@
 
     <div id="modal-backdrop" class="fixed inset-0 bg-black opacity-50 hidden"></div>
 </div>
+<script>
+
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
