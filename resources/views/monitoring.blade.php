@@ -129,6 +129,7 @@
                     </button>
                     <button class="text-red-600" onclick="openDeleteConfirmation({{ $item->id }})">
                         <ion-icon name="trash-outline"></ion-icon>
+                    </button>
                 </td>
             </tr>
             @endforeach
@@ -217,8 +218,8 @@
     <!-- Modal Confirmation Delete -->
     <div id="delete-confirmation-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
-            <h2 class="text-lg font-bold mb-4">Confirm Deletion</h2>
-            <p>Are you sure you want to delete this data?</p>
+            <h2 class="text-lg font-bold mb-4">Konfirmasi Hapus</h2>
+            <p>Apakah anda yakin ingin menghapus data?</p>
             <div class="mt-4">
                 <button id="confirm-delete" class="bg-red-500 text-white p-2 rounded">Delete</button>
                 <button id="cancel-delete" class="bg-gray-300 p-2 rounded">Cancel</button>
@@ -426,31 +427,35 @@
         window.openDeleteConfirmation = function(id) {
             currentDeleteId = id;
             deleteConfirmationModal.classList.remove('hidden');
-            modalBackdrop.classList.remove('hidden');
         };
 
         cancelDeleteBtn.addEventListener('click', function() {
             deleteConfirmationModal.classList.add('hidden');
-            modalBackdrop.classList.add('hidden');
         });
 
         confirmDeleteBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch(`/data/${currentDeleteId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
-                });
+            if (currentDeleteId !== null) {
+                try {
+                    const response = await fetch(`/data/${currentDeleteId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Content-Type': 'application/json'
+                        }
+                    });
 
-                if (response.ok) {
-                    alert('Data successfully deleted.');
-                    location.reload();
-                } else {
-                    throw new Error('Failed to delete data.');
+                    if (response.ok) {
+                        alert('Data berhasil dihapus.');
+                        location.reload();
+                    } else {
+                        const errorData = await response.json();
+                        alert(`Gagal menghapus data: ${errorData.message || 'Unknown error'}`);
+                    }
+                } catch (error) {
+                    alert(`Terjadi kesalahan: ${error.message}`);
+                } finally {
+                    deleteConfirmationModal.classList.add('hidden');
                 }
-            } catch (error) {
-                alert(error.message);
             }
         });
     });
@@ -505,14 +510,14 @@
             tickAmount: 3,
             labels: {
                 formatter: function(val) {
-                    if (val === 1) return "Baik"; 
-                    if (val === 0) return "Netral"; 
-                    if (val === 2) return "Buruk"; 
+                    if (val === 1) return "Baik";
+                    if (val === 0) return "Netral";
+                    if (val === 2) return "Buruk";
                     return "";
                 }
             },
             min: 0,
-            max: 2 
+            max: 2
         },
         tooltip: {
             custom: function({

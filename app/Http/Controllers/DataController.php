@@ -106,17 +106,25 @@ class DataController extends Controller
             ($request->ph < 6 || $request->ph > 8)
         ) {
             $hasil = 2; // Buruk
-            if ($request->ph < 6 || $request->ph > 8) {
+            if ($request->ph < 6) {
                 $saran .= 'pH kurang dari standar. ';
+            } elseif ($request->ph > 8) {
+                $saran .= 'pH melebihi standar. ';
             }
-            if ($request->suhu < 28 || $request->suhu > 30) {
+            if ($request->suhu < 28) {
                 $saran .= 'Suhu kurang dari standar. ';
+            } elseif ($request->suhu > 30) {
+                $saran .= 'Suhu melebihi standar. ';
             }
-            if ($request->o2 < 4 || $request->o2 > 8) {
+            if ($request->o2 < 4) {
                 $saran .= 'Oksigen kurang dari standar. ';
+            } elseif ($request->o2 > 8) {
+                $saran .= 'Oksigen melebihi standar. ';
             }
-            if ($request->salinitas < 0 || $request->salinitas > 30) {
+            if ($request->salinitas < 0) {
                 $saran .= 'Salinitas kurang dari standar. ';
+            } elseif ($request->salinitas > 30) {
+                $saran .= 'Salinitas melebihi standar. ';
             }
         } elseif ($request->o2 == 4 && $request->suhu == 28 && $request->salinitas == 0 && $request->ph == 6) {
             $hasil = 0; // Netral
@@ -138,7 +146,7 @@ class DataController extends Controller
             'saran' => $saran,
         ]);
 
-        return redirect()->route('monitoring')->with('success', 'Data added successfully.');
+        return redirect()->route('monitoring')->with('success', 'Data berhasil ditambahkan.');
     }
 
     public function show($id)
@@ -169,17 +177,25 @@ class DataController extends Controller
             ($request->ph < 6 || $request->ph > 8)
         ) {
             $hasil = 2; // Buruk
-            if ($request->ph < 6 || $request->ph > 8) {
+            if ($request->ph < 6) {
                 $saran .= 'pH kurang dari standar. ';
+            } elseif ($request->ph > 8) {
+                $saran .= 'pH melebihi standar. ';
             }
-            if ($request->suhu < 28 || $request->suhu > 30) {
+            if ($request->suhu < 28) {
                 $saran .= 'Suhu kurang dari standar. ';
+            } elseif ($request->suhu > 30) {
+                $saran .= 'Suhu melebihi standar. ';
             }
-            if ($request->o2 < 4 || $request->o2 > 8) {
+            if ($request->o2 < 4) {
                 $saran .= 'Oksigen kurang dari standar. ';
+            } elseif ($request->o2 > 8) {
+                $saran .= 'Oksigen melebihi standar. ';
             }
-            if ($request->salinitas < 0 || $request->salinitas > 30) {
+            if ($request->salinitas < 0) {
                 $saran .= 'Salinitas kurang dari standar. ';
+            } elseif ($request->salinitas > 30) {
+                $saran .= 'Salinitas melebihi standar. ';
             }
         } elseif ($request->o2 == 4 && $request->suhu == 28 && $request->salinitas == 0 && $request->ph == 6) {
             $hasil = 0; // Netral
@@ -195,18 +211,22 @@ class DataController extends Controller
 
             \Log::info('Updated data:', $updateData);
 
-            return redirect()->route('monitoring')->with('success', 'Data updated successfully.');
+            return redirect()->route('monitoring')->with('success', 'Data Berhasil diupdate.');
         } catch (\Exception $e) {
             \Log::error('Update failed: ' . $e->getMessage());
-            return redirect()->route('monitoring')->with('error', 'Failed to update data: ' . $e->getMessage());
+            return redirect()->route('monitoring')->with('error', 'Gagal mengupdate data: ' . $e->getMessage());
         }
     }
 
     public function destroy($id)
     {
-        $data = Data::findOrFail($id);
-        $data->delete();
+        try {
+            $data = Data::findOrFail($id);
+            $data->delete();
 
-        return redirect()->route('monitoring')->with('success', 'Data deleted successfully.');
+            return response()->json(['message' => 'Data berhasil dihapus.'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Gagal menghapus data: ' . $e->getMessage()], 500);
+        }
     }
 }
