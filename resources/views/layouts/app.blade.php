@@ -151,6 +151,7 @@
                 </path>
             </svg>
         </div>
+<<<<<<< HEAD
         <div class="bg-[#082F49] py-10 text-left text-white">
             <div class="grid-1 mx-32 grid gap-16 md:grid-cols-1 lg:grid-cols-3">
                 <!-- TW Elements section -->
@@ -226,6 +227,10 @@
                     </p>
                 </div>
             </div>
+=======
+        <div class="h-36 absolute w-36 ml-64">
+                <img src="{{ asset('assets/logo.png') }}" class="mt-1" alt="">
+>>>>>>> 85c6410aa5b25b1dd7528d1f715677bbcfbcb255
         </div>
         <div class="bg-[#082F49] text-white text-sm text-center py-4">
             <p>&copy; 2024 AquaNova. All rights reserved.</p>
