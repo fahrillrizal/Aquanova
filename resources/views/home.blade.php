@@ -51,7 +51,7 @@
 
         <!-- close header -->
         {{-- button start --}}
-        <button
+        <button id="scrollButton"
             class="flex justify-center items-center mx-auto md:ml-[1050px] md:mt-2 mt-16 rounded-full bg-gradient-to-r from-[#6FCDF7] to-[#D3E2FF] text-white md:px-6 py-3 md:w-[211px] w-40 md:h-[60px] h-14 text-sm md:text-lg font-medium transition-all duration-300 hover:shadow-lg hover:opacity-90 space-x-3">
             <span>Start Now</span>
             <ion-icon name="arrow-up-outline" class="text-3xl transform rotate-45"></ion-icon>
@@ -61,9 +61,9 @@
 
 
     <!-- manfaat -->
-    <section class="md:my-40 my-20">
+    <section id="optimizing" class="md:my-40 my-20">
         <!-- header manfaat-->
-        <h3 class="flex justify-center items-center md:text-4xl text-2xl font-semibold"> optimizes fish farming</h3>
+        <h3 class="flex justify-center items-center md:text-4xl text-2xl font-semibold"> Optimizes Fish Farming</h3>
         <p class=" flex justify-center items-center text-center md:text-xl text-lg mt-8 font-regular">Aquanova optimizes
             fish
             production through innovative water management solutions.</p>
@@ -71,34 +71,41 @@
         <!-- card 3 (hover) -->
         <div class="flex flex-col md:flex-row gap-20 md:gap-32 md:my-60 my-20 mx-auto justify-center items-center">
 
-            {{-- chard 1 --}}
-            <div class="card w-72 h-46 bg-gray-100 rounded-xl">
+            {{-- card 1 --}}
+            <div id="optimize" class="card w-72 h-46 bg-gray-100 rounded-xl">
                 <div class="card w-8 h-8 bg-white rounded m-2 flex justify-center items-center shadow-lg">
                     <ion-icon name="stats-chart" class=" text-cyan-600 size-6"></ion-icon>
                 </div>
-                <h3 class="md:text-xl text-sm font-semibold mt-12 mb-4 mx-4">Set your water quality to stabilise</h3>
+                <h3 class="md:text-xl text-sm font-semibold mt-12 mb-4 mx-4">Optimize your system for efficient water
+                    management</h3>
             </div>
 
             {{-- card 2 --}}
             <div class="card w-72 h-46 bg-gray-100 rounded-xl">
-                <div class="card w-8 h-8 bg-white rounded m-2 flex justify-center items-center shadow-lg">
-                    <ion-icon name="bag" class=" text-cyan-600 size-6"></ion-icon>
-                </div>
-                <h3 class="md:text-xl text-sm font-semibold mt-12 mb-4 mx-4">Set your water quality to stabilise</h3>
+                <a href="monitoring">
+                    <div class="card w-8 h-8 bg-white rounded m-2 flex justify-center items-center shadow-lg">
+                        <ion-icon name="bag" class=" text-cyan-600 size-6"></ion-icon>
+                    </div>
+                    <h3 class="md:text-xl text-sm font-semibold mt-12 mb-4 mx-4">Monitor your water quality in real-time
+                    </h3>
+                </a>
             </div>
 
             {{-- card 3 --}}
             <div class="card w-72 h-46 bg-gray-100 rounded-xl">
+                <a href="recom">
                 <div class="card w-8 h-8 bg-white rounded m-2 flex justify-center items-center shadow-lg">
                     <ion-icon name="wallet" class=" text-cyan-600 size-6"></ion-icon>
                 </div>
-                <h3 class="md:text-xl text-sm font-semibold mt-12 mb-4 mx-4">Set your water quality to stabilise</h3>
+                <h3 class="md:text-xl text-sm font-semibold mt-12 mb-4 mx-4">Recommendations for related articles to improve
+                    your system</h3>
+                </a>
             </div>
         </div>
 
 
         <!-- img right info -->
-        <div class="my-20 md:my-40 flex flex-col md:flex-row md:mx-52 justify-center items-center">
+        <div id="info" class="my-20 md:my-40 flex flex-col md:flex-row md:mx-52 justify-center items-center">
             <img src="/assets/img/svg/img_benefit.svg" alt="fish"
                 class=" w-[516px] h-[397px] rounded-2xl mx-20 mb-10 md:mb-0 object-cover transition delay-100 hover:scale-105 duration-200 ease-in-out">
 
@@ -129,7 +136,7 @@
             <img src="/assets/img/svg/iMockup - iPhone_analyzing.svg" alt="Analyzing"
                 class="md:w-[553px] md:h-[600px] w-[253px] h-[300px] max-w-sm md:max-w-md lg:max-w-lg md:pt-32 pt-6 -ml-6">
         </div>
-        
+
         <!-- alur/step -->
         <div class="flex flex-col sm:flex-row md:mt-20 mt-10 gap-8 mx-4 sm:mx-64 justify-center items-center text-center">
             {{-- step 1 --}}
@@ -281,4 +288,27 @@
                             productivity.</p>
                     </div><!--  header-->
     </section>
+    <script>
+        document.getElementById('scrollButton').addEventListener('click', function() {
+            const targetElement = document.getElementById('optimizing');
+            const offset = -100; // negative offset (scrolling -100px above the target element)
+            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset + offset;
+
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        });
+
+        document.getElementById('optimize').addEventListener('click', function() {
+            const targetElement = document.getElementById('info');
+            const offset = -100; // negative offset (scrolling -100px above the target element)
+            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset + offset;
+
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 @endsection

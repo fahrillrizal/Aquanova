@@ -159,7 +159,7 @@
                 </div>
 
                 <!-- navbar section-->
-                <div class="text-left md:text-center">
+                <div class="text-left">
                     <h6 class="mb-4 flex justify-center font-semibold uppercase md:justify-start">
                         Useful links
                     </h6>
