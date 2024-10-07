@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div class="flex justify-center items-center space-x-4 mb-7">
+    <div class="flex overflow-x-auto space-x-4 mb-7 py-2">
         <button class="chart-btn px-4 py-2 border border-gray-400 rounded-lg" data-chart="temperature">Temperature</button>
         <button class="chart-btn px-4 py-2 border border-gray-400 rounded-lg" data-chart="ph">pH</button>
         <button class="chart-btn px-4 py-2 border border-gray-400 rounded-lg" data-chart="oxygen">Oxygen</button>
@@ -39,103 +39,112 @@
         <div class="flex items-center space-x-4">
             <!-- User-selected Month Filter -->
             <div>
-                <input type="month" id="user-selected-date" class="border border-gray-300 p-2 rounded" />
+                <input type="month" id="user-selected-date" class="border border-gray-300 w-2/3 sm:w-1/3 md:w-full p-1 rounded" />
             </div>
-
             <!-- Search Bar -->
             <div>
-                <input type="text" id="search-bar" class="border border-gray-300 p-2 rounded" placeholder="Cari Nama Kolam" />
+                <input type="text" id="search-bar" class="border border-gray-300 p-1 rounded w-full sm:w-[50%] :w-[100%]" placeholder="Cari Nama Kolam" />
             </div>
         </div>
 
         <!-- Add Data Button -->
-        <div>
-            <button id="add-data-btn" class="bg-[#8C63DA] text-white p-2 rounded"><ion-icon name="add-outline"></ion-icon>Add Data</button>
+         <!-- Mobile Button -->
+        <div class="fixed bottom-0 left-0 right-0 bg-white shadow-lg p-1 z-50"> 
+            <button id="add-data-btn" class="w-full bg-[#8C63DA] text-white p-1 rounded">
+                <ion-icon name="add-outline"></ion-icon> Add Data
+            </button>
         </div>
+        <!-- Desktop Button -->
+        <div class="hidden sm:block">
+            <button id="add-data-btn-desktop" class="bg-[#8C63DA] text-white p-2 rounded">
+                <ion-icon name="add-outline"></ion-icon> Add Data
+            </button>
+        </div>
+
     </div>
 
-    <!-- Table -->
-    <table class="min-w-full bg-white">
-        <thead>
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    <div class="flex items-center">
-                        No
-                    </div>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    <div class="flex items-center">Nama Kolam</div>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    <div class="flex items-center">Tanggal</div>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    <div class="flex items-center">
-                        Temperature (°C)
-                        <a href="#" id="sort-temperature">
-                            <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http:
-                                <path d=" M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
-                            </svg>
-                        </a>
-                    </div>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    <div class="flex items-center">pH</div>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    <div class="flex items-center">O2</div>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    <div class="flex items-center">Salinitas</div>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    <div class="flex items-center">
-                        Status
-                        <a href="#" id="sort-status">
-                            <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http:
-                                <path d=" M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
-                            </svg>
-                        </a>
-                    </div>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    <div class="flex items-center">Saran</div>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    <div class="flex items-center">Action</div>
-                </th>
-            </tr>
-        </thead>
-        <tbody id="data-table">
-            @if($data->isEmpty())
-            <tr>
-                <td colspan="10" class="py-4 text-center text-gray-500">Belum ada data</td>
-            </tr>
-            @else
-            @foreach($data as $item)
-            <tr class="{{ $loop->even ? 'bg-blue-50' : 'bg-purple-50' }}" data-index="{{ $loop->iteration }}">
-                <td class="py-2 text-center">{{ $loop->iteration }}</td>
-                <td class="py-2 text-center">{{ $item->nama }}</td>
-                <td class="py-2 text-center">{{ $item->tgl }}</td>
-                <td class="py-2 text-center">{{ $item->suhu }}</td>
-                <td class="py-2 text-center">{{ $item->ph }}</td>
-                <td class="py-2 text-center">{{ $item->o2 }}</td>
-                <td class="py-2 text-center">{{ $item->salinitas }}</td>
-                <td class="py-2 text-center">{!! renderStatusBadge($item->o2, $item->suhu, $item->salinitas, $item->ph) !!}</td>
-                <td class="py-2 text-center">{{ $item->saran }}</td>
-                <td class="py-2 text-center">
-                    <button class="text-[#624DE3]" onclick="openEditModal({ id: {{ $item->id }}, nama: '{{ $item->nama }}', tgl: '{{ $item->tgl }}', suhu: {{ $item->suhu }}, ph: {{ $item->ph }}, o2: {{ $item->o2 }}, salinitas: {{ $item->salinitas }} })">
-                        <ion-icon name="create-outline"></ion-icon>
-                    </button>
-                    <button class="text-red-600" onclick="openDeleteConfirmation({{ $item->id }})">
-                        <ion-icon name="trash-outline"></ion-icon>
-                    </button>
-                </td>
-            </tr>
-            @endforeach
-            @endif
-        </tbody>
-    </table>
+    <!-- Tabel sg iso digeser ter -->
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white">
+            <thead>
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">No</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">Nama Kolam</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">Tanggal</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">
+                            Temperature (°C)
+                            <a href="#" id="sort-temperature">
+                                <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">pH</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">O2</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">Salinitas</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">
+                            Status
+                            <a href="#" id="sort-status">
+                                <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">Saran</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">Action</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="data-table">
+                @if($data->isEmpty())
+                <tr>
+                    <td colspan="10" class="py-4 text-center text-gray-500">Belum ada data</td>
+                </tr>
+                @else
+                @foreach($data as $item)
+                <tr class="{{ $loop->even ? 'bg-blue-50' : 'bg-purple-50' }}" data-index="{{ $loop->iteration }}">
+                    <td class="py-2 text-center">{{ $loop->iteration }}</td>
+                    <td class="py-2 text-center">{{ $item->nama }}</td>
+                    <td class="py-2 text-center">{{ $item->tgl }}</td>
+                    <td class="py-2 text-center">{{ $item->suhu }}</td>
+                    <td class="py-2 text-center">{{ $item->ph }}</td>
+                    <td class="py-2 text-center">{{ $item->o2 }}</td>
+                    <td class="py-2 text-center">{{ $item->salinitas }}</td>
+                    <td class="py-2 text-center">{!! renderStatusBadge($item->o2, $item->suhu, $item->salinitas, $item->ph) !!}</td>
+                    <td class="py-2 text-center">{{ $item->saran }}</td>
+                    <td class="py-2 text-center">
+                        <button class="text-[#624DE3]" onclick="openEditModal({ id: {{ $item->id }}, nama: '{{ $item->nama }}', tgl: '{{ $item->tgl }}', suhu: {{ $item->suhu }}, ph: {{ $item->ph }}, o2: {{ $item->o2 }}, salinitas: {{ $item->salinitas }} })">
+                            <ion-icon name="create-outline"></ion-icon>
+                        </button>
+                        <button class="text-red-600" onclick="openDeleteConfirmation({{ $item->id }})">
+                            <ion-icon name="trash-outline"></ion-icon>
+                        </button>
+                    </td>
+                </tr>
+                @endforeach
+                @endif
+            </tbody>
+        </table>
+    </div>
 
     <!-- Pagination -->
     <div class="flex justify-between items-center mt-4">
@@ -144,7 +153,7 @@
 
     <!-- Modal Add Data  -->
     <div id="add-data-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2">
             <h2 class="text-lg font-bold mb-4">Add Data</h2>
             <form action="{{ route('data.store') }}" method="POST">
                 @csrf
@@ -180,7 +189,7 @@
 
     <!-- Modal Edit Data -->
     <div id="edit-data-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
             <h2 class="text-lg font-bold mb-4">Edit Data</h2>
             <form id="edit-form" action="{{ route('data.update', '') }}" method="POST">
                 @csrf
@@ -217,9 +226,9 @@
 
     <!-- Modal Confirmation Delete -->
     <div id="delete-confirmation-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
-            <h2 class="text-lg font-bold mb-4">Konfirmasi Hapus</h2>
-            <p>Apakah anda yakin ingin menghapus data?</p>
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
+            <h2 class="text-lg font-bold mb-4">Confirm Deletion</h2>
+            <p>Are you sure you want to delete this data?</p>
             <div class="mt-4">
                 <button id="confirm-delete" class="bg-red-500 text-white p-2 rounded">Delete</button>
                 <button id="cancel-delete" class="bg-gray-300 p-2 rounded">Cancel</button>
@@ -232,112 +241,16 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const userSelectedDateInput = document.getElementById('user-selected-date');
-        const searchBar = document.getElementById('search-bar');
-        const addDataBtn = document.getElementById('add-data-btn');
+        const addDataBtnMobile = document.getElementById('add-data-btn');
+        const addDataBtnDesktop = document.getElementById('add-data-btn-desktop');
         const addDataModal = document.getElementById('add-data-modal');
         const closeModalBtn = document.getElementById('close-modal');
         const modalBackdrop = document.getElementById('modal-backdrop');
         const addDataForm = document.querySelector('#add-data-modal form');
-        const sortTemperatureBtn = document.getElementById('sort-temperature');
-        const sortStatusBtn = document.getElementById('sort-status');
+
+        const searchBar = document.getElementById('search-bar');
+        const userSelectedDateInput = document.getElementById('user-selected-date');
         const dataTable = document.getElementById('data-table');
-        const editDataModal = document.getElementById('edit-data-modal');
-        const editForm = document.getElementById('edit-form');
-        const closeEditModalBtn = document.getElementById('close-edit-modal');
-        const deleteConfirmationModal = document.getElementById('delete-confirmation-modal');
-        const confirmDeleteBtn = document.getElementById('confirm-delete');
-        const cancelDeleteBtn = document.getElementById('cancel-delete');
-
-        let currentDeleteId = null;
-        let currentEditData = {};
-
-        let temperatureSortDirection = 'asc';
-        let statusSortDirection = 'asc';
-
-        function sortTable(column, direction) {
-            const rows = Array.from(dataTable.querySelectorAll('tr:not(.no-data)')).slice(1);
-
-            rows.sort((a, b) => {
-                const aValue = a.querySelector(`td:nth-child(${column})`).textContent.trim();
-                const bValue = b.querySelector(`td:nth-child(${column})`).textContent.trim();
-
-                if (column === 4) {
-                    return direction === 'asc' ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(aValue);
-                } else if (column === 8) {
-                    return direction === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-                }
-            });
-
-            while (dataTable.rows.length > 1) {
-                dataTable.deleteRow(1);
-            }
-
-            rows.forEach((row, index) => {
-                const newRow = dataTable.insertRow();
-                newRow.innerHTML = row.innerHTML;
-                newRow.className = row.className;
-                newRow.querySelector('td:first-child').textContent = index + 1;
-            });
-
-            updateTableVisibility();
-        }
-
-        sortTemperatureBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            temperatureSortDirection = temperatureSortDirection === 'asc' ? 'desc' : 'asc';
-            sortTable(4, temperatureSortDirection);
-            updateSortIcon(sortTemperatureBtn, temperatureSortDirection);
-        });
-
-        sortStatusBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            statusSortDirection = statusSortDirection === 'asc' ? 'desc' : 'asc';
-            sortTable(8, statusSortDirection);
-            updateSortIcon(sortStatusBtn, statusSortDirection);
-        });
-
-        function updateSortIcon(button, direction) {
-            const svg = button.querySelector('svg');
-            svg.style.transform = direction === 'asc' ? 'rotate(0deg)' : 'rotate(180deg)';
-        }
-
-
-        addDataBtn.addEventListener('click', function() {
-            addDataModal.classList.remove('hidden');
-            modalBackdrop.classList.remove('hidden');
-        });
-
-        closeModalBtn.addEventListener('click', function() {
-            addDataModal.classList.add('hidden');
-            modalBackdrop.classList.add('hidden');
-        });
-
-        addDataForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const formData = new FormData(addDataForm);
-
-            try {
-                const response = await fetch("/data", {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
-                });
-
-                if (response.ok) {
-                    alert('Data successfully added.');
-                    location.reload();
-                } else {
-                    throw new Error('Failed to save data.');
-                }
-            } catch (error) {
-                alert(error.message);
-            }
-        });
-
 
         function updateTableVisibility() {
             const query = searchBar.value.toLowerCase();
@@ -385,6 +298,57 @@
 
         updateTableVisibility();
 
+        function openModal() {
+            addDataModal.classList.remove('hidden');
+            modalBackdrop.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            addDataModal.classList.add('hidden');
+            modalBackdrop.classList.add('hidden');
+        }
+
+        if (addDataBtnMobile) {
+            addDataBtnMobile.addEventListener('click', openModal);
+        }
+        if (addDataBtnDesktop) {
+            addDataBtnDesktop.addEventListener('click', openModal);
+        }
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', closeModal);
+        }
+        if (modalBackdrop) {
+            modalBackdrop.addEventListener('click', closeModal);
+        }
+
+        addDataForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(addDataForm);
+
+            try {
+                const response = await fetch("/data", {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                if (response.ok) {
+                    alert('Data berhasil ditambahkan.');
+                    location.reload();
+                } else {
+                    throw new Error('Gagal menyimpan data.');
+                }
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        let currentEditData = {};
+        let currentDeleteId = null;
+
         window.openEditModal = function(data) {
             currentEditData = data;
             document.getElementById('edit_nama').value = data.nama;
@@ -394,14 +358,19 @@
             document.getElementById('edit_o2').value = data.o2;
             document.getElementById('edit_salinitas').value = data.salinitas;
 
-            editDataModal.classList.remove('hidden');
+            document.getElementById('edit-data-modal').classList.remove('hidden');
             modalBackdrop.classList.remove('hidden');
         };
 
-        editForm.addEventListener('submit', async function(event) {
+        document.getElementById('close-edit-modal').addEventListener('click', function() {
+            document.getElementById('edit-data-modal').classList.add('hidden');
+            modalBackdrop.classList.add('hidden');
+        });
+
+        document.getElementById('edit-form').addEventListener('submit', async function(event) {
             event.preventDefault();
-            const formData = new FormData(editForm);
-            const url = editForm.action + '/' + currentEditData.id;
+            const formData = new FormData(event.target);
+            const url = event.target.action + '/' + currentEditData.id;
 
             try {
                 const response = await fetch(url, {
@@ -414,10 +383,10 @@
                 });
 
                 if (response.ok) {
-                    alert('Data successfully updated.');
+                    alert('Data berhasil diperbarui.');
                     location.reload();
                 } else {
-                    throw new Error('Failed to update data.');
+                    throw new Error('Gagal memperbarui data.');
                 }
             } catch (error) {
                 alert(error.message);
@@ -426,37 +395,36 @@
 
         window.openDeleteConfirmation = function(id) {
             currentDeleteId = id;
-            deleteConfirmationModal.classList.remove('hidden');
+            document.getElementById('delete-confirmation-modal').classList.remove('hidden');
+            modalBackdrop.classList.remove('hidden');
         };
 
-        cancelDeleteBtn.addEventListener('click', function() {
-            deleteConfirmationModal.classList.add('hidden');
+        document.getElementById('confirm-delete').addEventListener('click', async function() {
+            try {
+                const response = await fetch(`/data/${currentDeleteId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                if (response.ok) {
+                    alert('Data berhasil dihapus.');
+                    location.reload();
+                } else {
+                    throw new Error('Gagal menghapus data.');
+                }
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                document.getElementById('delete-confirmation-modal').classList.add('hidden');
+                modalBackdrop.classList.add('hidden');
+            }
         });
 
-        confirmDeleteBtn.addEventListener('click', async function() {
-            if (currentDeleteId !== null) {
-                try {
-                    const response = await fetch(`/data/${currentDeleteId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Content-Type': 'application/json'
-                        }
-                    });
-
-                    if (response.ok) {
-                        alert('Data berhasil dihapus.');
-                        location.reload();
-                    } else {
-                        const errorData = await response.json();
-                        alert(`Gagal menghapus data: ${errorData.message || 'Unknown error'}`);
-                    }
-                } catch (error) {
-                    alert(`Terjadi kesalahan: ${error.message}`);
-                } finally {
-                    deleteConfirmationModal.classList.add('hidden');
-                }
-            }
+        document.getElementById('cancel-delete').addEventListener('click', function() {
+            document.getElementById('delete-confirmation-modal').classList.add('hidden');
+            modalBackdrop.classList.add('hidden');
         });
     });
 </script>
