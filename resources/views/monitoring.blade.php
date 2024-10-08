@@ -112,7 +112,7 @@
                         </div>
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        <div class="flex items-center">Saran</div>
+                        <div class="flex items-center">Keterangan</div>
                     </th>
                     <th scope="col" class="px-6 py-3">
                         <div class="flex items-center">Action</div>
@@ -243,10 +243,6 @@
 
     <div id="modal-backdrop" class="fixed inset-0 bg-black opacity-50 hidden"></div>
 </div>
-<script>
-
-</script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const addDataBtnMobile = document.getElementById('add-data-btn');

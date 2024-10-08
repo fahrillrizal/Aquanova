@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- import cdn Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href='./assets/img/png/logo.png' rel='shortcut icon'>
     <!-- Font embed Montserrat Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <!-- CropperJs -->
