@@ -1,8 +1,47 @@
 @extends('layouts.nvprofile')
 
 @section('content')
+<!-- Tampilan Mobail -->
+<div class="block md:hidden bg-white w-full max-w-sm rounded-lg p-0 mt-5">
+    <div class="text-center mb-5">
+
+        <!-- Background Image Section -->
+        <div class="h-24 w-[100%] bg-cover bg-center rounded-t-lg">
+            <img class="" src="./assets/img/svg/inibg.svg" alt="">
+        </div>
+
+        <!-- Profile Image -->
+        <div class="w-20 h-20 justify-center rounded-full mx-auto -mt-6">
+            <img src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/img/png/profile.png') }}" alt="Profile Image" class="w-full h-full object-cover rounded-full">
+            <button onclick="openModal('editPhotoModal')" class="absolute top-[-100] right-50 transform translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white p-2 rounded-full border border-gray-300 shadow">
+                <ion-icon name="pencil-outline" class="text-blue-500 hover:text-blue-600 rounded-full"></ion-icon>
+            </button>
+        </div>
+
+        <!-- User Information -->
+        <h2 class="mt-4 text-xl font-semibold">{{ Auth::user()->name }}</h2>
+        <p class="text-gray-500">{{ Auth::user()->email }}</p>
+    </div>
+    
+    <!-- Buttons for Google Connect and Logout -->
+    <div class="flex justify-end space-x-4 mb-6">
+        <button class="bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold py-2 px-3 rounded-lg flex items-center">
+            <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google Icon" class="w-4 h-4 mr-2">
+            Connect with Email
+        </button>
+        <form action="{{ route('logout') }}" method="POST" class="flex">
+            @csrf
+            <button class="bg-sky-400 hover:bg-sky-500 text-white font-semibold py-2 px-3 rounded-lg">
+                Logout
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Tampilan Dekstop -->
+
 <!-- Container for Profile Section -->
-<div class="relative w-full p-6 sm:p-5 lg:p-5">
+<div class="relative hidden md:block w-full p-5 sm:p-5 lg:p-5">
     <!-- Background Image Section -->
     <div class="relative w-full h-60 lg:h-72 overflow-hidden rounded-t-lg">
         <img src="./assets/img/png/ab.png" alt="Background Image" class="w-full object-cover max-w-full">
@@ -34,7 +73,7 @@
 </div>
 
 <!-- Buttons for Google Connect and Logout -->
-<div class="absolute sm:right-[60px] sm:top-[250px] lg:right-20 lg:top-[350px] flex space-x-4">
+<div class="absolute sm:right-[60px] sm:top-[250px] lg:right-20 lg:top-[350px] flex space-x-4 hidden sm:flex">
     <button class="bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 rounded shadow-sm flex items-center">
         <img src="https://www.google.com/favicon.ico" alt="Google Icon" class="w-5 h-5 mr-2">
         Connect with Google
@@ -119,7 +158,7 @@
 </div>
 
 <!-- modals Edit Profile Image-->
-<div id="editPhotoModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 z-50 items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full flex shadow">
+<div id="editPhotoModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-black bg-opacity-50">
     <div class="fixed inset-0 bg-black bg-opacity-50"></div>
     <div class="relative p-4 w-full max-w-md max-h-full z-10">
         <div class="relative bg-white rounded-lg shadow white:bg-white-700">
@@ -163,7 +202,7 @@
 </div>
 
 <!-- Baru Change Password Modal -->
-<div id="changePasswordModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 z-50 items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full flex shadow">
+<div id="changePasswordModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-black bg-opacity-50">
     <div class="fixed inset-0 bg-black bg-opacity-50"></div>
     <div class="relative p-4 w-full max-w-md max-h-full z-10">
         <div class="relative bg-white rounded-lg shadow white:bg-white-700">

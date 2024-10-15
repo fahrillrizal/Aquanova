@@ -52,7 +52,7 @@
         <!-- close header -->
         {{-- button start --}}
         <button id="scrollButton"
-            class="flex justify-center items-center mx-auto md:ml-[950px] md:mt-2 mt-16 lg:ml-[1050px] rounded-full bg-gradient-to-r from-[#6FCDF7] to-[#D3E2FF] text-white md:px-6 py-3 md:w-[211px] w-40 md:h-[60px] h-14 text-sm md:text-lg font-medium transition-all duration-300 hover:shadow-lg hover:opacity-90 space-x-3">
+            class="flex justify-center items-center mx-auto md:ml-[950px] md:mt-2 mt-16 lg:ml-[950px] xl:ml-[950px] rounded-full bg-gradient-to-r from-[#6FCDF7] to-[#D3E2FF] text-white md:px-6 py-3 md:w-[211px] w-40 md:h-[60px] h-14 text-sm md:text-lg font-medium transition-all duration-300 hover:shadow-lg hover:opacity-90 space-x-3">
             <span>Start Now</span>
             <ion-icon name="arrow-up-outline" class="text-3xl transform rotate-45"></ion-icon>
         </button>
