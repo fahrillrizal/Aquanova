@@ -1,0 +1,157 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container mx-auto p-4">
+    <div class="container mx-auto my-4">
+        <!-- Chart Rekap Bulanan -->
+        <div class="max-w-full w-full bg-white rounded-lg shadow p-4 md:p-6 mb-6">
+            <div class="flex flex-col items-center mb-5">
+                <h5 class="leading-none text-2xl font-bold text-[#2E2E30] pb-2 text-center">Rekap Bulanan</h5>
+                <form method="GET" action="{{ route('recap.index') }}" class="flex justify-center mb-4">
+                    <select name="month" class="border rounded p-2 mr-2">
+                        @foreach (range(1, 12) as $m)
+                            <option value="{{ $m }}" {{ $selectedMonth == Carbon\Carbon::create()->month($m)->translatedFormat('F') ? 'selected' : '' }}>
+                                {{ Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="bg-blue-500 text-white p-2 rounded">Tampilkan Rekap</button>
+                </form>
+                <p class="text-base font-normal text-gray-500 text-center">{{ $selectedMonth }}</p>
+            </div>
+            <div id="monthly-recap-chart" style="height: 400px;"></div>
+        </div>
+
+        <!-- Chart Gabungan -->
+        <div class="max-w-full w-full bg-white rounded-lg shadow p-4 md:p-6 mb-6">
+            <h5 class="leading-none text-xl font-bold text-[#2E2E30] pb-2 text-center">Grafik Gabungan Suhu, O2, pH, dan Salinitas</h5>
+            <div id="combined-chart" style="height: 400px;"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Chart Rekap Bulanan
+        @if($data && $data->isNotEmpty())
+            const monthlyOptions = {
+                chart: {
+                    type: 'line',
+                    height: 350,
+                    toolbar: {
+                        show: true
+                    }
+                },
+                series: [{
+                    name: 'Hasil Bulanan',
+                    data: {!! json_encode($data->pluck('hasil')) !!} // Mengambil data dari kolom hasil
+                }],
+                xaxis: {
+                    categories: {!! json_encode($labels) !!}, // Mengambil label untuk sumbu X
+                    title: {
+                        text: 'Tanggal'
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Nilai'
+                    },
+                    tickAmount: 3,
+                    min: 0,
+                    max: 2,
+                    labels: {
+                        formatter: function(val) {
+                            return val === 1 ? "Baik" : (val === 0 ? "Netral" : "Buruk");
+                        }
+                    }
+                },
+                stroke: {
+                    curve: 'stepline',
+                    width: 2,
+                    colors: ['#007bff']
+                },
+                markers: {
+                    size: 5,
+                    colors: ['#007bff'],
+                    strokeColors: '#fff',
+                    strokeWidth: 2,
+                    hover: {
+                        sizeOffset: 6
+                    }
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'],
+                        opacity: 0.5
+                    }
+                },
+                tooltip: {
+                    custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                        const data = w.config.series[seriesIndex].data[dataPointIndex];
+                        return `
+                            <div class="arrow_box">
+                                <p><b>Tanggal:</b> ${w.config.xaxis.categories[dataPointIndex]}</p>
+                                <p><b>Kualitas:</b> ${data === 0 ? 'Netral' : (data === 1 ? 'Baik' : 'Buruk')}</p>
+                            </div>
+                        `;
+                    }
+                }
+            };
+
+            const monthlyChart = new ApexCharts(document.querySelector("#monthly-recap-chart"), monthlyOptions);
+            monthlyChart.render();
+        @else
+            document.querySelector("#monthly-recap-chart").innerHTML = '<p class="text-center text-red-500">Tidak ada data untuk bulan ini.</p>';
+        @endif
+
+        // Chart Gabungan
+        @if($suhuData && $suhuData->isNotEmpty() || $o2Data && $o2Data->isNotEmpty() || $phData && $phData->isNotEmpty() || $salinityData && $salinityData->isNotEmpty())
+            const combinedOptions = {
+                chart: {
+                    type: 'line',
+                    height: 350,
+                    toolbar: {
+                        show: true
+                    }
+                },
+                series: [
+                    {
+                        name: 'Suhu',
+                        data: {!! json_encode($suhuData) !!}
+                    },
+                    {
+                        name: 'O2',
+                        data: {!! json_encode($o2Data) !!}
+                    },
+                    {
+                        name: 'pH',
+                        data: {!! json_encode($phData) !!}
+                    },
+                    {
+                        name: 'Salinitas',
+                        data: {!! json_encode($salinityData) !!}
+                    }
+                ],
+                xaxis: {
+                    categories: {!! json_encode($labels) !!},
+                    title: {
+                        text: 'Tanggal'
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Nilai'
+                    }
+                }
+            };
+
+            const combinedChart = new ApexCharts(document.querySelector("#combined-chart"), combinedOptions);
+            combinedChart.render();
+        @else
+            document.querySelector("#combined-chart").innerHTML = '<p class="text-center text-red-500">Tidak ada data untuk grafik gabungan.</p>';
+        @endif
+    });
+</script>
+
+@endsection

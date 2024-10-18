@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\RecapController;
 
 Route::get('/', fn() => view('home'));
 
@@ -40,3 +41,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/data/{id}', [DataController::class, 'destroy'])->name('data.delete');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+Route::get('/recap', [RecapController::class, 'recap'])->name('recap.index');
