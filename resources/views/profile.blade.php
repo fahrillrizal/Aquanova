@@ -22,7 +22,7 @@
         <h2 class="mt-4 text-xl font-semibold">{{ Auth::user()->name }}</h2>
         <p class="text-gray-500">{{ Auth::user()->email }}</p>
     </div>
-    
+
     <!-- Buttons for Google Connect and Logout -->
     <div class="flex justify-end space-x-4 mb-6">
         <button class="bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold py-2 px-3 rounded-lg flex items-center">
@@ -282,174 +282,124 @@
     </div>
 </div>
 
-<!--alert modals Logout -->
-<div id="alertLogoutModal" tabindex="-1" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 rounded-xl">
-    <div class="relative p-4 w-full max-w-md">
-        <div class="relative bg-white rounded-xl shadow">
-            <div class="p-4 md:p-5 text-center">
-                <img src="/assets/img/svg/ceklist.svg" alt="Success Checkmark" class="mx-auto mb-4 w-12 h-12" />
-                <h3 class="mb-5 text-lg text-dark">Logout berhasil.</h3>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const logoutForm = document.getElementById('logoutForm');
-    logoutForm.addEventListener('submit', async function(event) {
-        event.preventDefault(); 
+    // alert modals edit profile
+    document.addEventListener('DOMContentLoaded', function() {
+        const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+
+        if (!csrfTokenMeta) {
+            console.error('CSRF token meta tag is missing.');
+            return;
+        }
+
+        const csrfToken = csrfTokenMeta.content;
+        document.getElementById('savePhotoButton').addEventListener('click', async function(event) {
+            event.preventDefault();
+
+            const form = document.querySelector('#editPhotoModal form');
+
+            try {
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+
+                if (response.ok) {
+                    document.getElementById('editPhotoModal').classList.add('hidden');
+                    const modalBody = document.getElementById('alertEditProfileModal');
+                    modalBody.classList.remove('hidden');
+                    setTimeout(() => {
+                        modalBody.classList.add('hidden');
+                        location.reload();
+                    }, 1500);
+                } else {
+                    throw new Error('Gagal menyimpan data.');
+                }
+            } catch (error) {
+                document.getElementById('editPhotoModal').classList.add('hidden');
+                const modalBody = document.getElementById('alertEditProfileModal');
+                modalBody.classList.remove('hidden');
+                setTimeout(() => {
+                    modalBody.classList.add('hidden');
+                }, 1500);
+            }
+        });
+    });
+
+    // Change Password
+    document.getElementById('changePasswordModal').addEventListener('submit', async function(event) {
+        event.preventDefault();
 
         try {
-            const formData = new FormData(this); 
+            const formData = new FormData(this);
             const response = await fetch(this.action, {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content 
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 }
             });
 
             if (response.ok) {
-                const modalBody = document.querySelector('#alertLogoutModal');
-                modalBody.classList.remove('hidden'); 
-                setTimeout(() => {
-                    modalBody.classList.add('hidden');
-                    location.reload(); 
-                }, 1000);
-            } else {
-                throw new Error('Gagal melakukan logout.'); 
-            }
-        } catch (error) {
-            const modalBody = document.querySelector('#alertLogoutModal');
-            modalBody.classList.remove('hidden'); 
-            
-            setTimeout(() => {
-                modalBody.classList.add('hidden');
-            }, 1000);
-        }
-    });
-});
-
-
-// alert modals edit profile
-document.addEventListener('DOMContentLoaded', function() {
-    const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
-    
-    if (!csrfTokenMeta) {
-        console.error('CSRF token meta tag is missing.');
-        return; 
-    }
-
-    const csrfToken = csrfTokenMeta.content;
-    document.getElementById('savePhotoButton').addEventListener('click', async function(event) {
-        event.preventDefault(); 
-
-        const form = document.querySelector('#editPhotoModal form'); 
-
-        try {
-            const formData = new FormData(form); 
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken 
-                }
-            });
-
-            if (response.ok) {
-                document.getElementById('editPhotoModal').classList.add('hidden');
-                const modalBody = document.getElementById('alertEditProfileModal');
-                modalBody.classList.remove('hidden'); 
+                document.getElementById('changePasswordModal').classList.add('hidden');
+                const modalBody = document.querySelector('#alertChangeModal');
+                modalBody.classList.remove('hidden');
                 setTimeout(() => {
                     modalBody.classList.add('hidden');
                     location.reload();
                 }, 1500);
             } else {
-                throw new Error('Gagal menyimpan data.'); 
+                throw new Error('Gagal menyimpan data.');
             }
         } catch (error) {
-            document.getElementById('editPhotoModal').classList.add('hidden');
-            const modalBody = document.getElementById('alertEditProfileModal');
-            modalBody.classList.remove('hidden'); 
+            document.getElementById('changePasswordModal').classList.add('hidden');
+            const modalBody = document.querySelector('#alertChangeModal');
+            modalBody.classList.remove('hidden');
             setTimeout(() => {
                 modalBody.classList.add('hidden');
             }, 1500);
         }
     });
-});
 
-// Change Password
-document.getElementById('changePasswordModal').addEventListener('submit', async function(event) {
-    event.preventDefault();
+    // alert modals edit
+    document.getElementById('editProfileForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
 
-    try {
-        const formData = new FormData(this); 
-        const response = await fetch(this.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        try {
+            const formData = new FormData(this);
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            });
+
+            if (response.ok) {
+                document.getElementById('editProfileForm').classList.add('hidden');
+                const modalBody = document.querySelector('#alertEditModal');
+                modalBody.classList.remove('hidden');
+                setTimeout(() => {
+                    modalBody.classList.add('hidden');
+                    location.reload();
+                }, 1500);
+            } else {
+                throw new Error('Gagal menyimpan data.');
             }
-        });
-
-        if (response.ok) {
-                            document.getElementById('changePasswordModal').classList.add('hidden');
-                            const modalBody = document.querySelector('#alertChangeModal');
-                            modalBody.classList.remove('hidden'); 
-                            setTimeout(() => {
-                                modalBody.classList.add('hidden');
-                                location.reload();
-                            }, 1500);
-                        } else {
-                            throw new Error('Gagal menyimpan data.');
-                        }
-                    } catch (error) {
-                        document.getElementById('changePasswordModal').classList.add('hidden');
-                        const modalBody = document.querySelector('#alertChangeModal');
-                        modalBody.classList.remove('hidden'); 
-                        setTimeout(() => {
-                            modalBody.classList.add('hidden');
-                        }, 1500);
-                    }
-});
-
-// alert modals edit
-document.getElementById('editProfileForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    try {
-        const formData = new FormData(this); 
-        const response = await fetch(this.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            }
-        });
-
-        if (response.ok) {
-                            document.getElementById('editProfileForm').classList.add('hidden');
-                            const modalBody = document.querySelector('#alertEditModal');
-                            modalBody.classList.remove('hidden'); 
-                            setTimeout(() => {
-                                modalBody.classList.add('hidden');
-                                location.reload();
-                            }, 1500);
-                        } else {
-                            throw new Error('Gagal menyimpan data.');
-                        }
-                    } catch (error) {
-                        document.getElementById('editProfileForm').classList.add('hidden');
-                        const modalBody = document.querySelector('#alertEditModal');
-                        modalBody.classList.remove('hidden'); 
-                        setTimeout(() => {
-                            modalBody.classList.add('hidden');
-                        }, 1500);
-                    }
-});
-
-
+        } catch (error) {
+            document.getElementById('editProfileForm').classList.add('hidden');
+            const modalBody = document.querySelector('#alertEditModal');
+            modalBody.classList.remove('hidden');
+            setTimeout(() => {
+                modalBody.classList.add('hidden');
+            }, 1500);
+        }
+    });
 
     function openModal(modalId) {
         document.getElementById(modalId).classList.remove('hidden');
@@ -562,24 +512,6 @@ document.getElementById('editProfileForm').addEventListener('submit', async func
             cropper = null;
         }
     }
-
-
-
-    // function showAlert(type, message) {
-    //     const alertElement = document.createElement('div');
-    //     alertElement.textContent = message;
-    //     alertElement.className = `alert alert-${type} fixed top-4 right-4 p-4 rounded shadow-lg z-50`;
-    //     if (type === 'success') {
-    //         alertElement.classList.add('bg-green-500', 'text-white');
-    //     } else {
-    //         alertElement.classList.add('bg-red-500', 'text-white');
-    //     }
-    //     document.body.appendChild(alertElement);
-
-    //     setTimeout(() => {
-    //         alertElement.remove();
-    //     }, 3000);
-    // }
 </script>
 <script>
     const currentPasswordInput = document.getElementById("current_password");

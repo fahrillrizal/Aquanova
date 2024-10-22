@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Recomendation')
+
 @section('content')
         <!-- content -->
         <main class="md:my-32 my-24">

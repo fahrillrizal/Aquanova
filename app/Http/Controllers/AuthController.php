@@ -24,12 +24,13 @@ class AuthController extends Controller
             'password' => [
                 'required',
                 'string',
-                'min:8', // Minimal 8 karakter
+                'min:8',
                 'confirmed',
-                'regex:/^(?=.*[A-Z])(?=.*[0-9]).*$/', // Aturan regex
+                'regex:/^(?=.*[A-Z])(?=.*[0-9]).*$/',
             ],
         ], [
-            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter dan one number.',
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one number.',
+            'email.regex' => 'Email must be a valid Gmail or Yahoo address.',
         ]);
 
         $user = User::create([
@@ -38,8 +39,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-
-        return redirect()->route('login')->with('success', 'Registration successful. Please check your email and login.');
+        return redirect()->route('login')->with('success', 'Registrasi berhasil.');
     }
 
     // Menampilkan formulir login
@@ -60,7 +60,7 @@ class AuthController extends Controller
         // Coba untuk login
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/')->with('success', 'You are logged in!');
+            return redirect()->intended('/')->with('success', 'Login berhasil!');
         }
 
         return back()->withErrors([
