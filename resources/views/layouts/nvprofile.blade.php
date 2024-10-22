@@ -11,6 +11,7 @@
     <!-- CropperJs -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
     <link href='./assets/img/png/logo.png' rel='shortcut icon'>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         #scroll-up {
             background-color: #6CA2BA;

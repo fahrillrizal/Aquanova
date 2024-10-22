@@ -29,9 +29,9 @@
             <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google Icon" class="w-4 h-4 mr-2">
             Connect with Email
         </button>
-        <form action="{{ route('logout') }}" method="POST" class="flex">
+        <form id="logoutForm" action="{{ route('logout') }}" method="POST" class="flex">
             @csrf
-            <button class="bg-sky-400 hover:bg-sky-500 text-white font-semibold py-2 px-3 rounded-lg">
+            <button id="lg" class="bg-sky-400 hover:bg-sky-500 text-white font-semibold py-2 px-3 rounded-lg">
                 Logout
             </button>
         </form>
@@ -78,9 +78,9 @@
         <img src="https://www.google.com/favicon.ico" alt="Google Icon" class="w-5 h-5 mr-2">
         Connect with Google
     </button>
-    <form action="{{ route('logout') }}" method="POST">
+    <form id="logoutForm" action="{{ route('logout') }}" method="POST">
         @csrf
-        <button type="submit" class="bg-sky-400 hover:bg-sky-500 text-white font-semibold py-2 px-4 rounded shadow-sm">Logout</button>
+        <button id="lg" type="submit" class="bg-sky-400 hover:bg-sky-500 text-white font-semibold py-2 px-4 rounded shadow-sm">Logout</button>
     </form>
 </div>
 
@@ -129,7 +129,7 @@
                 </h3>
             </div>
             <div class="p-4 md:p-5">
-                <form action="{{ route('profile.update') }}" method="POST">
+                <form id="editProfileForm" action="{{ route('profile.update') }}" method="POST">
                     @csrf
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700">Full Name</label>
@@ -149,7 +149,7 @@
                     </div>
                     <div class="flex justify-end space-x-4">
                         <button type="button" onclick="closeModal('editProfileModal')" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Save Changes</button>
+                        <button type="submit" id="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Save Changes</button>
                     </div>
                 </form>
             </div>
@@ -246,7 +246,211 @@
     </div>
 </div>
 
+<!--alert modals add data baru -->
+<div id="alertEditModal" tabindex="-1" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 rounded-xl">
+    <div class="relative p-4 w-full max-w-md">
+        <div class="relative bg-white rounded-xl shadow">
+            <div class="p-4 md:p-5 text-center">
+                <img src="/assets/img/svg/ceklist.svg" alt="Success Checkmark" class="mx-auto mb-4 w-12 h-12" />
+                <h3 class="mb-5 text-lg text-dark">Data berhasil disimpan.</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--alert modals change password -->
+<div id="alertChangeModal" tabindex="-1" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 rounded-xl">
+    <div class="relative p-4 w-full max-w-md">
+        <div class="relative bg-white rounded-xl shadow">
+            <div class="p-4 md:p-5 text-center">
+                <img src="/assets/img/svg/ceklist.svg" alt="Success Checkmark" class="mx-auto mb-4 w-12 h-12" />
+                <h3 class="mb-5 text-lg text-dark">Password berhasil disimpan.</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--alert modals edit profile -->
+<div id="alertEditProfileModal" tabindex="-1" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 rounded-xl">
+    <div class="relative p-4 w-full max-w-md">
+        <div class="relative bg-white rounded-xl shadow">
+            <div class="p-4 md:p-5 text-center">
+                <img src="/assets/img/svg/ceklist.svg" alt="Success Checkmark" class="mx-auto mb-4 w-12 h-12" />
+                <h3 class="mb-5 text-lg text-dark">Foto berhasil disimpan.</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--alert modals Logout -->
+<div id="alertLogoutModal" tabindex="-1" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 rounded-xl">
+    <div class="relative p-4 w-full max-w-md">
+        <div class="relative bg-white rounded-xl shadow">
+            <div class="p-4 md:p-5 text-center">
+                <img src="/assets/img/svg/ceklist.svg" alt="Success Checkmark" class="mx-auto mb-4 w-12 h-12" />
+                <h3 class="mb-5 text-lg text-dark">Logout berhasil.</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const logoutForm = document.getElementById('logoutForm');
+    logoutForm.addEventListener('submit', async function(event) {
+        event.preventDefault(); 
+
+        try {
+            const formData = new FormData(this); 
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content 
+                }
+            });
+
+            if (response.ok) {
+                const modalBody = document.querySelector('#alertLogoutModal');
+                modalBody.classList.remove('hidden'); 
+                setTimeout(() => {
+                    modalBody.classList.add('hidden');
+                    location.reload(); 
+                }, 1000);
+            } else {
+                throw new Error('Gagal melakukan logout.'); 
+            }
+        } catch (error) {
+            const modalBody = document.querySelector('#alertLogoutModal');
+            modalBody.classList.remove('hidden'); 
+            
+            setTimeout(() => {
+                modalBody.classList.add('hidden');
+            }, 1000);
+        }
+    });
+});
+
+
+// alert modals edit profile
+document.addEventListener('DOMContentLoaded', function() {
+    const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+    
+    if (!csrfTokenMeta) {
+        console.error('CSRF token meta tag is missing.');
+        return; 
+    }
+
+    const csrfToken = csrfTokenMeta.content;
+    document.getElementById('savePhotoButton').addEventListener('click', async function(event) {
+        event.preventDefault(); 
+
+        const form = document.querySelector('#editPhotoModal form'); 
+
+        try {
+            const formData = new FormData(form); 
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken 
+                }
+            });
+
+            if (response.ok) {
+                document.getElementById('editPhotoModal').classList.add('hidden');
+                const modalBody = document.getElementById('alertEditProfileModal');
+                modalBody.classList.remove('hidden'); 
+                setTimeout(() => {
+                    modalBody.classList.add('hidden');
+                    location.reload();
+                }, 1500);
+            } else {
+                throw new Error('Gagal menyimpan data.'); 
+            }
+        } catch (error) {
+            document.getElementById('editPhotoModal').classList.add('hidden');
+            const modalBody = document.getElementById('alertEditProfileModal');
+            modalBody.classList.remove('hidden'); 
+            setTimeout(() => {
+                modalBody.classList.add('hidden');
+            }, 1500);
+        }
+    });
+});
+
+// Change Password
+document.getElementById('changePasswordModal').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    try {
+        const formData = new FormData(this); 
+        const response = await fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        });
+
+        if (response.ok) {
+                            document.getElementById('changePasswordModal').classList.add('hidden');
+                            const modalBody = document.querySelector('#alertChangeModal');
+                            modalBody.classList.remove('hidden'); 
+                            setTimeout(() => {
+                                modalBody.classList.add('hidden');
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            throw new Error('Gagal menyimpan data.');
+                        }
+                    } catch (error) {
+                        document.getElementById('changePasswordModal').classList.add('hidden');
+                        const modalBody = document.querySelector('#alertChangeModal');
+                        modalBody.classList.remove('hidden'); 
+                        setTimeout(() => {
+                            modalBody.classList.add('hidden');
+                        }, 1500);
+                    }
+});
+
+// alert modals edit
+document.getElementById('editProfileForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    try {
+        const formData = new FormData(this); 
+        const response = await fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        });
+
+        if (response.ok) {
+                            document.getElementById('editProfileForm').classList.add('hidden');
+                            const modalBody = document.querySelector('#alertEditModal');
+                            modalBody.classList.remove('hidden'); 
+                            setTimeout(() => {
+                                modalBody.classList.add('hidden');
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            throw new Error('Gagal menyimpan data.');
+                        }
+                    } catch (error) {
+                        document.getElementById('editProfileForm').classList.add('hidden');
+                        const modalBody = document.querySelector('#alertEditModal');
+                        modalBody.classList.remove('hidden'); 
+                        setTimeout(() => {
+                            modalBody.classList.add('hidden');
+                        }, 1500);
+                    }
+});
+
+
+
     function openModal(modalId) {
         document.getElementById(modalId).classList.remove('hidden');
     }

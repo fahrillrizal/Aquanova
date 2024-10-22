@@ -39,12 +39,12 @@
         <div class="flex items-center space-x-4">
             <!-- Search Bar -->
             <div>
-                <input type="text" id="search-bar" class="border border-gray-300 p-1 rounded w-full sm:w-[50%] :w-[100%]" placeholder="Cari Nama Kolam" name="search" value="{{ request('search') }}" />
+                <input type="text" id="search-bar" class="border border-gray-300 p-1 rounded w-full sm:w-[50%] lg:w-[100%]" placeholder="Cari Nama Kolam" />
             </div>
         </div>
 
         <!-- Add Data Button -->
-        <div class="fixed bottom-0 left-0 right-0 bg-white shadow-lg p-1 z-50 sm:hidden">
+        <div class="fixed bottom-0 left-0 right-0 shadow-lg p-1 z-50 sm:hidden">
             <button id="add-data-btn" class="w-full bg-[#8C63DA] text-white p-1 rounded">
                 <ion-icon name="add-outline"></ion-icon> Add Data
             </button>
@@ -147,6 +147,42 @@
         {{ $data->links() }}
     </div>
 
+    <!--alert modals add data baru -->
+    <div id="alertModal" tabindex="-1" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 rounded-xl">
+        <div class="relative p-4 w-full max-w-md">
+            <div class="relative bg-white rounded-xl shadow">
+                <div class="p-4 md:p-5 text-center">
+                    <img src="/assets/img/svg/ceklist.svg" alt="Success Checkmark" class="mx-auto mb-4 w-12 h-12" />
+                    <h3 class="mb-5 text-lg text-dark">Data berhasil ditambahkan.</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert modals delet -->
+    <div id="alertDeletModal" tabindex="-1" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+        <div class="relative p-4 w-full max-w-md">
+            <div class="relative bg-white rounded-xl shadow">
+                <div class="p-4 md:p-5 text-center">
+                    <img src="/assets/img/svg/ceklist.svg" alt="Success Checkmark" class="mx-auto mb-4 w-12 h-12" />
+                    <h3 class="mb-5 text-lg text-dark">Data berhasil dihapus.</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert modals edit data -->
+    <div id="alertEditDataModal" tabindex="-1" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+        <div class="relative p-4 w-full max-w-md">
+            <div class="relative bg-white rounded-xl shadow">
+                <div class="p-4 md:p-5 text-center">
+                    <img src="/assets/img/svg/ceklist.svg" alt="Success Checkmark" class="mx-auto mb-4 w-12 h-12" />
+                    <h3 class="mb-5 text-lg text-dark">Data berhasil dihapus.</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Add Data  -->
     <div id="add-data-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="bg-white rounded-lg shadow-lg p-6 w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2">
@@ -221,7 +257,7 @@
     </div>
 
     <!-- Modal Confirmation Delete -->
-    <div id="delete-confirmation-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+    <div id="delete-confirmation-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden bg-black bg-opacity-50">
         <div class="bg-white rounded-lg shadow-lg p-6 w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
             <h2 class="text-lg font-bold mb-4">Confirm Deletion</h2>
             <p>Are you sure you want to delete this data?</p>
@@ -231,17 +267,15 @@
             </div>
         </div>
     </div>
-
-    <div id="modal-backdrop" class="fixed inset-0 bg-black opacity-50 hidden"></div>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const addDataBtnMobile = document.getElementById('add-data-btn');
-        const addDataBtnDesktop = document.getElementById('add-data-btn-desktop');
-        const addDataModal = document.getElementById('add-data-modal');
-        const closeModalBtn = document.getElementById('close-modal');
-        const modalBackdrop = document.getElementById('modal-backdrop');
-        const addDataForm = document.querySelector('#add-data-modal form');
+                const addDataBtnMobile = document.getElementById('add-data-btn');
+                const addDataBtnDesktop = document.getElementById('add-data-btn-desktop');
+                const addDataModal = document.getElementById('add-data-modal');
+                const closeModalBtn = document.getElementById('close-modal');
+                const modalBackdrop = document.getElementById('modal-backdrop');
+                const addDataForm = document.querySelector('#add-data-modal form');
 
         const searchBar = document.getElementById('search-bar');
         const dataTable = document.getElementById('data-table');
@@ -264,8 +298,8 @@
                 }
             });
 
-            updateNoDataRow(anyVisible);
-        }
+                    updateNoDataRow(anyVisible);
+                }
 
         function updateNoDataRow(anyVisible) {
             let noDataRow = dataTable.querySelector('.no-data');
@@ -288,134 +322,193 @@
 
         updateTableVisibility(); 
 
-        function openModal() {
-            addDataModal.classList.remove('hidden');
-            modalBackdrop.classList.remove('hidden');
-        }
+                function openModal() {
+                    addDataModal.classList.remove('hidden');
+                    modalBackdrop.classList.remove('hidden');
+                }
 
-        function closeModal() {
-            addDataModal.classList.add('hidden');
-            modalBackdrop.classList.add('hidden');
-        }
+                function closeModal() {
+                    addDataModal.classList.add('hidden');
+                    modalBackdrop.classList.add('hidden');
+                }
 
-        if (addDataBtnMobile) {
-            addDataBtnMobile.addEventListener('click', openModal);
-        }
-        if (addDataBtnDesktop) {
-            addDataBtnDesktop.addEventListener('click', openModal);
-        }
-        if (closeModalBtn) {
-            closeModalBtn.addEventListener('click', closeModal);
-        }
-        if (modalBackdrop) {
-            modalBackdrop.addEventListener('click', closeModal);
-        }
+                if (addDataBtnMobile) {
+                    addDataBtnMobile.addEventListener('click', openModal);
+                }
+                if (addDataBtnDesktop) {
+                    addDataBtnDesktop.addEventListener('click', openModal);
+                }
+                if (closeModalBtn) {
+                    closeModalBtn.addEventListener('click', closeModal);
+                }
+                if (modalBackdrop) {
+                    modalBackdrop.addEventListener('click', closeModal);
+                }
 
-        addDataForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const formData = new FormData(addDataForm);
+                // alert add data baru 
+                addDataForm.addEventListener('submit', async function(event) {
+                    event.preventDefault();
 
-            try {
-                const response = await fetch("/data", {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    const formData = new FormData(addDataForm);
+
+                    try {
+                        const response = await fetch("/data", {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            }
+                        });
+
+                        if (response.ok) {
+                            document.getElementById('add-data-modal').classList.add('hidden');
+                            const modalBody = document.querySelector('#alertModal');
+                            modalBody.classList.remove('hidden'); 
+                            setTimeout(() => {
+                                modalBody.classList.add('hidden');
+                                location.reload(); 
+                            }, 1500);
+                        } else {
+                            throw new Error('Gagal menyimpan data.');
+                        }
+                    } catch (error) {
+                        document.getElementById('add-data-modal').classList.add('hidden');
+                        const modalBody = document.querySelector('#alertModal');
+                        modalBody.classList.remove('hidden'); 
+                        setTimeout(() => {
+                            modalBody.classList.add('hidden');
+                        }, 1500);
                     }
                 });
 
-                if (response.ok) {
-                    alert('Data berhasil ditambahkan.');
-                    location.reload(); 
-                } else {
-                    throw new Error('Gagal menyimpan data.');
-                }
-            } catch (error) {
-                alert(error.message);
-            }
-        });
+                let currentEditData = {};
+                let currentDeleteId = null;
 
-        let currentEditData = {};
-        let currentDeleteId = null;
+                window.openEditModal = function(data) {
+                    currentEditData = data;
+                    document.getElementById('edit_nama').value = data.nama;
+                    document.getElementById('edit_tgl').value = data.tgl;
+                    document.getElementById('edit_suhu').value = data.suhu;
+                    document.getElementById('edit_ph').value = data.ph;
+                    document.getElementById('edit_o2').value = data.o2;
+                    document.getElementById('edit_salinitas').value = data.salinitas;
 
-        window.openEditModal = function(data) {
-            currentEditData = data;
-            document.getElementById('edit_nama').value = data.nama;
-            document.getElementById('edit_tgl').value = data.tgl;
-            document.getElementById('edit_suhu').value = data.suhu;
-            document.getElementById('edit_ph').value = data.ph;
-            document.getElementById('edit_o2').value = data.o2;
-            document.getElementById('edit_salinitas').value = data.salinitas;
+                    document.getElementById('edit-data-modal').classList.remove('hidden');
+                    modalBackdrop.classList.remove('hidden');
+                };
 
-            document.getElementById('edit-data-modal').classList.remove('hidden');
-            modalBackdrop.classList.remove('hidden');
-        };
+                document.getElementById('close-edit-modal').addEventListener('click', function() {
+                    document.getElementById('edit-data-modal').classList.add('hidden');
+                    modalBackdrop.classList.add('hidden');
+                });
 
-        document.getElementById('close-edit-modal').addEventListener('click', function() {
-            document.getElementById('edit-data-modal').classList.add('hidden');
-            modalBackdrop.classList.add('hidden');
-        });
+                document.getElementById('edit-form').addEventListener('submit', async function(event) {
+                    event.preventDefault();
+                    const formData = new FormData(event.target);
+                    const url = event.target.action + '/' + currentEditData.id;
 
-        document.getElementById('edit-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            const url = event.target.action + '/' + currentEditData.id;
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'X-HTTP-Method-Override': 'PUT'
+                            }
+                        });
 
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'X-HTTP-Method-Override': 'PUT'
+                        if (response.ok) {
+                            document.getElementById('edit-data-modal').classList.add('hidden');
+                            const modalBody = document.querySelector('#alertEditDataModal');
+                            modalBody.classList.remove('hidden'); 
+                            setTimeout(() => {
+                                modalBody.classList.add('hidden');
+                                location.reload(); 
+                            }, 1500);
+                        } else {
+                            throw new Error('Gagal menyimpan data.');
+                        }
+                    } catch (error) {
+                        document.getElementById('edit-data-modal').classList.add('hidden');
+                        const modalBody = document.querySelector('#alertEditDataModal');
+                        modalBody.classList.remove('hidden');
+
+                        setTimeout(() => {
+                            modalBody.classList.add('hidden');
+                        }, 1500);
                     }
                 });
 
-                if (response.ok) {
-                    alert('Data berhasil diperbarui.');
-                    location.reload(); 
-                } else {
-                    throw new Error('Gagal memperbarui data.');
-                }
-            } catch (error) {
-                alert(error.message);
-            }
-        });
+                window.openDeleteConfirmation = function(id) {
+                    currentDeleteId = id;
+                    document.getElementById('delete-confirmation-modal').classList.remove('hidden');
+                    modalBackdrop.classList.remove('hidden');
+                };
 
-        window.openDeleteConfirmation = function(id) {
-            currentDeleteId = id;
-            document.getElementById('delete-confirmation-modal').classList.remove('hidden');
-            modalBackdrop.classList.remove('hidden');
-        };
+                // alert delet
+                document.getElementById('confirm-delete').addEventListener('click', async function() {
+                        try {
+                            const response = await fetch(`/data/${currentDeleteId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                }
+                            });
 
-        document.getElementById('confirm-delete').addEventListener('click', async function() {
-            try {
-                const response = await fetch(`/data/${currentDeleteId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            if (response.ok) {
+                            document.getElementById('delete-confirmation-modal').classList.add('hidden');
+                            const modalBody = document.querySelector('#alertDeletModal');
+                            modalBody.classList.remove('hidden'); 
+                            setTimeout(() => {
+                                modalBody.classList.add('hidden');
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            throw new Error('Gagal menyimpan data.');
+                        }
+                    } catch (error) {
+                        document.getElementById('delete-confirmation-modal').classList.add('hidden');
+                        const modalBody = document.querySelector('#alertDeletModal');
+                        modalBody.classList.remove('hidden'); 
+                        setTimeout(() => {
+                            modalBody.classList.add('hidden');
+                        }, 1500);
                     }
+                    });
+
+                    document.getElementById('cancel-delete').addEventListener('click', function() {
+                        document.getElementById('delete-confirmation-modal').classList.add('hidden');
+                        modalBackdrop.classList.add('hidden');
+                    });
+
+                    // document.getElementById('confirm-delete').addEventListener('click', async function() {
+                    //     try {
+                    //         const response = await fetch(`/data/${currentDeleteId}`, {
+                    //             method: 'DELETE',
+                    //             headers: {
+                    //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    //             }
+                    //         });
+
+                    //         if (response.ok) {
+                    //             alert('Data berhasil dihapus.');
+                    //             location.reload();
+                    //         } else {
+                    //             throw new Error('Gagal menghapus data.');
+                    //         }
+                    //     } catch (error) {
+                    //         alert(error.message);
+                    //     } finally {
+                    //         document.getElementById('delete-confirmation-modal').classList.add('hidden');
+                    //         modalBackdrop.classList.add('hidden');
+                    //     }
+                    // });
+
+                    // document.getElementById('cancel-delete').addEventListener('click', function() {
+                    //     document.getElementById('delete-confirmation-modal').classList.add('hidden');
+                    //     modalBackdrop.classList.add('hidden');
+                    // });
                 });
-
-                if (response.ok) {
-                    alert('Data berhasil dihapus.');
-                    location.reload(); 
-                } else {
-                    throw new Error('Gagal menghapus data.');
-                }
-            } catch (error) {
-                alert(error.message);
-            } finally {
-                document.getElementById('delete-confirmation-modal').classList.add('hidden');
-                modalBackdrop.classList.add('hidden');
-            }
-        });
-
-        document.getElementById('cancel-delete').addEventListener('click', function() {
-            document.getElementById('delete-confirmation-modal').classList.add('hidden');
-            modalBackdrop.classList.add('hidden');
-        });
-    });
 </script>
 
 <script>
