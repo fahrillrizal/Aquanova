@@ -28,43 +28,34 @@
     </div>
 
     <div class="flex overflow-x-auto mb-7 py-2 space-x-4 snap-x snap-mandatory sm:justify-center" id="scroll-container">
-    <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="temperature">Temperature</button>
-    <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="ph">pH</button>
-    <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="oxygen">Oxygen</button>
-    <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="salinity">Salinity</button>
-</div>
-
-
-
-
-
+        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="temperature">Temperature</button>
+        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="ph">pH</button>
+        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="oxygen">Oxygen</button>
+        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="salinity">Salinity</button>
+    </div>
 
     <div class="flex justify-between items-center mb-4">
         <!-- Group for Date Filter and Search Bar -->
         <div class="flex items-center space-x-4">
-            <!-- User-selected Month Filter -->
-            <div>
-                <input type="month" id="user-selected-date" class="border border-gray-300 w-2/3 sm:w-1/3 md:w-full p-1 rounded" />
-            </div>
             <!-- Search Bar -->
             <div>
-                <input type="text" id="search-bar" class="border border-gray-300 p-1 rounded w-full sm:w-[50%] :w-[100%]" placeholder="Cari Nama Kolam" />
+                <input type="text" id="search-bar" class="border border-gray-300 p-1 rounded w-full sm:w-[50%] :w-[100%]" placeholder="Cari Nama Kolam" name="search" value="{{ request('search') }}" />
             </div>
         </div>
 
         <!-- Add Data Button -->
-        <div class="fixed bottom-0 left-0 right-0 bg-white shadow-lg p-1 z-50 sm:hidden"> 
-    <button id="add-data-btn" class="w-full bg-[#8C63DA] text-white p-1 rounded">
-        <ion-icon name="add-outline"></ion-icon> Add Data
-    </button>
-</div>
+        <div class="fixed bottom-0 left-0 right-0 bg-white shadow-lg p-1 z-50 sm:hidden">
+            <button id="add-data-btn" class="w-full bg-[#8C63DA] text-white p-1 rounded">
+                <ion-icon name="add-outline"></ion-icon> Add Data
+            </button>
+        </div>
 
-<!-- Desktop Button -->
-<div class="hidden sm:block">
-    <button id="add-data-btn-desktop" class="bg-[#8C63DA] text-white p-2 rounded">
-        <ion-icon name="add-outline"></ion-icon> Add Data
-    </button>
-</div>
+        <!-- Desktop Button -->
+        <div class="hidden sm:block">
+            <button id="add-data-btn-desktop" class="bg-[#8C63DA] text-white p-2 rounded">
+                <ion-icon name="add-outline"></ion-icon> Add Data
+            </button>
+        </div>
 
     </div>
 
@@ -86,7 +77,7 @@
                         <div class="flex items-center">
                             Temperature (°C)
                             <a href="#" id="sort-temperature">
-                                <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http:
                                     <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
                                 </svg>
                             </a>
@@ -105,7 +96,7 @@
                         <div class="flex items-center">
                             Status
                             <a href="#" id="sort-status">
-                                <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http:
                                     <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
                                 </svg>
                             </a>
@@ -126,7 +117,7 @@
                 </tr>
                 @else
                 @foreach($data as $item)
-                <tr class="{{ $loop->even ? 'bg-blue-50' : 'bg-purple-50' }}" data-index="{{ $loop->iteration }}">
+                <tr class="{{ $loop->even ? 'bg-[#F7F6FE]' : 'bg-white' }}" data-index="{{ $loop->iteration }}">
                     <td class="py-2 text-center">{{ $loop->iteration }}</td>
                     <td class="py-2 text-center">{{ $item->nama }}</td>
                     <td class="py-2 text-center">{{ $item->tgl }}</td>
@@ -253,27 +244,23 @@
         const addDataForm = document.querySelector('#add-data-modal form');
 
         const searchBar = document.getElementById('search-bar');
-        const userSelectedDateInput = document.getElementById('user-selected-date');
         const dataTable = document.getElementById('data-table');
 
         function updateTableVisibility() {
             const query = searchBar.value.toLowerCase();
-            const selectedDate = userSelectedDateInput.value;
             const rows = dataTable.querySelectorAll('tr:not(.no-data)');
             let visibleCount = 0;
             let anyVisible = false;
 
             rows.forEach((row, index) => {
                 const kolamName = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase();
-                const dateCell = row.querySelector('td:nth-child(3)')?.textContent;
-                const isVisible = (kolamName && kolamName.includes(query)) &&
-                    (!selectedDate || (dateCell && dateCell.includes(selectedDate)));
+                const isVisible = kolamName && kolamName.includes(query);
 
                 row.style.display = isVisible ? '' : 'none';
                 if (isVisible) {
                     anyVisible = true;
                     visibleCount++;
-                    row.querySelector('td:first-child').textContent = visibleCount;
+                    row.querySelector('td:first-child').textContent = visibleCount; 
                 }
             });
 
@@ -287,7 +274,7 @@
                     noDataRow = dataTable.insertRow();
                     noDataRow.className = 'no-data';
                     const cell = noDataRow.insertCell();
-                    cell.colSpan = 10;
+                    cell.colSpan = 10; 
                     cell.className = 'py-4 text-center text-gray-500';
                 }
                 noDataRow.style.display = '';
@@ -298,9 +285,8 @@
         }
 
         searchBar.addEventListener('input', updateTableVisibility);
-        userSelectedDateInput.addEventListener('change', updateTableVisibility);
 
-        updateTableVisibility();
+        updateTableVisibility(); 
 
         function openModal() {
             addDataModal.classList.remove('hidden');
@@ -327,7 +313,6 @@
 
         addDataForm.addEventListener('submit', async function(event) {
             event.preventDefault();
-
             const formData = new FormData(addDataForm);
 
             try {
@@ -341,7 +326,7 @@
 
                 if (response.ok) {
                     alert('Data berhasil ditambahkan.');
-                    location.reload();
+                    location.reload(); 
                 } else {
                     throw new Error('Gagal menyimpan data.');
                 }
@@ -388,7 +373,7 @@
 
                 if (response.ok) {
                     alert('Data berhasil diperbarui.');
-                    location.reload();
+                    location.reload(); 
                 } else {
                     throw new Error('Gagal memperbarui data.');
                 }
@@ -414,7 +399,7 @@
 
                 if (response.ok) {
                     alert('Data berhasil dihapus.');
-                    location.reload();
+                    location.reload(); 
                 } else {
                     throw new Error('Gagal menghapus data.');
                 }

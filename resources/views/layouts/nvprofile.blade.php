@@ -62,6 +62,7 @@
                 <li><a href="/">Home</a></li>
                 @auth
                 <li><a href="{{ route('monitoring') }}">Monitoring</a></li>
+                <li><a href="{{ route('recap') }}">Recap</a></li>
                 @endauth
                 <li><a href="{{ route('recom') }}">Recomendation</a></li>
                 @guest
@@ -108,6 +109,7 @@
                 <li><a href="/">Home</a></li>
                 @auth
                 <li><a href="{{ route('monitoring') }}">Monitoring</a></li>
+                <li><a href="{{ route('recap') }}">Recap</a></li>
                 @endauth
                 <li><a href="{{ route('recom') }}">Recommendation</a></li>
                 @guest
@@ -233,6 +235,7 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const scrollUpButton = document.getElementById("scroll-up");

@@ -11,29 +11,13 @@ class DataController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $sort = $request->input('sort', 'tgl');
-        $dataQuery = Data::where('user_id', auth()->id());
-
-        if ($request->has('month')) {
-            $month = $request->input('month');
-            $dataQuery->whereMonth('tgl', Carbon::parse($month)->month)
-                ->whereYear('tgl', Carbon::parse($month)->year);
-        }
+        $dataQuery = Data::where('user_id', auth()->id())
+            ->whereMonth('tgl', Carbon::now()->month)
+            ->whereYear('tgl', Carbon::now()->year);
 
         if ($search) {
             $dataQuery->where('nama', 'like', "%{$search}%");
-        }
-
-        if ($sort) {
-            $direction = 'asc';
-            if (strpos($sort, '-') === 0) {
-                $direction = 'desc';
-                $sort = substr($sort, 1);
-            }
-            if (in_array($sort, ['tgl', 'suhu', 'ph', 'o2', 'salinitas', 'hasil'])) {
-                $dataQuery->orderBy($sort, $direction);
-            }
-        }
+        }//search
 
         $data = $dataQuery->paginate(10);
         $dailyData = $dataQuery->get();

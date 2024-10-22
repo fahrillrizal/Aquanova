@@ -67,6 +67,7 @@
                 <li><a href="/">Home</a></li>
                 @auth
                     <li><a href="{{ route('monitoring') }}">Monitoring</a></li>
+                    <li><a href="{{ route('recap') }}">Recap</a></li>
                 @endauth
                 <li><a href="{{ route('recom') }}">Recomendation</a></li>
                 @guest
@@ -113,6 +114,7 @@
                 <li><a href="/">Home</a></li>
                 @auth
                     <li><a href="{{ route('monitoring') }}">Monitoring</a></li>
+                    <li><a href="{{ route('recap') }}">Recap</a></li>
                 @endauth
                 <li><a href="{{ route('recom') }}">Recommendation</a></li>
                 @guest
@@ -172,6 +174,9 @@
                     </p>
                     <p class="mb-4">
                         <a href="{{ route('monitoring') }}">Monitoring</a>
+                    </p>
+                    <p class="mb-4">
+                        <a href="{{ route('recap') }}">Recap</a>
                     </p>
                     <p class="mb-4">
                         <a href="{{ route('recom') }}">Recomendation</a>
@@ -240,6 +245,7 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const scrollUpButton = document.getElementById("scroll-up");

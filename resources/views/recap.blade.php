@@ -7,7 +7,7 @@
         <div class="max-w-full w-full bg-white rounded-lg shadow p-4 md:p-6 mb-6">
             <div class="flex flex-col items-center mb-5">
                 <h5 class="leading-none text-2xl font-bold text-[#2E2E30] pb-2 text-center">Rekap Bulanan</h5>
-                <form method="GET" action="{{ route('recap.index') }}" class="flex justify-center mb-4">
+                <form method="GET" action="{{ route('recap') }}" class="flex justify-center mb-4">
                     <select name="month" class="border rounded p-2 mr-2">
                         @foreach (range(1, 12) as $m)
                             <option value="{{ $m }}" {{ $selectedMonth == Carbon\Carbon::create()->month($m)->translatedFormat('F') ? 'selected' : '' }}>
@@ -30,6 +30,70 @@
     </div>
 </div>
 
+<div class="overflow-x-auto">
+        <table class="min-w-full bg-white">
+            <thead>
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">No</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">Nama Kolam</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">Tanggal</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">
+                            Temperature (°C)
+                        </div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">pH</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">O2</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">Salinitas</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">
+                            Status
+                        </div>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <div class="flex items-center">Keterangan</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="data-table">
+                @if($data->isEmpty())
+                <tr>
+                    <td colspan="10" class="py-4 text-center text-gray-500">Belum ada data</td>
+                </tr>
+                @else
+                @foreach($data as $item)
+                <tr class="{{ $loop->even ? 'bg-[#F7F6FE]' : 'bg-white' }}" data-index="{{ $loop->iteration }}">
+                    <td class="py-2 text-center">{{ $loop->iteration }}</td>
+                    <td class="py-2 text-center">{{ $item->nama }}</td>
+                    <td class="py-2 text-center">{{ $item->tgl }}</td>
+                    <td class="py-2 text-center">{{ $item->suhu }}</td>
+                    <td class="py-2 text-center">{{ $item->ph }}</td>
+                    <td class="py-2 text-center">{{ $item->o2 }}</td>
+                    <td class="py-2 text-center">{{ $item->salinitas }}</td>
+                    <td class="py-2 text-center">{!! renderStatusBadge($item->o2, $item->suhu, $item->salinitas, $item->ph) !!}</td>
+                    <td class="py-2 text-center">{{ $item->saran }}</td>
+                </tr>
+                @endforeach
+                @endif
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex justify-between items-center mt-4">
+        {{ $data->links() }}
+    </div>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {

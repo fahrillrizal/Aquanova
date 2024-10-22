@@ -17,7 +17,8 @@ class RecapController extends Controller
         // Ambil data dari database berdasarkan bulan dan tahun
         $data = Data::whereMonth('tgl', $month)
                     ->whereYear('tgl', $year)
-                    ->get();
+                    ->where('user_id', auth()->id())
+                    ->paginate(10);
 
         // Cek apakah data ada
         if ($data->isEmpty()) {

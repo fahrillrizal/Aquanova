@@ -35,10 +35,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/photo/delete', [ProfileController::class, 'hapusPP'])->name('profile.photo.delete');
     Route::post('/profile/password/change', [ProfileController::class, 'updatePassword'])->name('password.update');
     Route::get('/monitoring', [DataController::class, 'index'])->name('monitoring');
+    Route::get('/fetch-data', [DataController::class, 'fetchData'])->name('fetch.data');
     Route::post('/data', [DataController::class, 'store'])->name('data.store');
     Route::get('/data/{id}', [DataController::class, 'show'])->name('data.show');
     Route::put('/data/{id}', [DataController::class, 'update'])->name('data.update');
     Route::delete('/data/{id}', [DataController::class, 'destroy'])->name('data.delete');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
-Route::get('/recap', [RecapController::class, 'recap'])->name('recap.index');
+Route::get('/recap', [RecapController::class, 'recap'])->name('recap');
