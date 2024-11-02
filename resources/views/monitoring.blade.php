@@ -30,10 +30,10 @@
     </div>
 
     <div class="flex overflow-x-auto mb-7 py-2 space-x-4 snap-x snap-mandatory sm:justify-center" id="scroll-container">
-        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="temperature">Temperature</button>
+        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="temperature">Suhu</button>
         <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="ph">pH</button>
-        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="oxygen">Oxygen</button>
-        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="salinity">Salinity</button>
+        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="oxygen">Oksigen</button>
+        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="salinity">Salinitas</button>
     </div>
 
     <div class="flex justify-between items-center mb-4">
@@ -80,7 +80,7 @@
                             Temperature (°C)
                             <a href="#" id="sort-temperature">
                                 <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http:
-                                    <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
+                                    <path d=" M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
                                 </svg>
                             </a>
                         </div>
@@ -99,7 +99,7 @@
                             Status
                             <a href="#" id="sort-status">
                                 <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http:
-                                    <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
+                                    <path d=" M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
                                 </svg>
                             </a>
                         </div>
@@ -272,12 +272,12 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-                const addDataBtnMobile = document.getElementById('add-data-btn');
-                const addDataBtnDesktop = document.getElementById('add-data-btn-desktop');
-                const addDataModal = document.getElementById('add-data-modal');
-                const closeModalBtn = document.getElementById('close-modal');
-                const modalBackdrop = document.getElementById('modal-backdrop');
-                const addDataForm = document.querySelector('#add-data-modal form');
+        const addDataBtnMobile = document.getElementById('add-data-btn');
+        const addDataBtnDesktop = document.getElementById('add-data-btn-desktop');
+        const addDataModal = document.getElementById('add-data-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const addDataForm = document.querySelector('#add-data-modal form');
 
         const searchBar = document.getElementById('search-bar');
         const dataTable = document.getElementById('data-table');
@@ -296,12 +296,12 @@
                 if (isVisible) {
                     anyVisible = true;
                     visibleCount++;
-                    row.querySelector('td:first-child').textContent = visibleCount; 
+                    row.querySelector('td:first-child').textContent = visibleCount;
                 }
             });
 
-                    updateNoDataRow(anyVisible);
-                }
+            updateNoDataRow(anyVisible);
+        }
 
         function updateNoDataRow(anyVisible) {
             let noDataRow = dataTable.querySelector('.no-data');
@@ -310,7 +310,7 @@
                     noDataRow = dataTable.insertRow();
                     noDataRow.className = 'no-data';
                     const cell = noDataRow.insertCell();
-                    cell.colSpan = 10; 
+                    cell.colSpan = 10;
                     cell.className = 'py-4 text-center text-gray-500';
                 }
                 noDataRow.style.display = '';
@@ -322,215 +322,202 @@
 
         searchBar.addEventListener('input', updateTableVisibility);
 
-        updateTableVisibility(); 
+        updateTableVisibility();
 
-                function openModal() {
-                    addDataModal.classList.remove('hidden');
-                    modalBackdrop.classList.remove('hidden');
-                }
+        function openModal() {
+            addDataModal.classList.remove('hidden');
+            modalBackdrop.classList.remove('hidden');
+        }
 
-                function closeModal() {
-                    addDataModal.classList.add('hidden');
-                    modalBackdrop.classList.add('hidden');
-                }
+        function closeModal() {
+            addDataModal.classList.add('hidden');
+            modalBackdrop.classList.add('hidden');
+        }
 
-                if (addDataBtnMobile) {
-                    addDataBtnMobile.addEventListener('click', openModal);
-                }
-                if (addDataBtnDesktop) {
-                    addDataBtnDesktop.addEventListener('click', openModal);
-                }
-                if (closeModalBtn) {
-                    closeModalBtn.addEventListener('click', closeModal);
-                }
-                if (modalBackdrop) {
-                    modalBackdrop.addEventListener('click', closeModal);
-                }
+        if (addDataBtnMobile) {
+            addDataBtnMobile.addEventListener('click', openModal);
+        }
+        if (addDataBtnDesktop) {
+            addDataBtnDesktop.addEventListener('click', openModal);
+        }
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', closeModal);
+        }
+        if (modalBackdrop) {
+            modalBackdrop.addEventListener('click', closeModal);
+        }
 
-                // alert add data baru 
-                addDataForm.addEventListener('submit', async function(event) {
-                    event.preventDefault();
+        // alert add data baru 
+        addDataForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
 
-                    const formData = new FormData(addDataForm);
+            const formData = new FormData(addDataForm);
 
-                    try {
-                        const response = await fetch("/data", {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                            }
-                        });
-
-                        if (response.ok) {
-                            document.getElementById('add-data-modal').classList.add('hidden');
-                            const modalBody = document.querySelector('#alertModal');
-                            modalBody.classList.remove('hidden'); 
-                            setTimeout(() => {
-                                modalBody.classList.add('hidden');
-                                location.reload(); 
-                            }, 1500);
-                        } else {
-                            throw new Error('Gagal menyimpan data.');
-                        }
-                    } catch (error) {
-                        document.getElementById('add-data-modal').classList.add('hidden');
-                        const modalBody = document.querySelector('#alertModal');
-                        modalBody.classList.remove('hidden'); 
-                        setTimeout(() => {
-                            modalBody.classList.add('hidden');
-                        }, 1500);
+            try {
+                const response = await fetch("/data", {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     }
                 });
 
-                let currentEditData = {};
-                let currentDeleteId = null;
+                if (response.ok) {
+                    document.getElementById('add-data-modal').classList.add('hidden');
+                    const modalBody = document.querySelector('#alertModal');
+                    modalBody.classList.remove('hidden');
+                    setTimeout(() => {
+                        modalBody.classList.add('hidden');
+                        location.reload();
+                    }, 1500);
+                } else {
+                    throw new Error('Gagal menyimpan data.');
+                }
+            } catch (error) {
+                document.getElementById('add-data-modal').classList.add('hidden');
+                const modalBody = document.querySelector('#alertModal');
+                modalBody.classList.remove('hidden');
+                setTimeout(() => {
+                    modalBody.classList.add('hidden');
+                }, 1500);
+            }
+        });
 
-                window.openEditModal = function(data) {
-                    currentEditData = data;
-                    document.getElementById('edit_nama').value = data.nama;
-                    document.getElementById('edit_tgl').value = data.tgl;
-                    document.getElementById('edit_suhu').value = data.suhu;
-                    document.getElementById('edit_ph').value = data.ph;
-                    document.getElementById('edit_o2').value = data.o2;
-                    document.getElementById('edit_salinitas').value = data.salinitas;
+        let currentEditData = {};
+        let currentDeleteId = null;
 
-                    document.getElementById('edit-data-modal').classList.remove('hidden');
-                    modalBackdrop.classList.remove('hidden');
-                };
+        window.openEditModal = function(data) {
+            currentEditData = data;
+            document.getElementById('edit_nama').value = data.nama;
+            document.getElementById('edit_tgl').value = data.tgl;
+            document.getElementById('edit_suhu').value = data.suhu;
+            document.getElementById('edit_ph').value = data.ph;
+            document.getElementById('edit_o2').value = data.o2;
+            document.getElementById('edit_salinitas').value = data.salinitas;
 
-                document.getElementById('close-edit-modal').addEventListener('click', function() {
+            document.getElementById('edit-data-modal').classList.remove('hidden');
+            modalBackdrop.classList.remove('hidden');
+        };
+
+        document.getElementById('close-edit-modal').addEventListener('click', function() {
+            document.getElementById('edit-data-modal').classList.add('hidden');
+            modalBackdrop.classList.add('hidden');
+        });
+
+        document.getElementById('edit-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const url = event.target.action + '/' + currentEditData.id;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'X-HTTP-Method-Override': 'PUT'
+                    }
+                });
+
+                if (response.ok) {
                     document.getElementById('edit-data-modal').classList.add('hidden');
-                    modalBackdrop.classList.add('hidden');
-                });
+                    const modalBody = document.querySelector('#alertEditDataModal');
+                    modalBody.classList.remove('hidden');
+                    setTimeout(() => {
+                        modalBody.classList.add('hidden');
+                        location.reload();
+                    }, 1500);
+                } else {
+                    throw new Error('Gagal menyimpan data.');
+                }
+            } catch (error) {
+                document.getElementById('edit-data-modal').classList.add('hidden');
+                const modalBody = document.querySelector('#alertEditDataModal');
+                modalBody.classList.remove('hidden');
 
-                document.getElementById('edit-form').addEventListener('submit', async function(event) {
-                    event.preventDefault();
-                    const formData = new FormData(event.target);
-                    const url = event.target.action + '/' + currentEditData.id;
+                setTimeout(() => {
+                    modalBody.classList.add('hidden');
+                }, 1500);
+            }
+        });
 
-                    try {
-                        const response = await fetch(url, {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                                'X-HTTP-Method-Override': 'PUT'
-                            }
-                        });
+        window.openDeleteConfirmation = function(id) {
+            currentDeleteId = id;
+            document.getElementById('delete-confirmation-modal').classList.remove('hidden');
+            modalBackdrop.classList.remove('hidden');
+        };
 
-                        if (response.ok) {
-                            document.getElementById('edit-data-modal').classList.add('hidden');
-                            const modalBody = document.querySelector('#alertEditDataModal');
-                            modalBody.classList.remove('hidden'); 
-                            setTimeout(() => {
-                                modalBody.classList.add('hidden');
-                                location.reload(); 
-                            }, 1500);
-                        } else {
-                            throw new Error('Gagal menyimpan data.');
-                        }
-                    } catch (error) {
-                        document.getElementById('edit-data-modal').classList.add('hidden');
-                        const modalBody = document.querySelector('#alertEditDataModal');
-                        modalBody.classList.remove('hidden');
-
-                        setTimeout(() => {
-                            modalBody.classList.add('hidden');
-                        }, 1500);
+        // alert delet
+        document.getElementById('confirm-delete').addEventListener('click', async function() {
+            try {
+                const response = await fetch(`/data/${currentDeleteId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     }
                 });
 
-                window.openDeleteConfirmation = function(id) {
-                    currentDeleteId = id;
-                    document.getElementById('delete-confirmation-modal').classList.remove('hidden');
-                    modalBackdrop.classList.remove('hidden');
-                };
+                if (response.ok) {
+                    document.getElementById('delete-confirmation-modal').classList.add('hidden');
+                    const modalBody = document.querySelector('#alertDeletModal');
+                    modalBody.classList.remove('hidden');
+                    setTimeout(() => {
+                        modalBody.classList.add('hidden');
+                        location.reload();
+                    }, 1500);
+                } else {
+                    throw new Error('Gagal menyimpan data.');
+                }
+            } catch (error) {
+                document.getElementById('delete-confirmation-modal').classList.add('hidden');
+                const modalBody = document.querySelector('#alertDeletModal');
+                modalBody.classList.remove('hidden');
+                setTimeout(() => {
+                    modalBody.classList.add('hidden');
+                }, 1500);
+            }
+        });
 
-                // alert delet
-                document.getElementById('confirm-delete').addEventListener('click', async function() {
-                        try {
-                            const response = await fetch(`/data/${currentDeleteId}`, {
-                                method: 'DELETE',
-                                headers: {
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                                }
-                            });
-
-                            if (response.ok) {
-                            document.getElementById('delete-confirmation-modal').classList.add('hidden');
-                            const modalBody = document.querySelector('#alertDeletModal');
-                            modalBody.classList.remove('hidden'); 
-                            setTimeout(() => {
-                                modalBody.classList.add('hidden');
-                                location.reload();
-                            }, 1500);
-                        } else {
-                            throw new Error('Gagal menyimpan data.');
-                        }
-                    } catch (error) {
-                        document.getElementById('delete-confirmation-modal').classList.add('hidden');
-                        const modalBody = document.querySelector('#alertDeletModal');
-                        modalBody.classList.remove('hidden'); 
-                        setTimeout(() => {
-                            modalBody.classList.add('hidden');
-                        }, 1500);
-                    }
-                    });
-
-                    document.getElementById('cancel-delete').addEventListener('click', function() {
-                        document.getElementById('delete-confirmation-modal').classList.add('hidden');
-                        modalBackdrop.classList.add('hidden');
-                    });
-
-                    // document.getElementById('confirm-delete').addEventListener('click', async function() {
-                    //     try {
-                    //         const response = await fetch(`/data/${currentDeleteId}`, {
-                    //             method: 'DELETE',
-                    //             headers: {
-                    //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    //             }
-                    //         });
-
-                    //         if (response.ok) {
-                    //             alert('Data berhasil dihapus.');
-                    //             location.reload();
-                    //         } else {
-                    //             throw new Error('Gagal menghapus data.');
-                    //         }
-                    //     } catch (error) {
-                    //         alert(error.message);
-                    //     } finally {
-                    //         document.getElementById('delete-confirmation-modal').classList.add('hidden');
-                    //         modalBackdrop.classList.add('hidden');
-                    //     }
-                    // });
-
-                    // document.getElementById('cancel-delete').addEventListener('click', function() {
-                    //     document.getElementById('delete-confirmation-modal').classList.add('hidden');
-                    //     modalBackdrop.classList.add('hidden');
-                    // });
-                });
+        document.getElementById('cancel-delete').addEventListener('click', function() {
+            document.getElementById('delete-confirmation-modal').classList.add('hidden');
+            modalBackdrop.classList.add('hidden');
+        });
+    });
 </script>
 
 <script>
-    const groupedData = @json($groupedData);
+    // Inisialisasi data dari PHP ke JavaScript
+    const groupedData = @json($weeklyData);
+    const currentWeek = groupedData.currentWeek;
 
-    const sortedQualityData = Object.entries(groupedData.quality)
-        .sort(([dateA], [dateB]) => new Date(dateA) - new Date(dateB))
-        .map(([date, values]) => ({
-            x: date,
-            y: values.score,
-            temperature: values.temperature,
-            ph: values.ph,
-            oxygen: values.oxygen,
-            salinity: values.salinity
-        }));
+    // Fungsi untuk mendapatkan data parameter berdasarkan minggu
+    function getParameterDataForWeek(parameter, weekNumber) {
+        const data = [];
+        Object.entries(groupedData.quality).forEach(([date, values]) => {
+            if (values.week === weekNumber) {
+                data.push({
+                    x: new Date(date).toLocaleDateString('id-ID'), // Format date for display
+                    y: parseInt(values[parameter]) || null // Ensure integer values
+                });
+            }
+        });
+        return data;
+    }
 
+    // Konfigurasi Water Quality Chart
     const waterQualityOptions = {
         series: [{
             name: "Water Quality",
-            data: sortedQualityData
+            data: Object.entries(groupedData.quality)
+                .map(([date, values]) => ({
+                    x: new Date(date).getTime(),
+                    y: values.score === 2 ? -1 : values.score,
+                    temperature: parseInt(values.temperature),
+                    ph: parseInt(values.ph),
+                    oxygen: parseInt(values.oxygen),
+                    salinity: parseInt(values.salinity),
+                    week: values.week
+                }))
         }],
         chart: {
             height: 350,
@@ -543,7 +530,8 @@
             enabled: false
         },
         stroke: {
-            curve: 'stepline'
+            curve: 'smooth',
+            width: 2
         },
         title: {
             text: 'Water Quality Trend',
@@ -556,7 +544,7 @@
             },
         },
         xaxis: {
-            categories: Object.keys(groupedData.quality),
+            type: 'datetime'
         },
         yaxis: {
             tickAmount: 3,
@@ -564,12 +552,12 @@
                 formatter: function(val) {
                     if (val === 1) return "Baik";
                     if (val === 0) return "Netral";
-                    if (val === 2) return "Buruk";
+                    if (val === -1) return "Buruk";
                     return "";
                 }
             },
-            min: 0,
-            max: 2
+            min: -1,
+            max: 1
         },
         tooltip: {
             custom: function({
@@ -582,130 +570,184 @@
                 const quality = data.y === 0 ? "Netral" : (data.y === 1 ? "Baik" : "Buruk");
                 return `
             <div class="arrow_box">
-                <p><b>Date:</b> ${data.x}</p>
-                <p><b>Quality:</b> ${quality}</p>
-                <p><b>Temperature:</b> ${data.temperature.toFixed(2)}°C</p>
-                <p><b>pH:</b> ${data.ph.toFixed(2)}</p>
-                <p><b>Oxygen:</b> ${data.oxygen.toFixed(2)} mg/L</p>
-                <p><b>Salinity:</b> ${data.salinity.toFixed(2)} ppt</p>
+                <p><b>Tanggal:</b> ${new Date(data.x).toLocaleDateString('id-ID')}</p>
+                <p><b>Minggu:</b> ${data.week}</p>
+                <p><b>Kualitas:</b> ${quality}</p>
+                <p><b>Suhu:</b> ${parseInt(data.temperature)}°C</p>
+                <p><b>pH:</b> ${parseInt(data.ph)}</p>
+                <p><b>Oksigen:</b> ${parseInt(data.oxygen)} mg/L</p>
+                <p><b>Salinitas:</b> ${parseInt(data.salinity)} ppt</p>
             </div>
         `;
             }
         },
         markers: {
-            size: 5,
-        },
-    };
-
-    if (document.getElementById("data-labels-chart") && typeof ApexCharts !== 'undefined') {
-        const waterQualityChart = new ApexCharts(document.getElementById("data-labels-chart"), waterQualityOptions);
-        waterQualityChart.render();
-    }
-
-    const temperatureOptions = {
-        colors: ["#DAF0FB"],
-        series: [{
-            name: "Temperature",
-            data: Object.keys(groupedData.temperature).map(function(day) {
-                return {
-                    x: day,
-                    y: groupedData.temperature[day]
-                };
-            }),
-        }],
-        chart: {
-            type: "bar",
-            height: "320px",
-        },
-    };
-
-    const phOptions = {
-        colors: ["#FDD835"],
-        series: [{
-            name: "pH",
-            data: Object.keys(groupedData.ph).map(function(day) {
-                return {
-                    x: day,
-                    y: groupedData.ph[day]
-                };
-            }),
-        }],
-        chart: {
-            type: "bar",
-            height: "320px",
-        },
-    };
-
-    const oxygenOptions = {
-        colors: ["#66BB6A"],
-        series: [{
-            name: "Oxygen",
-            data: Object.keys(groupedData.oxygen).map(function(day) {
-                return {
-                    x: day,
-                    y: groupedData.oxygen[day]
-                };
-            }),
-        }],
-        chart: {
-            type: "bar",
-            height: "320px",
-        },
-    };
-
-    const salinityOptions = {
-        colors: ["#42A5F5"],
-        series: [{
-            name: "Salinity",
-            data: Object.keys(groupedData.salinity).map(function(day) {
-                return {
-                    x: day,
-                    y: groupedData.salinity[day]
-                };
-            }),
-        }],
-        chart: {
-            type: "bar",
-            height: "320px",
-        },
-    };
-
-    let activeChart;
-
-    function renderChart(chartOptions) {
-        if (activeChart) {
-            activeChart.destroy();
+            size: 5
         }
-        activeChart = new ApexCharts(document.getElementById("column-chart"), chartOptions);
-        activeChart.render();
-    }
+    };
 
-    function updateChartDetails(title, description) {
-        document.getElementById('chart-title').innerText = title;
-        document.getElementById('chart-description').innerText = description;
-    }
-
-    const chartBtns = document.querySelectorAll('.chart-btn');
-    chartBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const chartType = btn.getAttribute('data-chart');
-            if (chartType === 'temperature') {
-                renderChart(temperatureOptions);
-                updateChartDetails('Temperature', 'Average time temp spent per day');
-            } else if (chartType === 'ph') {
-                renderChart(phOptions);
-                updateChartDetails('pH', 'Average pH level throughout the week');
-            } else if (chartType === 'oxygen') {
-                renderChart(oxygenOptions);
-                updateChartDetails('Oxygen', 'Average oxygen levels throughout the week');
-            } else if (chartType === 'salinity') {
-                renderChart(salinityOptions);
-                updateChartDetails('Salinity', 'Average salinity levels throughout the week');
+    // Fungsi untuk membuat konfigurasi chart parameter
+    function createParameterChartOptions(parameter, color, title) {
+        return {
+            series: [{
+                name: title,
+                data: getParameterDataForWeek(parameter, currentWeek)
+            }],
+            chart: {
+                type: 'bar',
+                height: 320,
+                toolbar: {
+                    show: false
+                }
+            },
+            colors: [color],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    endingShape: 'rounded'
+                },
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: function(val) {
+                    return val ? parseInt(val) : 'No Data'; // Display as integer
+                }
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent']
+            },
+            xaxis: {
+                categories: Object.keys(groupedData[parameter])
+            },
+            yaxis: {
+                title: {
+                    text: title
+                },
+                labels: {
+                    formatter: function(val) {
+                        return val ? parseInt(val) : ''; // Display as integer
+                    }
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return val ? parseInt(val) : 'No Data'; // Display as integer
+                    }
+                }
             }
+        };
+    }
+
+    // Konfigurasi untuk masing-masing parameter
+    const temperatureOptions = createParameterChartOptions('temperature', '#DAF0FB', 'Temperature');
+    const phOptions = createParameterChartOptions('ph', '#FDD835', 'pH');
+    const oxygenOptions = createParameterChartOptions('oxygen', '#66BB6A', 'Oxygen');
+    const salinityOptions = createParameterChartOptions('salinity', '#42A5F5', 'Salinity');
+
+    // Inisialisasi charts
+    document.addEventListener('DOMContentLoaded', function() {
+        let activeChart;
+
+        // Render Water Quality Chart
+        if (document.getElementById('data-labels-chart')) {
+            const waterQualityChart = new ApexCharts(
+                document.getElementById('data-labels-chart'),
+                waterQualityOptions
+            );
+            waterQualityChart.render();
+        }
+
+        // Render Temperature Chart (default)
+        if (document.getElementById('column-chart')) {
+            activeChart = new ApexCharts(
+                document.getElementById('column-chart'),
+                temperatureOptions
+            );
+            activeChart.render();
+        }
+
+        // Week selector handler
+        const weekSelector = document.getElementById('week-selector');
+        if (weekSelector) {
+            weekSelector.addEventListener('change', function() {
+                const selectedWeek = parseInt(this.value);
+                updateParameterCharts(selectedWeek);
+            });
+        }
+
+        // Event listeners untuk tombol chart
+        const chartBtns = document.querySelectorAll('.chart-btn');
+        chartBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const chartType = this.getAttribute('data-chart');
+                if (activeChart) {
+                    activeChart.destroy();
+                }
+
+                let newOptions;
+                let title = '';
+                let description = '';
+
+                switch (chartType) {
+                    case 'temperature':
+                        newOptions = temperatureOptions;
+                        title = 'Temperature';
+                        description = 'Daily temperature readings';
+                        break;
+                    case 'ph':
+                        newOptions = phOptions;
+                        title = 'pH';
+                        description = 'Daily pH readings';
+                        break;
+                    case 'oxygen':
+                        newOptions = oxygenOptions;
+                        title = 'Oxygen';
+                        description = 'Daily oxygen readings';
+                        break;
+                    case 'salinity':
+                        newOptions = salinityOptions;
+                        title = 'Salinity';
+                        description = 'Daily salinity readings';
+                        break;
+                }
+
+                activeChart = new ApexCharts(document.getElementById('column-chart'), newOptions);
+                activeChart.render();
+
+                // Update chart details
+                document.getElementById('chart-title').innerText = title;
+                const descriptionElement = document.getElementById('chart-description');
+                if (descriptionElement) {
+                    descriptionElement.innerText = description;
+                }
+            });
         });
     });
 
-    renderChart(temperatureOptions);
-    updateChartDetails('Temperature', 'Average time temp spent per day');
+    // Fungsi untuk mengupdate chart parameter
+    function updateParameterCharts(weekNumber) {
+        const charts = {
+            temperature: temperatureOptions,
+            ph: phOptions,
+            oxygen: oxygenOptions,
+            salinity: salinityOptions
+        };
+
+        Object.entries(charts).forEach(([parameter, options]) => {
+            options.series[0].data = getParameterDataForWeek(parameter, weekNumber);
+        });
+
+        // Update active chart
+        if (activeChart) {
+            activeChart.updateOptions(charts[activeChart.el.parentElement.getAttribute('data-current-chart')]);
+        }
+    }
 </script>
 @endsection

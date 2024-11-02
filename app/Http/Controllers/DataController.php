@@ -23,51 +23,66 @@ class DataController extends Controller
         $dailyData = $dataQuery->get();
 
         Carbon::setLocale('id');
+        $currentWeekNumber = Carbon::now()->weekOfMonth;
 
-        $daysOfWeek = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+        $daysOfWeek = [
+            'Senin',
+            'Selasa',
+            'Rabu',
+            'Kamis',
+            'Jumat',
+            'Sabtu',
+            'Minggu'
+        ];
 
-        $groupedData = [
-            'temperature' => array_fill_keys($daysOfWeek, []),
-            'ph' => array_fill_keys($daysOfWeek, []),
-            'oxygen' => array_fill_keys($daysOfWeek, []),
-            'salinity' => array_fill_keys($daysOfWeek, []),
+        $weeklyData = [
+            'currentWeek' => $currentWeekNumber,
+            'temperature' => [],
+            'ph' => [],
+            'oxygen' => [],
+            'salinity' => [],
             'quality' => [],
         ];
 
         $monthYear = null;
 
+        foreach ($daysOfWeek as $day) {
+            $weeklyData['temperature'][$day] = [];
+            $weeklyData['ph'][$day] = [];
+            $weeklyData['oxygen'][$day] = [];
+            $weeklyData['salinity'][$day] = [];
+        }
+
         foreach ($dailyData as $entry) {
             $date = Carbon::parse($entry->tgl);
+            $weekNumber = $date->weekOfMonth;
+            $dayName = $date->isoFormat('dddd'); 
             $dateFormatted = $date->format('Y-m-d');
-            $dayOfWeek = $date->isoFormat('dddd');
-
+        
             if ($monthYear === null) {
                 $monthYear = $date->isoFormat('MMMM YYYY');
             }
-
-            $groupedData['temperature'][$dayOfWeek][] = $entry->suhu;
-            $groupedData['ph'][$dayOfWeek][] = $entry->ph;
-            $groupedData['oxygen'][$dayOfWeek][] = $entry->o2;
-            $groupedData['salinity'][$dayOfWeek][] = $entry->salinitas;
-
-            $groupedData['quality'][$dateFormatted] = [
-                'temperature' => $entry->suhu,
-                'ph' => $entry->ph,
-                'oxygen' => $entry->o2,
-                'salinity' => $entry->salinitas,
+            
+            $weeklyData['quality'][$dateFormatted] = [
+                'temperature' => (int)$entry->suhu,
+                'ph' => (int)$entry->ph,
+                'oxygen' => (int)$entry->o2,
+                'salinity' => (int)$entry->salinitas,
                 'score' => $entry->hasil,
+                'week' => $weekNumber
             ];
-        }
+            
+            if (in_array($dayName, $daysOfWeek)) {
+                $weeklyData['temperature'][$dayName][$weekNumber] = (int)$entry->suhu;
+                $weeklyData['ph'][$dayName][$weekNumber] = (int)$entry->ph;
+                $weeklyData['oxygen'][$dayName][$weekNumber] = (int)$entry->o2;
+                $weeklyData['salinity'][$dayName][$weekNumber] = (int)$entry->salinitas;
+            }
+        }        
+        
+        ksort($weeklyData['quality']);
 
-        $groupedData = [
-            'temperature' => array_map(fn($data) => count($data) ? array_sum($data) / count($data) : null, $groupedData['temperature']),
-            'ph' => array_map(fn($data) => count($data) ? array_sum($data) / count($data) : null, $groupedData['ph']),
-            'oxygen' => array_map(fn($data) => count($data) ? array_sum($data) / count($data) : null, $groupedData['oxygen']),
-            'salinity' => array_map(fn($data) => count($data) ? array_sum($data) / count($data) : null, $groupedData['salinity']),
-            'quality' => $groupedData['quality'],
-        ];
-
-        return view('monitoring', compact('data', 'groupedData', 'monthYear'));
+        return view('monitoring', compact('data', 'weeklyData', 'monthYear', 'currentWeekNumber'));
     }
 
     public function store(Request $request)
@@ -89,7 +104,7 @@ class DataController extends Controller
             ($request->salinitas < 0 || $request->salinitas > 30) ||
             ($request->ph < 6 || $request->ph > 8)
         ) {
-            $hasil = 2; // Buruk
+            $hasil = 2; 
             if ($request->ph < 6) {
                 $saran .= 'pH kurang dari standar. ';
             } elseif ($request->ph > 8) {
@@ -111,10 +126,10 @@ class DataController extends Controller
                 $saran .= 'Salinitas melebihi standar. ';
             }
         } elseif ($request->o2 == 4 && $request->suhu == 28 && $request->salinitas == 0 && $request->ph == 6) {
-            $hasil = 0; // Netral
+            $hasil = 0; 
             $saran = 'Semua parameter dalam batas netral.';
         } else {
-            $hasil = 1; // Baik
+            $hasil = 1; 
             $saran = 'Semua parameter dalam batas standar.';
         }
 
@@ -160,7 +175,7 @@ class DataController extends Controller
             ($request->salinitas < 0 || $request->salinitas > 30) ||
             ($request->ph < 6 || $request->ph > 8)
         ) {
-            $hasil = 2; // Buruk
+            $hasil = 2; 
             if ($request->ph < 6) {
                 $saran .= 'pH kurang dari standar. ';
             } elseif ($request->ph > 8) {
@@ -182,10 +197,10 @@ class DataController extends Controller
                 $saran .= 'Salinitas melebihi standar. ';
             }
         } elseif ($request->o2 == 4 && $request->suhu == 28 && $request->salinitas == 0 && $request->ph == 6) {
-            $hasil = 0; // Netral
+            $hasil = 0; 
             $saran = 'Semua parameter dalam batas netral.';
         } else {
-            $hasil = 1; // Baik
+            $hasil = 1; 
             $saran = 'Semua parameter dalam batas standar.';
         }
 
