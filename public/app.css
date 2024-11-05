@@ -1,0 +1,94 @@
+/* animation tagline Aquanova header */
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-down {
+    animation: fadeInDown 1s ease-in-out;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 1s ease-in-out forwards;
+}
+
+
+@keyframes appear {
+    from {
+        /* opacity: 0; */
+        scale: 0.6;
+    }
+
+    to {
+        /* opacity: 1; */
+        scale: 1;
+    }
+}
+
+.block {
+    animation: appear linear;
+    animation-timeline: view();
+    animation-range: entry 0;
+}
+
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fade-in-right,
+.fade-in-left {
+    opacity: 0;
+}
+
+.fade-in-right {
+    animation: fadeInRight ease-in-out;
+    animation-timeline: view();
+    animation-range: entry 0;
+}
+
+.fade-in-left {
+    animation: fadeInLeft  ease-in-out ;
+    animation-timeline: view();
+    animation-range: entry 0;
+}
+

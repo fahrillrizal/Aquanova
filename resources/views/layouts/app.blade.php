@@ -11,6 +11,8 @@
     <link href='./assets/img/png/logo.png' rel='shortcut icon'>
     <!-- Font embed Montserrat Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    {{-- css --}}
+    <link rel="stylesheet" href="{{ asset('./app.css') }}">
     <!-- CropperJs -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
     <!-- Flowbite -->
