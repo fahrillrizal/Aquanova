@@ -142,7 +142,7 @@
 
                 <!-- Gambar yang muncul saat di-hover -->
                 <div
-                    class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-[309px] w-[252px] bg-[url('/assets/img/png/Card1_(1).png')] bg-cover bg-center">
+                    class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-[309px] w-[252px] bg-[url('/assets/img/png/card2.png')] bg-cover bg-center">
                     <div class="flex flex-col items-start justify-start h-full">
                         <!-- Icon above the image -->
                         <div class="w-8 h-8 bg-white rounded m-2 flex justify-center items-center shadow-lg">
@@ -171,7 +171,7 @@
 
                 <!-- Gambar yang muncul saat di-hover -->
                 <div
-                    class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-[309px] w-[252px] bg-[url('/assets/img/png/Card1_(1).png')] bg-cover bg-center">
+                    class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-[309px] w-[252px] bg-[url('/assets/img/png/card3.png')] bg-cover bg-center">
                     <div class="flex flex-col items-start justify-start h-full">
                         <!-- Icon above the image -->
                         <div class="w-8 h-8 bg-white rounded m-2 flex justify-center items-center shadow-lg">
