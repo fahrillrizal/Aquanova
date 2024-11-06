@@ -4,18 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Default Title')</title>
     <!-- import cdn Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href='./assets/img/png/logo.png' rel='shortcut icon'>
     <!-- Font embed Montserrat Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    {{-- css --}}
+    <link rel="stylesheet" href="{{ asset('./app.css') }}">
     <!-- CropperJs -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
-    <link href='./assets/img/png/logo.png' rel='shortcut icon'>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- Flowbite -->
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+    <!-- Apexcharts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         #scroll-up {
-            background-color: #6CA2BA;
+            background-color: #082F49;
             width: 45px;
             height: 45px;
             color: white;
@@ -30,7 +37,7 @@
         }
 
         #scroll-up:hover {
-            background-color: #4a90a2;
+            background-color: #082F49;
         }
 
         .cropper-crop-box {
@@ -44,10 +51,14 @@
         .cropper-view-box {
             border-radius: 50%;
         }
+
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
 </head>
 
-<body class="font-['Montserrat'] overflow-x-hidden">
+<body class="font-['Montserrat']">
     <!-- Navigation -->
     <nav class="fixed top-0 left-0 w-full px-8 py-4 text-sm font-medium bg-white bg-opacity-20 backdrop-blur-sm z-10">
         <div class="container mx-auto flex justify-between items-center">
@@ -72,36 +83,48 @@
                 @endguest
                 @auth
                 <li>
-                    <div class="relative" data-twe-dropdown-ref>
-                        <!-- Profile Image that toggles dropdown -->
-                        <a href="javascript:void(0)" id="profileDropdown">
-                            <img src="assets/img/png/profile.png" alt="Profile" class="w-10 h-10">
-                        </a>
+                    <!-- Profile Dropdown Button -->
+                    <div class="relative" x-data="{ isOpen: false }">
+                        <button @click="isOpen = !isOpen"
+                            @click.away="isOpen = false"
+                            class="flex items-center focus:outline-none"
+                            type="button">
+                            <img src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/img/png/profile.png') }}"
+                                alt="Profile"
+                                class="w-10 h-10 rounded-full">
+                        </button>
 
                         <!-- Dropdown Menu -->
-                        <ul id="profileDropdownMenu"
-                            class="absolute z-[1000] left-0 -ml-12  mt-2 hidden w-24 min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-base shadow-lg data-[twe-dropdown-show]:block dark:bg-surface-dark"
-                            aria-labelledby="dropdownMenuButton1h" data-twe-dropdown-menu-ref>
-                            <h6
-                                class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-black/50 focus:bg-zinc-200/60 focus:outline-none dark:bg-surface-dark dark:text-white/50">
-                                Angelicav.
-                            </h6>
-                            <li class="flex justify-center items-center">
-                                <a class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
-                                    href="#" data-twe-dropdown-item-ref> <ion-icon name="person-outline"
-                                        class="text-sm transform mr-2"></ion-icon>Profile
-                                </a>
-                            </li>
-                            <li>
-                                <a class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
-                                    href="#" data-twe-dropdown-item-ref><ion-icon name="log-out-outline"
-                                        class="text-sm transform mr-2"></ion-icon>Logout</a>
-                            </li>
-                        </ul>
+                        <div x-show="isOpen"
+                            x-cloak
+                            x-transition:enter="transition ease-out duration-100"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-75"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+
+                            <div class="px-4 py-2 text-sm text-gray-500 border-b">
+                                {{ Auth::user()->name }}
+                            </div>
+
+                            <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                <ion-icon name="person-outline" class="mr-2 text-lg"></ion-icon>
+                                Profile
+                            </a>
+
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                    <ion-icon name="log-out-outline" class="mr-2 text-lg"></ion-icon>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </li>
-                @endauth
-                {{-- end --}}
+                    @endauth
+                    {{-- end --}}
             </ul>
         </div>
 
@@ -122,19 +145,36 @@
                 @auth
                 <li>
                     <a href="javascript:void(0)" class="flex items-center">
-                        <img src="assets/img/png/profile.png" alt="Profile" class="w-10 h-10 mr-2"> Angelicav.
+                        <img src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/img/png/profile.png') }}"
+                            alt="Profile"
+                            class="w-10 h-10 mr-2">
+                        {{ Auth::user()->name }}
                     </a>
                     <ul class="pl-10">
-                        <li><a href="#" class="block py-1 text-sm">Profile</a></li>
-                        <li><a href="#" class="block py-1 text-sm">Logout</a></li>
+                        <li>
+                            <a href="{{ route('profile') }}" class="flex items-center py-2 text-sm">
+                                <ion-icon name="person-outline" class="mr-2 text-lg"></ion-icon>
+                                Profile
+                            </a>
+                        </li>
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="flex items-center py-2 text-sm w-full">
+                                    <ion-icon name="log-out-outline" class="mr-2 text-lg"></ion-icon>
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
                     </ul>
                 </li>
                 @endauth
             </ul>
         </div>
     </nav>
-    <main class="mx-8 mt-24 flex-grow">
-        <div class="mb-96">
+
+    <main class="mx-8 mt-20 flex-grow">
+        <div class="mb-20">
             @yield('content')
         </div>
     </main>
@@ -170,6 +210,9 @@
                     </p>
                     <p class="mb-4">
                         <a href="{{ route('monitoring') }}">Monitoring</a>
+                    </p>
+                    <p class="mb-4">
+                        <a href="{{ route('recap') }}">Recap</a>
                     </p>
                     <p class="mb-4">
                         <a href="{{ route('recom') }}">Recomendation</a>
@@ -237,6 +280,7 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -258,16 +302,21 @@
             });
         });
 
+        // responsif navbar
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
         // dropdown profile
-        // Ambil elemen tombol dan dropdown menu
         const menuButton = document.getElementById('menu-button');
         const dropdownMenu = menuButton.nextElementSibling;
 
         // Fungsi untuk menampilkan atau menyembunyikan menu dropdown
         menuButton.addEventListener('click', () => {
             const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
-
-            // Toggle atribut aria-expanded dan tampilan dropdown
             menuButton.setAttribute('aria-expanded', !isExpanded);
             dropdownMenu.classList.toggle('hidden');
         });
@@ -279,8 +328,17 @@
                 dropdownMenu.classList.add('hidden');
             }
         });
-    </script>
 
+        document.getElementById('scrollButton').addEventListener('click', function() {
+            const targetElement = document.getElementById('optimizing');
+            const offset = -100;
+            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset + offset;
+
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        });
     </script>
 </body>
 

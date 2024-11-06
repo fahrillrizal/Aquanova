@@ -19,10 +19,10 @@
             <div class="flex justify-between items-center pb-4 mb-4 border-b border-white-200">
                 <div class="flex flex-col items-center justify-center text-center flex-grow">
                     <div class="flex items-center justify-center">
-                        <h5 id="chart-title" class="leading-none text-2xl font-bold text-[#2E2E30] pb-1">Temperature</h5>
+                        <h5 id="chart-title" class="leading-none text-2xl font-bold text-[#2E2E30] pb-1">Suhu</h5>
                         <ion-icon name="arrow-down-outline" style="color: #314CFF; font-size: 1.2rem; margin-left: 8px;"></ion-icon>
                     </div>
-                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Average time temp spent per day</p>
+                    <p class="chart-description text-sm font-normal text-gray-500 dark:text-gray-400">Grafik Suhu per hari dalam 1 minggu</p>
                 </div>
             </div>
             <div id="column-chart" class="mx-auto"></div>
@@ -161,7 +161,7 @@
         </div>
     </div>
 
-    <!-- Alert modals delet -->
+    <!-- Alert modal delete -->
     <div id="alertDeletModal" tabindex="-1" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
         <div class="relative p-4 w-full max-w-md">
             <div class="relative bg-white rounded-xl shadow">
@@ -173,7 +173,7 @@
         </div>
     </div>
 
-    <!-- Alert modals edit data -->
+    <!-- Alert modal edit data -->
     <div id="alertEditDataModal" tabindex="-1" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
         <div class="relative p-4 w-full max-w-md">
             <div class="relative bg-white rounded-xl shadow">
@@ -261,10 +261,10 @@
     <!-- Modal Confirmation Delete -->
     <div id="delete-confirmation-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden bg-black bg-opacity-50">
         <div class="bg-white rounded-lg shadow-lg p-6 w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
-            <h2 class="text-lg font-bold mb-4">Confirm Deletion</h2>
-            <p>Are you sure you want to delete this data?</p>
+            <h2 class="text-lg font-bold mb-4">Konfirmasi Hapus Data</h2>
+            <p>Apakah Anda yakin ingin menghapus data ini?</p>
             <div class="mt-4">
-                <button id="confirm-delete" class="bg-red-500 text-white p-2 rounded">Delete</button>
+                <button id="confirm-delete" class="bg-red-500 text-white p-2 rounded">Hapus</button>
                 <button id="cancel-delete" class="bg-gray-300 p-2 rounded">Cancel</button>
             </div>
         </div>
@@ -347,7 +347,7 @@
             modalBackdrop.addEventListener('click', closeModal);
         }
 
-        // alert add data baru 
+
         addDataForm.addEventListener('submit', async function(event) {
             event.preventDefault();
 
@@ -447,7 +447,7 @@
             modalBackdrop.classList.remove('hidden');
         };
 
-        // alert delet
+
         document.getElementById('confirm-delete').addEventListener('click', async function() {
             try {
                 const response = await fetch(`/data/${currentDeleteId}`, {
@@ -486,25 +486,22 @@
 </script>
 
 <script>
-    // Inisialisasi data dari PHP ke JavaScript
     const groupedData = @json($weeklyData);
     const currentWeek = groupedData.currentWeek;
 
-    // Fungsi untuk mendapatkan data parameter berdasarkan minggu
     function getParameterDataForWeek(parameter, weekNumber) {
         const data = [];
         Object.entries(groupedData.quality).forEach(([date, values]) => {
             if (values.week === weekNumber) {
                 data.push({
-                    x: new Date(date).toLocaleDateString('id-ID'), // Format date for display
-                    y: parseInt(values[parameter]) || null // Ensure integer values
+                    x: new Date(date).toLocaleDateString('id-ID'),
+                    y: parseInt(values[parameter]) || null
                 });
             }
         });
         return data;
     }
 
-    // Konfigurasi Water Quality Chart
     const waterQualityOptions = {
         series: [{
             name: "Water Quality",
@@ -586,7 +583,6 @@
         }
     };
 
-    // Fungsi untuk membuat konfigurasi chart parameter
     function createParameterChartOptions(parameter, color, title) {
         return {
             series: [{
@@ -611,7 +607,7 @@
             dataLabels: {
                 enabled: true,
                 formatter: function(val) {
-                    return val ? parseInt(val) : 'No Data'; // Display as integer
+                    return val ? parseInt(val) : 'No Data';
                 }
             },
             stroke: {
@@ -628,7 +624,7 @@
                 },
                 labels: {
                     formatter: function(val) {
-                        return val ? parseInt(val) : ''; // Display as integer
+                        return val ? parseInt(val) : '';
                     }
                 }
             },
@@ -638,24 +634,21 @@
             tooltip: {
                 y: {
                     formatter: function(val) {
-                        return val ? parseInt(val) : 'No Data'; // Display as integer
+                        return val ? parseInt(val) : 'No Data';
                     }
                 }
             }
         };
     }
 
-    // Konfigurasi untuk masing-masing parameter
-    const temperatureOptions = createParameterChartOptions('temperature', '#DAF0FB', 'Temperature');
+    const temperatureOptions = createParameterChartOptions('temperature', '#DAF0FB', 'Suhu');
     const phOptions = createParameterChartOptions('ph', '#FDD835', 'pH');
-    const oxygenOptions = createParameterChartOptions('oxygen', '#66BB6A', 'Oxygen');
-    const salinityOptions = createParameterChartOptions('salinity', '#42A5F5', 'Salinity');
+    const oxygenOptions = createParameterChartOptions('oxygen', '#66BB6A', 'Oksigen');
+    const salinityOptions = createParameterChartOptions('salinity', '#42A5F5', 'Salinitas');
 
-    // Inisialisasi charts
     document.addEventListener('DOMContentLoaded', function() {
         let activeChart;
 
-        // Render Water Quality Chart
         if (document.getElementById('data-labels-chart')) {
             const waterQualityChart = new ApexCharts(
                 document.getElementById('data-labels-chart'),
@@ -664,7 +657,6 @@
             waterQualityChart.render();
         }
 
-        // Render Temperature Chart (default)
         if (document.getElementById('column-chart')) {
             activeChart = new ApexCharts(
                 document.getElementById('column-chart'),
@@ -673,7 +665,6 @@
             activeChart.render();
         }
 
-        // Week selector handler
         const weekSelector = document.getElementById('week-selector');
         if (weekSelector) {
             weekSelector.addEventListener('change', function() {
@@ -682,7 +673,6 @@
             });
         }
 
-        // Event listeners untuk tombol chart
         const chartBtns = document.querySelectorAll('.chart-btn');
         chartBtns.forEach(btn => {
             btn.addEventListener('click', function() {
@@ -698,56 +688,38 @@
                 switch (chartType) {
                     case 'temperature':
                         newOptions = temperatureOptions;
-                        title = 'Temperature';
-                        description = 'Daily temperature readings';
+                        title = 'Suhu';
+                        description = 'Grafik Suhu per hari dalam 1 minggu';
                         break;
                     case 'ph':
                         newOptions = phOptions;
                         title = 'pH';
-                        description = 'Daily pH readings';
+                        description = 'Grafik pH per hari dalam 1 minggu';
                         break;
                     case 'oxygen':
                         newOptions = oxygenOptions;
-                        title = 'Oxygen';
-                        description = 'Daily oxygen readings';
+                        title = 'Oksigen';
+                        description = 'Grafik Oksigen per hari dalam 1 minggu';
                         break;
                     case 'salinity':
                         newOptions = salinityOptions;
-                        title = 'Salinity';
-                        description = 'Daily salinity readings';
+                        title = 'Salinitas';
+                        description = 'Grafik Salinitas per hari dalam 1 minggu';
                         break;
                 }
 
-                activeChart = new ApexCharts(document.getElementById('column-chart'), newOptions);
-                activeChart.render();
-
-                // Update chart details
+                // Update chart title and description
                 document.getElementById('chart-title').innerText = title;
-                const descriptionElement = document.getElementById('chart-description');
-                if (descriptionElement) {
-                    descriptionElement.innerText = description;
-                }
+                document.querySelector('.chart-description').innerText = description;
+
+                // Render the new chart
+                activeChart = new ApexCharts(
+                    document.getElementById('column-chart'),
+                    newOptions
+                );
+                activeChart.render();
             });
         });
     });
-
-    // Fungsi untuk mengupdate chart parameter
-    function updateParameterCharts(weekNumber) {
-        const charts = {
-            temperature: temperatureOptions,
-            ph: phOptions,
-            oxygen: oxygenOptions,
-            salinity: salinityOptions
-        };
-
-        Object.entries(charts).forEach(([parameter, options]) => {
-            options.series[0].data = getParameterDataForWeek(parameter, weekNumber);
-        });
-
-        // Update active chart
-        if (activeChart) {
-            activeChart.updateOptions(charts[activeChart.el.parentElement.getAttribute('data-current-chart')]);
-        }
-    }
 </script>
 @endsection

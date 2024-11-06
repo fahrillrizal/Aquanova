@@ -1,5 +1,7 @@
 @extends('layouts.nvprofile')
 
+@section('title', 'Profile')
+
 @section('content')
 <!-- Tampilan Mobail -->
 <div class="block md:hidden bg-white w-full max-w-sm rounded-lg p-0 mt-5">
@@ -176,23 +178,23 @@
             <div class="p-4 md:p-5">
                 <form class="space-y-4" action="#">
                     <div class="relative w-24 h-24 mx-auto overflow-hidden mb-4">
-                        <img id="photoPreview" src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/profile.png') }}" alt="Profile Image" class="w-full h-full object-cover">
+                        <img id="photoPreview" src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/img/png/profile.png') }}" alt="Profile Image" class="w-full h-full object-cover">
                     </div>
                     <div id="fileButtons" class="flex flex-col items-center mb-4">
                         <input type="file" id="photoInput" class="hidden" accept=".jpeg, .png, .jpg, .heic">
                         <label for="photoInput" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md cursor-pointer mb-3">Choose Photo</label>
                         @if(Auth::user()->foto)
-                        <form action="{{ route('profile.photo.delete') }}" method="POST" class="mt-6">
-                            @csrf
-                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md">Delete</button>
-                        </form>
+                        <button type="button"
+                            id="deletePhotoBtn"
+                            class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md">
+                            Delete Photo
+                        </button>
                         @endif
                     </div>
                     <div id="actionButtons" class="flex justify-center space-x-4 mb-4 hidden">
-                        <button id="cancelPhotoButton" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md" onclick="cancelPhoto()">Cancel</button>
-                        <button id="savePhotoButton" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded shadow-md" onclick="cropImage()">Save</button>
+                        <button id="cancelPhotoButton" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md" onclick="cancelPhoto()">Cancel</button>
+                        <button id="savePhotoButton" type="button" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded shadow-md" onclick="cropImage()">Save</button>
                     </div>
-
                 </form>
             </div>
         </div>
@@ -218,27 +220,24 @@
                 </button>
             </div>
             <div class="p-4 md:p-5">
-                <form action="{{ route('password.update') }}" method="POST">
-                    @csrf
-                    <div class="mb-4 relative">
-                        <label class="block text-sm font-medium text-gray-700">Current Password</label>
-                        <input type="password" id="current_password" name="current_password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="••••••••" autocomplete="off">
-                        <ion-icon name="eye-off-outline" id="password-toggle1" class="absolute text-sky-400 right-3 top-12 -translate-y-1/2 transform origin-center cursor-pointer"></ion-icon>
+                <form class="space-y-4" action="#">
+                    <div class="relative w-24 h-24 mx-auto overflow-hidden mb-4">
+                        <img id="photoPreview" src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/img/png/profile.png') }}" alt="Profile Image" class="w-full h-full object-cover">
                     </div>
-                    <div class="mb-4 relative">
-                        <label class="block text-sm font-medium text-gray-700">New Password</label>
-                        <input type="password" id="new_password" name="new_password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="••••••••" autocomplete="off">
-                        <ion-icon name="eye-off-outline" id="password-toggle2" class="absolute text-sky-400 right-3 top-12 -translate-y-1/2 transform origin-center cursor-pointer"></ion-icon>
+                    <div id="fileButtons" class="flex flex-col items-center mb-4">
+                        <input type="file" id="photoInput" class="hidden" accept=".jpeg, .png, .jpg, .heic">
+                        <label for="photoInput" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md cursor-pointer mb-3">Ganti Foto</label>
+                        @if(Auth::user()->foto)
+                        <button type="button"
+                            onclick="showDeleteConfirmation()"
+                            class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md">
+                            Hapus Foto
+                        </button>
+                        @endif
                     </div>
-                    <div class="mb-4 relative">
-                        <label class="block text-sm font-medium text-gray-700">Confirm New Password</label>
-                        <input type="password" id="new_password_confirmation" name="new_password_confirmation" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="••••••••" autocomplete="off">
-                        <ion-icon name="eye-off-outline" id="password-toggle3" class="absolute text-sky-400 right-3 top-12 -translate-y-1/2 transform origin-center cursor-pointer"></ion-icon>
-                    </div>
-
-                    <div class="flex justify-end space-x-4">
-                        <button type="button" onclick="closeModal('changePasswordModal')" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
-                        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Save Changes</button>
+                    <div id="actionButtons" class="flex justify-center space-x-4 mb-4 hidden">
+                        <button id="cancelPhotoButton" type="button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md" onclick="cancelPhoto()">Cancel</button>
+                        <button id="savePhotoButton" type="button" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded shadow-md" onclick="cropImage()">Save</button>
                     </div>
                 </form>
             </div>
@@ -282,6 +281,40 @@
     </div>
 </div>
 
+<!-- Delete Confirmation Modal -->
+<div id="deleteConfirmationModal" tabindex="-1" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+    <div class="relative p-4 w-full max-w-md">
+        <div class="relative bg-white rounded-xl shadow">
+            <div class="p-4 md:p-5 text-center">
+                <h3 class="mb-5 text-lg font-normal text-gray-800">Apakah anda yakin ingin menghapus foto profil?</h3>
+                <div class="flex justify-center gap-4">
+                    <button type="button"
+                        id="confirmDeleteBtn"
+                        class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md">
+                        Iya
+                    </button>
+                    <button type="button"
+                        id="cancelDeleteBtn"
+                        class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded shadow-md">
+                        Batal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Alert Modal -->
+<div id="alertDeleteProfileModal" tabindex="-1" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 rounded-xl">
+    <div class="relative p-4 w-full max-w-md">
+        <div class="relative bg-white rounded-xl shadow">
+            <div class="p-4 md:p-5 text-center">
+                <img src="/assets/img/svg/ceklist.svg" alt="Success Checkmark" class="mx-auto mb-4 w-12 h-12" />
+                <h3 class="mb-5 text-lg text-dark">Foto berhasil Dihapus.</h3>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     // alert modals edit profile
@@ -327,6 +360,49 @@
                 setTimeout(() => {
                     modalBody.classList.add('hidden');
                 }, 1500);
+            }
+        });
+        // Delete button click handler
+        document.getElementById('deletePhotoBtn').addEventListener('click', function() {
+            document.getElementById('deleteConfirmationModal').classList.remove('hidden');
+        });
+
+        // Cancel delete button click handler
+        document.getElementById('cancelDeleteBtn').addEventListener('click', function() {
+            document.getElementById('deleteConfirmationModal').classList.add('hidden');
+        });
+
+        // Confirm delete button click handler
+        document.getElementById('confirmDeleteBtn').addEventListener('click', async function() {
+            try {
+                const response = await fetch('{{ route("profile.photo.delete") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    // Hide confirmation modal
+                    document.getElementById('deleteConfirmationModal').classList.add('hidden');
+
+                    // Show success modal
+                    const modalBody = document.getElementById('alertDeleteProfileModal');
+                    modalBody.classList.remove('hidden');
+
+                    // Hide success modal and reload page after delay
+                    setTimeout(() => {
+                        modalBody.classList.add('hidden');
+                        location.reload();
+                    }, 1500);
+                } else {
+                    throw new Error('Gagal menghapus foto.');
+                }
+            } catch (error) {
+                document.getElementById('deleteConfirmationModal').classList.add('hidden');
+                alert('Gagal menghapus foto. Silakan coba lagi.');
             }
         });
     });
