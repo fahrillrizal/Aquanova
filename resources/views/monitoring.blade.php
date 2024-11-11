@@ -179,7 +179,7 @@
             <div class="relative bg-white rounded-xl shadow">
                 <div class="p-4 md:p-5 text-center">
                     <img src="/assets/img/svg/ceklist.svg" alt="Success Checkmark" class="mx-auto mb-4 w-12 h-12" />
-                    <h3 class="mb-5 text-lg text-dark">Data berhasil dihapus.</h3>
+                    <h3 class="mb-5 text-lg text-dark">Data berhasil diubah.</h3>
                 </div>
             </div>
         </div>
@@ -545,6 +545,8 @@
         },
         yaxis: {
             tickAmount: 3,
+            min: -1,
+            max: 1,
             labels: {
                 formatter: function(val) {
                     if (val === 1) return "Baik";
@@ -552,9 +554,7 @@
                     if (val === -1) return "Buruk";
                     return "";
                 }
-            },
-            min: -1,
-            max: 1
+            }
         },
         tooltip: {
             custom: function({
@@ -708,11 +708,9 @@
                         break;
                 }
 
-                // Update chart title and description
                 document.getElementById('chart-title').innerText = title;
                 document.querySelector('.chart-description').innerText = description;
 
-                // Render the new chart
                 activeChart = new ApexCharts(
                     document.getElementById('column-chart'),
                     newOptions
