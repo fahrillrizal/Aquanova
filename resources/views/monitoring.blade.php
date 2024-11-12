@@ -186,7 +186,7 @@
     </div>
 
     <!-- Modal Add Data  -->
-    <div id="add-data-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+    <div id="add-data-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden  bg-black bg-opacity-50">
         <div class="bg-white rounded-lg shadow-lg p-6 w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2">
             <h2 class="text-lg font-bold mb-4">Add Data</h2>
             <form action="{{ route('data.store') }}" method="POST">
@@ -222,7 +222,7 @@
     </div>
 
     <!-- Modal Edit Data -->
-    <div id="edit-data-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+    <div id="edit-data-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden  bg-black bg-opacity-50">
         <div class="bg-white rounded-lg shadow-lg p-6 w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
             <h2 class="text-lg font-bold mb-4">Edit Data</h2>
             <form id="edit-form" action="{{ route('data.update', '') }}" method="POST">
@@ -260,16 +260,18 @@
 
     <!-- Modal Confirmation Delete -->
     <div id="delete-confirmation-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden bg-black bg-opacity-50">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
-            <h2 class="text-lg font-bold mb-4">Konfirmasi Hapus Data</h2>
-            <p>Apakah Anda yakin ingin menghapus data ini?</p>
-            <div class="mt-4">
-                <button id="confirm-delete" class="bg-red-500 text-white p-2 rounded">Hapus</button>
-                <button id="cancel-delete" class="bg-gray-300 p-2 rounded">Cancel</button>
-            </div>
+    <div class="bg-white rounded-lg shadow-lg p-6 w-80 max-w-xs">
+        <h2 class="text-lg font-bold mb-4 text-center">Confirm Deletion</h2>
+        <p class="text-center mb-4">Are you sure you want to delete this data?</p>
+        <div class="flex justify-center gap-4">
+            <button id="confirm-delete" class="bg-red-500 text-white p-3 rounded">Delete</button>
+            <button id="cancel-delete" class="bg-gray-300 text-black p-3 rounded">Cancel</button>
         </div>
     </div>
 </div>
+
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const addDataBtnMobile = document.getElementById('add-data-btn');
