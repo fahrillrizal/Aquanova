@@ -55,6 +55,14 @@
         [x-cloak] {
             display: none !important;
         }
+
+        .active-link {
+            /* border: 1px solid #9F7AEA; */
+            border-radius: 20px;
+            padding: 10px;
+            background-color: #6fc1f7;
+            color: white;
+        }
     </style>
 </head>
 
@@ -72,67 +80,64 @@
             </div>
 
             <ul id="navbar-menu" class="hidden md:flex justify-center items-center space-x-16">
-                <li><a href="/">Home</a></li>
+                <li><a href="/" class="navbar-item tracking-wider" id="home">Home</a></li>
                 @auth
-                <li><a href="{{ route('monitoring') }}">Monitoring</a></li>
-                <li><a href="{{ route('recap') }}">Recap</a></li>
+                    <li><a href="{{ route('monitoring') }}" id="monitoring" class="navbar-item tracking-wider">Monitoring</a></li>
+                    <li><a href="{{ route('recap') }}" id="recap" class="navbar-item tracking-wider">Recap</a></li>
                 @endauth
-                <li><a href="{{ route('recom') }}">Recomendation</a></li>
+                <li><a href="{{ route('recom') }}" id="recom" class="navbar-item tracking-wider">Recomendation</a></li>
                 @auth
-                <li>
-                    <!-- ikon kondisi udara lur -->
-                    <div id="loading">Loading...</div>
-                    <div id="weatherData" style="display: none;">
-                        <img class="w-12" id="weatherIcon" alt="Weather Icon">
-                        <p><span id="temperature"></span></p>
-                    </div>
-                </li>
+                    <li>
+                        <!-- ikon kondisi udara lur -->
+                        <div id="loading">Loading...</div>
+                        <div id="weatherData" style="display: none;">
+                            <img class="w-12" id="weatherIcon" alt="Weather Icon">
+                            <p><span id="temperature"></span></p>
+                        </div>
+                    </li>
                 @endauth
                 @guest
-                <li><a href="{{ route('login') }}">Login</a></li>
+                    <li><a href="{{ route('login') }}" class="tracking-wider">Login</a></li>
                 @endguest
                 @auth
-                <li>
-                    <!-- Profile Dropdown Button -->
-                    <div class="relative" x-data="{ isOpen: false }">
-                        <button @click="isOpen = !isOpen"
-                            @click.away="isOpen = false"
-                            class="flex items-center focus:outline-none"
-                            type="button">
-                            <img src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/img/png/profile.png') }}"
-                                alt="Profile"
-                                class="w-10 h-10 rounded-full">
-                        </button>
+                    <li>
+                        <!-- Profile Dropdown Button -->
+                        <div class="relative" x-data="{ isOpen: false }">
+                            <button @click="isOpen = !isOpen" @click.away="isOpen = false"
+                                class="flex items-center focus:outline-none" type="button">
+                                <img src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/img/png/profile.png') }}"
+                                    alt="Profile" class="w-10 h-10 rounded-full">
+                            </button>
 
-                        <!-- Dropdown Menu -->
-                        <div x-show="isOpen"
-                            x-cloak
-                            x-transition:enter="transition ease-out duration-100"
-                            x-transition:enter-start="transform opacity-0 scale-95"
-                            x-transition:enter-end="transform opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-75"
-                            x-transition:leave-start="transform opacity-100 scale-100"
-                            x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                            <!-- Dropdown Menu -->
+                            <div x-show="isOpen" x-cloak x-transition:enter="transition ease-out duration-100"
+                                x-transition:enter-start="transform opacity-0 scale-95"
+                                x-transition:enter-end="transform opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75"
+                                x-transition:leave-start="transform opacity-100 scale-100"
+                                x-transition:leave-end="transform opacity-0 scale-95"
+                                class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
 
-                            <div class="px-4 py-2 text-sm text-gray-500 border-b">
-                                {{ Auth::user()->name }}
+                                <div class="px-4 py-2 text-sm text-gray-500 border-b">
+                                    {{ Auth::user()->name }}
+                                </div>
+
+                                <a href="{{ route('profile') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                    <ion-icon name="person-outline" class="mr-2 text-lg"></ion-icon>
+                                    Profile
+                                </a>
+
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit"
+                                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                        <ion-icon name="log-out-outline" class="mr-2 text-lg"></ion-icon>
+                                        Logout
+                                    </button>
+                                </form>
                             </div>
-
-                            <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
-                                <ion-icon name="person-outline" class="mr-2 text-lg"></ion-icon>
-                                Profile
-                            </a>
-
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
-                                    <ion-icon name="log-out-outline" class="mr-2 text-lg"></ion-icon>
-                                    Logout
-                                </button>
-                            </form>
                         </div>
-                    </div>
                     @endauth
                     {{-- end --}}
             </ul>
@@ -143,41 +148,40 @@
             <ul class="flex flex-col space-y-4 text-gray-700">
                 <li><a href="/">Home</a></li>
                 @auth
-                <li><a href="{{ route('monitoring') }}">Monitoring</a></li>
-                <li><a href="{{ route('recap') }}">Recap</a></li>
+                    <li><a href="{{ route('monitoring') }}">Monitoring</a></li>
+                    <li><a href="{{ route('recap') }}">Recap</a></li>
                 @endauth
                 <li><a href="{{ route('recom') }}">Recommendation</a></li>
                 @guest
-                <li><a href="{{ route('login') }}">Login</a></li>
+                    <li><a href="{{ route('login') }}">Login</a></li>
                 @endguest
 
                 {{-- <!-- Profile Dropdown for Mobile --> --}}
                 @auth
-                <li>
-                    <a href="javascript:void(0)" class="flex items-center">
-                        <img src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/img/png/profile.png') }}"
-                            alt="Profile"
-                            class="w-10 h-10 mr-2">
-                        {{ Auth::user()->name }}
-                    </a>
-                    <ul class="pl-10">
-                        <li>
-                            <a href="{{ route('profile') }}" class="flex items-center py-2 text-sm">
-                                <ion-icon name="person-outline" class="mr-2 text-lg"></ion-icon>
-                                Profile
-                            </a>
-                        </li>
-                        <li>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="flex items-center py-2 text-sm w-full">
-                                    <ion-icon name="log-out-outline" class="mr-2 text-lg"></ion-icon>
-                                    Logout
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </li>
+                    <li>
+                        <a href="javascript:void(0)" class="flex items-center">
+                            <img src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/img/png/profile.png') }}"
+                                alt="Profile" class="w-10 h-10 mr-2">
+                            {{ Auth::user()->name }}
+                        </a>
+                        <ul class="pl-10">
+                            <li>
+                                <a href="{{ route('profile') }}" class="flex items-center py-2 text-sm">
+                                    <ion-icon name="person-outline" class="mr-2 text-lg"></ion-icon>
+                                    Profile
+                                </a>
+                            </li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="flex items-center py-2 text-sm w-full">
+                                        <ion-icon name="log-out-outline" class="mr-2 text-lg"></ion-icon>
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
                 @endauth
             </ul>
         </div>
@@ -212,7 +216,7 @@
 
                 <!-- navbar section-->
                 <div class="text-left">
-                    <h6 class="mb-4 flex justify-center font-semibold uppercase md:justify-start">
+                    <h6 class="mb-4 flex justify-start font-semibold uppercase md:justify-start">
                         Useful links
                     </h6>
                     <p class="mb-4">
@@ -234,7 +238,7 @@
 
                 <!-- Contact section -->
                 <div class="text-left md:text-center">
-                    <h6 class="mb-4 flex justify-center font-semibold uppercase md:justify-start">
+                    <h6 class="mb-4 flex justify-start font-semibold uppercase md:justify-start">
                         Contact
                     </h6>
                     <p class="mb-4 flex items-center justify-start">
@@ -309,6 +313,25 @@
                     top: 0,
                     behavior: "smooth"
                 });
+            });
+        });
+
+        const navItems = document.querySelectorAll(".navbar-item");
+
+        // Check local storage for the active item
+        const activeItem = localStorage.getItem("activeLinkId");
+        if (activeItem) {
+            document.getElementById(activeItem)?.classList.add("active-link");
+        }
+
+        navItems.forEach(item => {
+            item.addEventListener("click", () => {
+                // Remove 'active-link' from all items
+                navItems.forEach(nav => nav.classList.remove("active-link"));
+
+                // Add 'active-link' to the clicked item and store its ID
+                item.classList.add("active-link");
+                localStorage.setItem("activeLinkId", item.id);
             });
         });
 
@@ -396,16 +419,16 @@
         }
 
         function getWeatherIcon(condition) {
-            if (condition.includes("clear")) return '{{ asset("assets/gif/clear.gif") }}';
-            if (condition.includes("partly cloudy")) return '{{ asset("assets/gif/pcloudy.gif")  }}';
-            if (condition.includes("overcast")) return '{{ asset("assets/gif/overcas.gif") }}';
-            if (condition.includes("rain")) return '{{ asset("assets/gif/rain.gif") }}';
-            if (condition.includes("thunderstorm")) return '{{ asset("assets/gif/storm.gif") }}';
-            // if (condition.includes("snow")) return '{{ asset("assets/images/snow.png") }}';
-            if (condition.includes("mist") || condition.includes("fog")) return '{{ asset("assets/gif/kabut.gif") }}';
-            if (condition.includes("haze")) return '{{ asset("assets/gif/kabut.gif") }}';
-            if (condition.includes("windy")) return '{{ asset("assets/gif/windy.gif") }}';
-            return '{{ asset("assets/gif/clear.gif") }}';
+            if (condition.includes("clear")) return '{{ asset('assets/gif/clear.gif') }}';
+            if (condition.includes("partly cloudy")) return '{{ asset('assets/gif/pcloudy.gif') }}';
+            if (condition.includes("overcast")) return '{{ asset('assets/gif/overcas.gif') }}';
+            if (condition.includes("rain")) return '{{ asset('assets/gif/rain.gif') }}';
+            if (condition.includes("thunderstorm")) return '{{ asset('assets/gif/storm.gif') }}';
+            // if (condition.includes("snow")) return '{{ asset('assets/images/snow.png') }}';
+            if (condition.includes("mist") || condition.includes("fog")) return '{{ asset('assets/gif/kabut.gif') }}';
+            if (condition.includes("haze")) return '{{ asset('assets/gif/kabut.gif') }}';
+            if (condition.includes("windy")) return '{{ asset('assets/gif/windy.gif') }}';
+            return '{{ asset('assets/gif/clear.gif') }}';
         }
 
         window.onload = function() {
