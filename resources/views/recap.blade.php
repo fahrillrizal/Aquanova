@@ -3,35 +3,32 @@
 @section('title', 'Recap')
 
 @section('content')
-<div class="container mx-auto p-4">
-    <div class="container mx-auto my-4">
-        <!-- Chart Rekap Bulanan -->
-        <div class="max-w-full w-full bg-white rounded-lg shadow p-4 md:p-6 mb-6">
-            <div class="flex flex-col items-center mb-5">
-                <h5 class="leading-none text-2xl font-bold text-[#2E2E30] pb-2 text-center">Rekap Bulanan</h5>
-                <form method="GET" action="{{ route('recap') }}" class="flex justify-center mb-4">
-                    <select name="month" class="border rounded p-2 mr-2">
-                        @foreach (range(1, 12) as $m)
-                            <option value="{{ $m }}" {{ $selectedMonth == Carbon\Carbon::create()->month($m)->translatedFormat('F') ? 'selected' : '' }}>
-                                {{ Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="bg-blue-500 text-white p-2 rounded">Tampilkan Rekap</button>
-                </form>
-                <p class="text-base font-normal text-gray-500 text-center">{{ $selectedMonth }}</p>
-            </div>
-            <div id="monthly-recap-chart" style="height: 400px;"></div>
+<div class="container mx-auto my-4">
+    <!-- Chart Rekap Bulanan -->
+    <div class="max-w-full w-full bg-white rounded-lg shadow p-4 md:p-6 mb-6">
+        <div class="flex flex-col items-center mb-5">
+            <h5 class="leading-none text-2xl font-bold text-[#2E2E30] pb-2 text-center">Rekap Bulanan</h5>
+            <form method="GET" action="{{ route('recap') }}" class="flex justify-center mb-4">
+                <select name="month" class="border rounded p-2 mr-2">
+                    @foreach (range(1, 12) as $m)
+                        <option value="{{ $m }}" {{ $selectedMonth == Carbon\Carbon::create()->month($m)->translatedFormat('F') ? 'selected' : '' }}>
+                            {{ Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                        </option>
+                    @endforeach
+                </select>
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded">Tampilkan Rekap</button>
+            </form>
+            <p class="text-base font-normal text-gray-500 text-center">{{ $selectedMonth }}</p>
         </div>
+        <div id="monthly-recap-chart" style="height: 400px;"></div>
+    </div>
 
-        <!-- Chart Gabungan -->
-        <div class="max-w-full w-full bg-white rounded-lg shadow p-4 md:p-6 mb-6">
-            <h5 class="leading-none text-xl font-bold text-[#2E2E30] pb-2 text-center">Grafik Gabungan Suhu, O2, pH, dan Salinitas</h5>
-            <div id="combined-chart" style="height: 400px;"></div>
-        </div>
+    <!-- Chart Gabungan -->
+    <div class="max-w-full w-full bg-white rounded-lg shadow p-4 md:p-6 mb-6">
+        <h5 class="leading-none text-xl font-bold text-[#2E2E30] pb-2 text-center">Grafik Gabungan Suhu, O2, pH, dan Salinitas</h5>
+        <div id="combined-chart" style="height: 400px;"></div>
     </div>
 </div>
-
 <div class="overflow-x-auto">
         <table class="min-w-full bg-white">
             <thead>
@@ -96,7 +93,6 @@
     <div class="flex justify-between items-center mt-4">
         {{ $data->links() }}
     </div>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Chart Rekap Bulanan
@@ -105,24 +101,18 @@
                 chart: {
                     type: 'line',
                     height: 350,
-                    toolbar: {
-                        show: true
-                    }
+                    toolbar: { show: true }
                 },
                 series: [{
                     name: 'Hasil Bulanan',
-                    data: {!! json_encode($data->pluck('hasil')) !!} // Mengambil data dari kolom hasil
+                    data: {!! json_encode($data->pluck('hasil')) !!}
                 }],
                 xaxis: {
-                    categories: {!! json_encode($labels) !!}, // Mengambil label untuk sumbu X
-                    title: {
-                        text: 'Tanggal'
-                    }
+                    categories: {!! json_encode($labels) !!},
+                    title: { text: 'Tanggal' }
                 },
                 yaxis: {
-                    title: {
-                        text: 'Nilai'
-                    },
+                    title: { text: 'Nilai' },
                     tickAmount: 3,
                     min: 0,
                     max: 2,
@@ -133,7 +123,7 @@
                     }
                 },
                 stroke: {
-                    curve: 'stepline',
+                    curve: 'smooth',
                     width: 2,
                     colors: ['#007bff']
                 },
@@ -142,15 +132,10 @@
                     colors: ['#007bff'],
                     strokeColors: '#fff',
                     strokeWidth: 2,
-                    hover: {
-                        sizeOffset: 6
-                    }
+                    hover: { sizeOffset: 6 }
                 },
                 grid: {
-                    row: {
-                        colors: ['#f3f3f3', 'transparent'],
-                        opacity: 0.5
-                    }
+                    row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }
                 },
                 tooltip: {
                     custom: function({ series, seriesIndex, dataPointIndex, w }) {
@@ -177,39 +162,59 @@
                 chart: {
                     type: 'line',
                     height: 350,
-                    toolbar: {
-                        show: true
-                    }
+                    toolbar: { show: true }
                 },
                 series: [
-                    {
-                        name: 'Suhu',
-                        data: {!! json_encode($suhuData) !!}
-                    },
-                    {
-                        name: 'O2',
-                        data: {!! json_encode($o2Data) !!}
-                    },
-                    {
-                        name: 'pH',
-                        data: {!! json_encode($phData) !!}
-                    },
-                    {
-                        name: 'Salinitas',
-                        data: {!! json_encode($salinityData) !!}
-                    }
+                    @if($suhuData && $suhuData->isNotEmpty())
+                        {
+                            name: 'Suhu',
+                            data: {!! json_encode($suhuData) !!}
+                        },
+                    @endif
+                    @if($o2Data && $o2Data->isNotEmpty())
+                        {
+                            name: 'O2',
+                            data: {!! json_encode($o2Data) !!}
+                        },
+                    @endif
+                    @if($phData && $phData->isNotEmpty())
+                        {
+                            name: 'pH',
+                            data: {!! json_encode($phData) !!}
+                        },
+                    @endif
+                    @if($salinityData && $salinityData->isNotEmpty())
+                        {
+                            name: 'Salinitas',
+                            data: {!! json_encode($salinityData) !!}
+                        }
+                    @endif
                 ],
                 xaxis: {
                     categories: {!! json_encode($labels) !!},
-                    title: {
-                        text: 'Tanggal'
-                    }
+                    title: { text: 'Tanggal' }
                 },
-                yaxis: {
-                    title: {
-                        text: 'Nilai'
-                    }
-                }
+                yaxis: { title: { text: 'Nilai' } },
+                stroke: {
+        curve: 'smooth',
+        width: 2,
+        colors: ['#007bff', '#28a745', '#ffc107', '#dc3545']
+    },
+    markers: {
+        size: 5,
+        colors: ['#007bff', '#28a745', '#ffc107', '#dc3545'],
+        strokeColors: '#fff',
+        strokeWidth: 2,
+        hover: {
+            sizeOffset: 6
+        }
+    },
+    grid: {
+        row: {
+            colors: ['#f3f3f3', 'transparent'],
+            opacity: 0.5
+        }
+    },
             };
 
             const combinedChart = new ApexCharts(document.querySelector("#combined-chart"), combinedOptions);
@@ -219,5 +224,6 @@
         @endif
     });
 </script>
+
 
 @endsection

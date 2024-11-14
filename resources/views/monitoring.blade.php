@@ -28,12 +28,12 @@
             <div id="column-chart" class="mx-auto"></div>
         </div>
     </div>
-
+    <!-- Button grafik -->
     <div class="flex overflow-x-auto mb-7 py-2 space-x-4 snap-x snap-mandatory sm:justify-center" id="scroll-container">
-        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="temperature">Suhu</button>
-        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="ph">pH</button>
-        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="oxygen">Oksigen</button>
-        <button class="chart-btn min-w-[150px] px-4 py-2 border border-gray-400 rounded-lg snap-center" data-chart="salinity">Salinitas</button>
+        <button id="temperatureBtn" class="chart-btn min-w-[150px] px-4 py-2 border rounded-lg snap-center hover:shadow-lg bg-[#6fc1f7] text-white hover:opacity-90 space-x-3" data-chart="temperature" onclick="toggleActiveButton(this, '#6fc1f7')">Suhu</button>
+        <button class="chart-btn min-w-[150px] px-4 py-2 border rounded-lg snap-center hover:shadow-lg bg-white text-black hover:opacity-90 space-x-3" data-chart="ph" onclick="toggleActiveButton(this, '#FDD835')">pH</button>
+        <button class="chart-btn min-w-[150px] px-4 py-2 border rounded-lg snap-center hover:shadow-lg bg-white text-black hover:opacity-90 space-x-3" data-chart="oxygen" onclick="toggleActiveButton(this, '#66BB6A')">Oksigen</button>
+        <button class="chart-btn min-w-[150px] px-4 py-2 border rounded-lg snap-center hover:shadow-lg bg-white text-black hover:opacity-90 space-x-3" data-chart="salinity" onclick="toggleActiveButton(this, '#42A5F5')">Salinitas</button>
     </div>
 
     <div class="flex justify-between items-center mb-4">
@@ -260,19 +260,35 @@
 
     <!-- Modal Confirmation Delete -->
     <div id="delete-confirmation-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden bg-black bg-opacity-50">
-    <div class="bg-white rounded-lg shadow-lg p-6 w-80 max-w-xs">
-        <h2 class="text-lg font-bold mb-4 text-center">Confirm Deletion</h2>
-        <p class="text-center mb-4">Are you sure you want to delete this data?</p>
-        <div class="flex justify-center gap-4">
-            <button id="confirm-delete" class="bg-red-500 text-white p-3 rounded">Delete</button>
-            <button id="cancel-delete" class="bg-gray-300 text-black p-3 rounded">Cancel</button>
+        <div class="bg-white rounded-lg shadow-lg p-6 w-80 max-w-xs">
+            <h2 class="text-lg font-bold mb-4 text-center">Confirm Deletion</h2>
+            <p class="text-center mb-4">Are you sure you want to delete this data?</p>
+            <div class="flex justify-center gap-4">
+                <button id="confirm-delete" class="bg-red-500 text-white p-3 rounded">Delete</button>
+                <button id="cancel-delete" class="bg-gray-300 text-black p-3 rounded">Cancel</button>
+            </div>
         </div>
     </div>
-</div>
 
 </div>
 
 <script>
+    function toggleActiveButton(clickedButton, activeColor) {
+        const buttons = document.querySelectorAll('.chart-btn');
+        buttons.forEach(button => {
+            button.style.backgroundColor = 'white';
+            button.style.color = 'black';
+        });
+
+        clickedButton.style.backgroundColor = activeColor;
+        clickedButton.style.color = 'white';
+
+        if (clickedButton.getAttribute("data-chart") !== "temperature") {
+            document.getElementById("temperatureBtn").style.backgroundColor = 'white';
+            document.getElementById("temperatureBtn").style.color = 'black';
+        }
+    }
+    
     document.addEventListener('DOMContentLoaded', function() {
         const addDataBtnMobile = document.getElementById('add-data-btn');
         const addDataBtnDesktop = document.getElementById('add-data-btn-desktop');
@@ -596,13 +612,13 @@
                 height: 320,
                 toolbar: {
                     show: false
-                }
+                },
             },
             colors: [color],
             plotOptions: {
                 bar: {
                     horizontal: false,
-                    columnWidth: '55%',
+                    columnWidth: '50%',
                     endingShape: 'rounded'
                 },
             },
@@ -618,11 +634,23 @@
                 colors: ['transparent']
             },
             xaxis: {
-                categories: Object.keys(groupedData[parameter])
+                categories: Object.keys(groupedData[parameter]),
+                labels: {
+                    style: {
+                        fontSize: '12px',
+                        fontWeight: 'regular',
+                        fontFamily: 'Montserrat'
+                    },
+                    rotate: -45,
+                    rotateAlways: true,
+                    offsetX: 0,
+                    offsetY: 0
+                }
             },
             yaxis: {
                 title: {
-                    text: title
+                    text: title,
+                    offsetX: 8
                 },
                 labels: {
                     formatter: function(val) {
@@ -640,10 +668,10 @@
                     }
                 }
             }
-        };
+        }
     }
 
-    const temperatureOptions = createParameterChartOptions('temperature', '#DAF0FB', 'Suhu');
+    const temperatureOptions = createParameterChartOptions('temperature', '#6fc1f7', 'Suhu');
     const phOptions = createParameterChartOptions('ph', '#FDD835', 'pH');
     const oxygenOptions = createParameterChartOptions('oxygen', '#66BB6A', 'Oksigen');
     const salinityOptions = createParameterChartOptions('salinity', '#42A5F5', 'Salinitas');

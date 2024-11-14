@@ -97,7 +97,15 @@
                     </li>
                 @endauth
                 @guest
-                    <li><a href="{{ route('login') }}" class="tracking-wider">Login</a></li>
+                <li><a href="{{ route('login') }}">Login</a></li>
+                <li>
+                    <!-- ikon kondisi udara lur -->
+                    <div id="loading">Loading...</div>
+                    <div id="weatherData" style="display: none;">
+                        <img class="w-12" id="weatherIcon" alt="Weather Icon">
+                        <p><span id="temperature"></span></p>
+                    </div>
+                </li>
                 @endguest
                 @auth
                     <li>

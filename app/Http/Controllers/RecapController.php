@@ -18,6 +18,7 @@ class RecapController extends Controller
         $data = Data::whereMonth('tgl', $month)
                     ->whereYear('tgl', $year)
                     ->where('user_id', auth()->id())
+                    ->orderBy('tgl', 'asc')
                     ->paginate(10);
 
         // Cek apakah data ada
