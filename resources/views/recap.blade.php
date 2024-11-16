@@ -113,12 +113,12 @@
                 },
                 yaxis: {
                     title: { text: 'Nilai' },
-                    tickAmount: 3,
-                    min: 0,
-                    max: 2,
+                    tickAmount: 2,
+                    min: -1,
+                    max: 1,
                     labels: {
                         formatter: function(val) {
-                            return val === 1 ? "Baik" : (val === 0 ? "Netral" : "Buruk");
+                            return val === 0 ? "Netral" : (val === 1 ? "Baik" : "Buruk");
                         }
                     }
                 },
@@ -196,32 +196,32 @@
                 },
                 yaxis: { title: { text: 'Nilai' } },
                 stroke: {
-        curve: 'smooth',
-        width: 2,
-        colors: ['#007bff', '#28a745', '#ffc107', '#dc3545']
-    },
-    markers: {
-        size: 5,
-        colors: ['#007bff', '#28a745', '#ffc107', '#dc3545'],
-        strokeColors: '#fff',
-        strokeWidth: 2,
-        hover: {
-            sizeOffset: 6
-        }
-    },
-    grid: {
-        row: {
-            colors: ['#f3f3f3', 'transparent'],
-            opacity: 0.5
-        }
-    },
-            };
+                    curve: 'smooth',
+                    width: 2,
+                    colors: ['#007bff', '#28a745', '#ffc107', '#dc3545']
+                },
+                markers: {
+                    size: 5,
+                    colors: ['#007bff', '#28a745', '#ffc107', '#dc3545'],
+                    strokeColors: '#fff',
+                    strokeWidth: 2,
+                    hover: {
+                        sizeOffset: 6
+                    }
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'],
+                        opacity: 0.5
+                    }
+                },
+                        };
 
-            const combinedChart = new ApexCharts(document.querySelector("#combined-chart"), combinedOptions);
-            combinedChart.render();
-        @else
-            document.querySelector("#combined-chart").innerHTML = '<p class="text-center text-red-500">Tidak ada data untuk grafik gabungan.</p>';
-        @endif
+                        const combinedChart = new ApexCharts(document.querySelector("#combined-chart"), combinedOptions);
+                        combinedChart.render();
+                    @else
+                        document.querySelector("#combined-chart").innerHTML = '<p class="text-center text-red-500">Tidak ada data untuk grafik gabungan.</p>';
+                    @endif
     });
 </script>
 
