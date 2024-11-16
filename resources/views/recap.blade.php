@@ -215,7 +215,7 @@
                         opacity: 0.5
                     }
                 },
-                        };
+            };
 
                         const combinedChart = new ApexCharts(document.querySelector("#combined-chart"), combinedOptions);
                         combinedChart.render();
