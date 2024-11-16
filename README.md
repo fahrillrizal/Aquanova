@@ -29,10 +29,14 @@
 
     php artisan migrate:fresh
 
-6.Run npm install
+6. Run Storage:link
+
+    php artisan storage:link
+
+7.Run npm install
 
     npm install
 
-7.Run
+8.Run
 
     php artisan serve

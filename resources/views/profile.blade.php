@@ -1,4 +1,4 @@
-@extends('layouts.nvprofile')
+@extends('layouts.app')
 
 @section('title', 'Profile')
 

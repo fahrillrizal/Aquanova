@@ -8,7 +8,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\RecapController;
 
-Route::get('/', fn() => view('home'));
+Route::get('/', fn() => view('home'))->name('home');
 
 Route::get('/recom', fn() => view('recom'))->name('recom');
 
