@@ -91,7 +91,9 @@
                 <li><a href="{{ route('recap') }}" id="recap" class="navbar-item tracking-wider">Recap</a></li>
                 @endauth
                 <li><a href="{{ route('recom') }}" id="recom" class="navbar-item tracking-wider">Recommendation</a></li>
-                @auth
+                @guest
+                <li><a href="{{ route('login') }}" id="recom" class="navbar-item tracking-wider">Login</a></li>
+                @endguest
                 <li>
                     <div id="loading">Loading...</div>
                     <div id="weatherData" style="display: none;">
@@ -99,6 +101,7 @@
                         <p><span id="temperature"></span></p>
                     </div>
                 </li>
+                @auth
                 <li>
                     <!-- Profile Dropdown Button -->
                     <div class="relative" x-data="{ isOpen: false }">
@@ -123,7 +126,7 @@
 
                             <a href="{{ route('profile') }}"
                                 id="profile"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center navbar-item">
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-[#6fc1f7] flex items-center navbar-item">
                                 <ion-icon name="person-outline" class="mr-2 text-lg"></ion-icon>
                                 Profile
                             </a>
@@ -131,7 +134,7 @@
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit"
-                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-[#6fc1f7] flex items-center navbar-item">
                                     <ion-icon name="log-out-outline" class="mr-2 text-lg"></ion-icon>
                                     Logout
                                 </button>
@@ -145,13 +148,13 @@
 
         {{-- Mobile Menu (Initially hidden) --}}
         <div id="mobile-menu" class="hidden md:hidden mt-4">
-            <ul class="flex flex-col space-y-4 text-gray-700">
+            <ul class="flex flex-col space-y-4 text-gray-700 items-center">
                 <li><a href="/">Home</a></li>
                 @auth
                 <li><a href="{{ route('monitoring') }}">Monitoring</a></li>
                 <li><a href="{{ route('recap') }}">Recap</a></li>
                 @endauth
-                <li><a href="{{ route('recom') }}">Recommendation</a></li>
+                <li><a href="{{ route('recom') }}">Recommendation</a></li>                
                 @guest
                 <li><a href="{{ route('login') }}">Login</a></li>
                 @endguest

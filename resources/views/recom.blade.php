@@ -26,7 +26,7 @@
             </div>
             <input type="search" id="default-search"
                 class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-xl bg-gray-50 focus:ring-1 focus:outline-none focus:border-blue-100"
-                placeholder="Cari article..." required />
+                placeholder="Cari article..." autocomplete="off" required />
             <button type="submit"
                 class="text-white absolute end-2.5 bottom-2.5 bg-blue-300 hover:bg-gray-300 focus:ring-1 focus:outline-none focus:ring-blue-300 font-medium rounded-xl text-sm px-4 py-2">Search</button>
         </div>
