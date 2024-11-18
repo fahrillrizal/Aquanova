@@ -84,18 +84,24 @@
                 <img src="/assets/img/png/logo.png" alt="Logo" class="w-8 h-8">
             </div>
 
-            <!-- <div class="carousel-container relative flex justify-center items-center sm:block md:hidden">
+            <div class="carousel-container relative flex justify-center items-center sm:block md:hidden">
                 <div id="carousel-logo" class="carousel-item">
                     <img src="/assets/img/png/logo.png" alt="Logo" class="w-8 h-8">
                 </div>
                 <div id="carousel-weather" class="carousel-item hidden">
-                    <div id="loading">Loading...</div>
-                    <div id="weatherData" style="display: none;">
-                        <img class="w-8" id="weatherIcon" alt="Weather Icon">
-                        <p><span class="text-xs" id="temperature"></span></p>
+                    <div id="loading-mobile">Loading...</div>
+                    <div id="weatherData-mobile" style="display: none;">
+                        <ul class="flex items-center space-x-2">
+                            <li>
+                                <img class="w-8 h-8" id="weatherIcon-mobile" alt="Weather Icon">
+                            </li>
+                            <li>
+                                <p class="text-xs" id="temperature-mobile"></p>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            </div> -->
+            </div>
 
             <!-- Hamburger Menu for Mobile -->
             <div class="md:hidden">
@@ -115,10 +121,10 @@
                 <li><a href="{{ route('login') }}" id="recom" class="navbar-item tracking-wider">Login</a></li>
                 @endguest
                 <li>
-                    <div id="loading">Loading...</div>
-                    <div id="weatherData" style="display: none;">
-                        <img class="w-12" id="weatherIcon" alt="Weather Icon">
-                        <p><span id="temperature"></span></p>
+                    <div id="loading-desktop">Loading...</div>
+                    <div id="weatherData-desktop" style="display: none;">
+                        <img class="w-12" id="weatherIcon-desktop" alt="Weather Icon">
+                        <p><span id="temperature-desktop"></span></p>
                     </div>
                 </li>
                 @auth
@@ -442,15 +448,23 @@
     <script>
         function fetchWeatherData() {
             const apiKey = 'f8c320633d6543ccb8a161745242410';
-            const loadingDiv = document.getElementById('loading');
-            const weatherDataDiv = document.getElementById('weatherData');
-            const temperatureElem = document.getElementById('temperature');
-            const weatherIconElem = document.getElementById('weatherIcon');
+
+            // Menyembunyikan elemen loading dan menampilkan elemen cuaca untuk tampilan mobile
+            document.getElementById('loading-mobile').style.display = 'none';
+            document.getElementById('weatherData-mobile').style.display = 'block';
+
+            // Menyembunyikan elemen loading dan menampilkan elemen cuaca untuk tampilan desktop
+            document.getElementById('loading-desktop').style.display = 'none';
+            document.getElementById('weatherData-desktop').style.display = 'block';
+
+            // Jika geolokasi tersedia
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
                     const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}&aqi=no`;
+
+                    // Memanggil API cuaca
                     fetch(url)
                         .then(response => {
                             if (!response.ok) {
@@ -459,29 +473,40 @@
                             return response.json();
                         })
                         .then(data => {
-                            temperatureElem.textContent = `${data.current.temp_c}°C`;
-                            const conditionText = data.current.condition.text.toLowerCase();
-                            weatherIconElem.src = getWeatherIcon(conditionText);
-                            weatherIconElem.style.display = 'block';
-                            loadingDiv.style.display = 'none';
-                            weatherDataDiv.style.display = 'block';
+                            // Menampilkan data cuaca pada tampilan mobile
+                            document.getElementById('weatherIcon-mobile').src = getWeatherIcon(data.current.condition.text.toLowerCase());
+                            document.getElementById('temperature-mobile').textContent = `${data.current.temp_c}°C`;
+
+                            // Menampilkan data cuaca pada tampilan desktop
+                            document.getElementById('weatherIcon-desktop').src = getWeatherIcon(data.current.condition.text.toLowerCase());
+                            document.getElementById('temperature-desktop').textContent = `${data.current.temp_c}°C`;
+
+                            // Menyembunyikan loading dan menampilkan data cuaca
+                            document.getElementById('loading-mobile').style.display = 'none';
+                            document.getElementById('weatherData-mobile').style.display = 'block';
+                            document.getElementById('loading-desktop').style.display = 'none';
+                            document.getElementById('weatherData-desktop').style.display = 'block';
                         })
                         .catch(error => {
                             console.error("Error in fetch:", error);
-                            loadingDiv.textContent = 'Failed to load weather data.';
+                            document.getElementById('loading-mobile').textContent = 'Failed to load weather data.';
+                            document.getElementById('loading-desktop').textContent = 'Failed to load weather data.';
                         });
                 }, error => {
                     console.error('Geolocation error:', error);
-                    loadingDiv.textContent = 'Error accessing location.';
+                    document.getElementById('loading-mobile').textContent = 'Error accessing location.';
+                    document.getElementById('loading-desktop').textContent = 'Error accessing location.';
                     alert("Geolocation error: Pastikan izin lokasi diberikan dan tersedia.");
                 });
             } else {
                 alert("Geolocation tidak didukung oleh browser Anda.");
             }
         }
+
         function getWeatherIcon(condition) {
+            // Menentukan ikon cuaca berdasarkan kondisi
             if (condition.includes("clear")) return '{{ asset("assets/gif/clear.gif") }}';
-            if (condition.includes("partly cloudy")) return '{{ asset("assets/gif/pcloudy.gif")  }}';
+            if (condition.includes("partly cloudy")) return '{{ asset("assets/gif/pcloudy.gif") }}';
             if (condition.includes("overcast")) return '{{ asset("assets/gif/overcas.gif") }}';
             if (condition.includes("rain")) return '{{ asset("assets/gif/rain.gif") }}';
             if (condition.includes("thunderstorm")) return '{{ asset("assets/gif/storm.gif") }}';
@@ -490,9 +515,10 @@
             if (condition.includes("windy")) return '{{ asset("assets/gif/windy.gif") }}';
             return '{{ asset("assets/gif/clear.gif") }}';
         }
+
         window.onload = function() {
             fetchWeatherData();
-        }
+        };
     </script>
 </body>
 
