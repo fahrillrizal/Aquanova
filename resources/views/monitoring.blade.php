@@ -3,7 +3,6 @@
 @section('title', 'Monitoring')
 
 @section('content')
-
     <!-- Skeleton Loader -->
     <div id="skeleton" class="w-full">
         <div class="animate-pulse grid grid-cols-1 place-items-center">
@@ -19,6 +18,7 @@
     </div>
     <div class="container mx-auto p-4">
         <div id="content" class="hidden">
+
             <div class="container mx-auto my-4">
                 <div class="max-w-full w-full bg-white rounded-lg shadow  p-4 md:p-6 mb-6">
                     <div class="flex flex-col items-center mb-5">
@@ -31,7 +31,6 @@
                 </div>
             </div>
 
-<<<<<<< HEAD
             <div class="container mx-auto my-4">
                 <div class="max-w-sm w-full bg-white rounded-lg shadow p-4 md:p-6 mx-auto">
                     <div class="flex justify-between items-center pb-4 mb-4 border-b border-white-200">
@@ -43,55 +42,6 @@
                             </div>
                             <p class="chart-description text-sm font-normal text-gray-500 dark:text-gray-400">Grafik Suhu
                                 per hari dalam 1 minggu</p>
-=======
-    <div class="flex justify-between items-center mb-4">
-        <!-- Group for Date Filter and Search Bar -->
-        <div class="flex items-center space-x-4">
-            <!-- Search Bar -->
-            <div>
-                <input type="text" id="search-bar" class="cursor-help border border-gray-300 p-1 rounded w-full sm:w-[50%] lg:w-[100%]" placeholder="Cari Nama Kolam" />
-            </div>
-        </div>
-
-        <!-- Add Data Button -->
-        <!-- Mobile Button -->
-        <div class="fixed bottom-0 left-0 right-0 shadow-lg p-1 z-50 sm:hidden">
-            <button id="add-data-btn" class="w-full bg-[#8C63DA] text-white p-1 rounded">
-                <ion-icon name="add-outline"></ion-icon> Add Data
-            </button>
-        </div>
-
-        <!-- Desktop Button -->
-        <div class="hidden sm:block">
-            <button id="add-data-btn-desktop" class=" bg-[#8C63DA] text-white p-2 rounded cursor-[url('/assets/cursor/pencil.png)',_pointer]">
-                <ion-icon name="add-outline"></ion-icon> Add Data
-            </button>
-        </div>
-    </div>
-
-    <!-- Tabel sg iso digeser ter -->
-    <div class="overflow-x-auto">
-        <table class="min-w-full bg-white">
-            <thead>
-                <tr>
-                    <th scope="col" class="px-6 py-3">
-                        <div class="flex items-center">No</div>
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        <div class="flex items-center">Nama Kolam</div>
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        <div class="flex items-center">Tanggal</div>
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        <div class="flex items-center">
-                            Temperature (°C)
-                            <a href="#" id="sort-temperature">
-                                <svg class="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http:
-                                    <path d=" M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Z" />
-                                </svg>
-                            </a>
->>>>>>> 824fbdc733387a791c6a6762f4efa8e15d0579d3
                         </div>
                     </div>
                     <div id="column-chart" class="mx-auto"></div>
@@ -379,64 +329,14 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-<<<<<<< HEAD
     <script>
         function toggleActiveButton(clickedButton, activeColor) {
             const buttons = document.querySelectorAll('.chart-btn');
             buttons.forEach(button => {
                 button.style.backgroundColor = 'white';
                 button.style.color = 'black';
-=======
-</div>
-
-<script>
-    function toggleActiveButton(clickedButton, activeColor) {
-        const buttons = document.querySelectorAll('.chart-btn');
-        buttons.forEach(button => {
-            button.style.backgroundColor = 'white';
-            button.style.color = 'black';
-        });
-
-        clickedButton.style.backgroundColor = activeColor;
-        clickedButton.style.color = 'white';
-
-        if (clickedButton.getAttribute("data-chart") !== "temperature") {
-            document.getElementById("temperatureBtn").style.backgroundColor = 'white';
-            document.getElementById("temperatureBtn").style.color = 'black';
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const addDataBtnMobile = document.getElementById('add-data-btn');
-        const addDataBtnDesktop = document.getElementById('add-data-btn-desktop');
-        const addDataModal = document.getElementById('add-data-modal');
-        const closeModalBtn = document.getElementById('close-modal');
-        const modalBackdrop = document.getElementById('modal-backdrop');
-        const addDataForm = document.querySelector('#add-data-modal form');
-
-        const searchBar = document.getElementById('search-bar');
-        const dataTable = document.getElementById('data-table');
-
-        function updateTableVisibility() {
-            const query = searchBar.value.toLowerCase();
-            const rows = dataTable.querySelectorAll('tr:not(.no-data)');
-            let visibleCount = 0;
-            let anyVisible = false;
-
-            rows.forEach((row, index) => {
-                const kolamName = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase();
-                const isVisible = kolamName && kolamName.includes(query);
-
-                row.style.display = isVisible ? '' : 'none';
-                if (isVisible) {
-                    anyVisible = true;
-                    visibleCount++;
-                    row.querySelector('td:first-child').textContent = visibleCount;
-                }
->>>>>>> 824fbdc733387a791c6a6762f4efa8e15d0579d3
             });
 
             clickedButton.style.backgroundColor = activeColor;
@@ -665,33 +565,9 @@
         });
     </script>
 
-<<<<<<< HEAD
     <script>
         const groupedData = @json($weeklyData);
         const currentWeek = groupedData.currentWeek;
-=======
-        document.getElementById('cancel-delete').addEventListener('click', function() {
-            document.getElementById('delete-confirmation-modal').classList.add('hidden');
-            modalBackdrop.classList.add('hidden');
-        });
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                if (!document.getElementById('add-data-modal').classList.contains('hidden')) {
-                    closeModal();
-                } else if (!document.getElementById('edit-data-modal').classList.contains('hidden')) {
-                    document.getElementById('edit-data-modal').classList.add('hidden');
-                    modalBackdrop.classList.add('hidden');
-                } else if (!document.getElementById('delete-confirmation-modal').classList.contains('hidden')) {
-                    document.getElementById('delete-confirmation-modal').classList.add('hidden');
-                    modalBackdrop.classList.add('hidden');
-                }
-            }
-        });
-
-    });
-</script>
->>>>>>> 824fbdc733387a791c6a6762f4efa8e15d0579d3
 
         function getParameterDataForWeek(parameter, weekNumber) {
             const data = [];
@@ -934,32 +810,38 @@
                     activeChart.render();
                 });
             });
-
-            //  skeleton loader 
-            skeleton.classList.remove("hidden");
-            content.classList.add("hidden");
-
-            //  setTimeout untuk menampilkan konten
-            setTimeout(() => {
-                skeleton.classList.add("hidden");
-                content.classList.remove("hidden");
-            }, 250); //250 ms
         });
-
-        // add event listener 
+    </script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const skeleton = document.getElementById("skeleton");
             const content = document.getElementById("content");
 
-            // hidden konten dan tampilkan skeleton saat halaman load
-            skeleton.classList.remove("hidden");
-            // content.classList.add("hidden");
+            if (!skeleton || !content) {
+                console.error("Skeleton or Content element not found.");
+                return;
+            }
 
-            // Tampilkan konten 
+            // Tampilkan skeleton dan sembunyikan konten
+            console.log("Initial State: Showing skeleton, hiding content.");
+            skeleton.classList.remove("hidden");
+            content.classList.add("hidden");
+
+            // Tampilkan konten setelah delay
             setTimeout(() => {
                 skeleton.classList.add("hidden");
-                // content.classList.remove("hidden");
-            }, 250); //250ms
+                content.classList.remove("hidden");
+
+                // Tambahkan style langsung sebagai fallback
+                content.style.display = "block";
+                skeleton.style.display = "none";
+
+                // Log final state
+                console.log("Final State:", {
+                    skeletonVisible: !skeleton.classList.contains("hidden"),
+                    contentVisible: !content.classList.contains("hidden"),
+                });
+            }, 200); // Delay 200ms
         });
     </script>
 @endsection
