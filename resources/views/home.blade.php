@@ -128,6 +128,7 @@
             </div>
 
             {{-- card 2 --}}
+            <a href="{{ route('monitoring') }}">
             <div id="set"
                 class="card w-[252px] h-[178px] bg-gray-100 rounded-xl overflow-hidden relative group transition-all duration-300 hover:-translate-y-16">
                 <!-- Konten default -->
@@ -155,7 +156,8 @@
                     </div>
                 </div>
             </div>
-
+            </a>
+            
             {{-- card 3 --}}
             <div id="sell"
                 class="card w-[252px] h-[178px] bg-gray-100 rounded-xl overflow-hidden relative group transition-all duration-300 hover:-translate-y-16">
@@ -443,8 +445,5 @@
                 card.style.height = '178px'; // Reset to original height
             });
         });
-
-
-        
     </script>
 @endsection

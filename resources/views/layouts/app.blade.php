@@ -84,7 +84,7 @@
                 <img src="/assets/img/png/logo.png" alt="Logo" class="w-8 h-8">
             </div>
 
-            <div class="carousel-container relative flex justify-center items-center sm:block md:hidden">
+            <!-- <div class="carousel-container relative flex justify-center items-center sm:block md:hidden">
                 <div id="carousel-logo" class="carousel-item">
                     <img src="/assets/img/png/logo.png" alt="Logo" class="w-8 h-8">
                 </div>
@@ -95,7 +95,7 @@
                         <p><span class="text-xs" id="temperature"></span></p>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Hamburger Menu for Mobile -->
             <div class="md:hidden">
@@ -446,16 +446,11 @@
             const weatherDataDiv = document.getElementById('weatherData');
             const temperatureElem = document.getElementById('temperature');
             const weatherIconElem = document.getElementById('weatherIcon');
-
-            loadingDiv.style.display = 'block';
-            weatherDataDiv.style.display = 'none';
-
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
                     const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}&aqi=no`;
-
                     fetch(url)
                         .then(response => {
                             if (!response.ok) {
@@ -465,11 +460,9 @@
                         })
                         .then(data => {
                             temperatureElem.textContent = `${data.current.temp_c}°C`;
-
                             const conditionText = data.current.condition.text.toLowerCase();
                             weatherIconElem.src = getWeatherIcon(conditionText);
                             weatherIconElem.style.display = 'block';
-
                             loadingDiv.style.display = 'none';
                             weatherDataDiv.style.display = 'block';
                         })
@@ -484,37 +477,23 @@
                 });
             } else {
                 alert("Geolocation tidak didukung oleh browser Anda.");
-                loadingDiv.textContent = 'Geolocation tidak didukung.';
             }
         }
-
         function getWeatherIcon(condition) {
-            condition = condition.toLowerCase();
-            if (condition.includes("clear")) return '{{ asset('
-            assets / gif / clear.gif ') }}';
-            if (condition.includes("partly cloudy")) return '{{ asset('
-            assets / gif / pcloudy.gif ') }}';
-            if (condition.includes("overcast")) return '{{ asset('
-            assets / gif / overcas.gif ') }}';
-            if (condition.includes("rain")) return '{{ asset('
-            assets / gif / rain.gif ') }}';
-            if (condition.includes("thunderstorm")) return '{{ asset('
-            assets / gif / storm.gif ') }}';
-            if (condition.includes("mist") || condition.includes("fog")) return '{{ asset('
-            assets / gif / kabut.gif ') }}';
-            if (condition.includes("haze")) return '{{ asset('
-            assets / gif / kabut.gif ') }}';
-            if (condition.includes("windy")) return '{{ asset('
-            assets / gif / windy.gif ') }}';
-            return '{{ asset('
-            assets / gif / clear.gif ') }}';
+            if (condition.includes("clear")) return '{{ asset("assets/gif/clear.gif") }}';
+            if (condition.includes("partly cloudy")) return '{{ asset("assets/gif/pcloudy.gif")  }}';
+            if (condition.includes("overcast")) return '{{ asset("assets/gif/overcas.gif") }}';
+            if (condition.includes("rain")) return '{{ asset("assets/gif/rain.gif") }}';
+            if (condition.includes("thunderstorm")) return '{{ asset("assets/gif/storm.gif") }}';
+            if (condition.includes("mist") || condition.includes("fog")) return '{{ asset("assets/gif/kabut.gif") }}';
+            if (condition.includes("haze")) return '{{ asset("assets/gif/kabut.gif") }}';
+            if (condition.includes("windy")) return '{{ asset("assets/gif/windy.gif") }}';
+            return '{{ asset("assets/gif/clear.gif") }}';
         }
-
         window.onload = function() {
             fetchWeatherData();
         }
     </script>
-
 </body>
 
 </html>
