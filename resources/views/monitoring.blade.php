@@ -41,11 +41,12 @@
         <div class="flex items-center space-x-4">
             <!-- Search Bar -->
             <div>
-                <input type="text" id="search-bar" class="border border-gray-300 p-1 rounded w-full sm:w-[50%] lg:w-[100%]" placeholder="Cari Nama Kolam" />
+                <input type="text" id="search-bar" class="cursor-help border border-gray-300 p-1 rounded w-full sm:w-[50%] lg:w-[100%]" placeholder="Cari Nama Kolam" />
             </div>
         </div>
 
         <!-- Add Data Button -->
+        <!-- Mobile Button -->
         <div class="fixed bottom-0 left-0 right-0 shadow-lg p-1 z-50 sm:hidden">
             <button id="add-data-btn" class="w-full bg-[#8C63DA] text-white p-1 rounded">
                 <ion-icon name="add-outline"></ion-icon> Add Data
@@ -54,11 +55,10 @@
 
         <!-- Desktop Button -->
         <div class="hidden sm:block">
-            <button id="add-data-btn-desktop" class="bg-[#8C63DA] text-white p-2 rounded">
+            <button id="add-data-btn-desktop" class=" bg-[#8C63DA] text-white p-2 rounded cursor-[url('/assets/cursor/pencil.png)',_pointer]">
                 <ion-icon name="add-outline"></ion-icon> Add Data
             </button>
         </div>
-
     </div>
 
     <!-- Tabel sg iso digeser ter -->
@@ -288,7 +288,7 @@
             document.getElementById("temperatureBtn").style.color = 'black';
         }
     }
-    
+
     document.addEventListener('DOMContentLoaded', function() {
         const addDataBtnMobile = document.getElementById('add-data-btn');
         const addDataBtnDesktop = document.getElementById('add-data-btn-desktop');
@@ -500,6 +500,21 @@
             document.getElementById('delete-confirmation-modal').classList.add('hidden');
             modalBackdrop.classList.add('hidden');
         });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                if (!document.getElementById('add-data-modal').classList.contains('hidden')) {
+                    closeModal();
+                } else if (!document.getElementById('edit-data-modal').classList.contains('hidden')) {
+                    document.getElementById('edit-data-modal').classList.add('hidden');
+                    modalBackdrop.classList.add('hidden');
+                } else if (!document.getElementById('delete-confirmation-modal').classList.contains('hidden')) {
+                    document.getElementById('delete-confirmation-modal').classList.add('hidden');
+                    modalBackdrop.classList.add('hidden');
+                }
+            }
+        });
+
     });
 </script>
 
