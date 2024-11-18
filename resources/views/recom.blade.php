@@ -25,22 +25,20 @@
     <main class="md:my-32 my-24">
 
         <!-- Skeleton Loader -->
-        {{-- tagline --}}
-
         <div id="skeleton" class="w-full">
             <div class="animate-pulse grid grid-cols-1 place-items-center">
                 <div class="h-16 bg-gray-100 rounded mt-4 w-[650px]"></div>
                 <div class="h-20 bg-gray-100 rounded mt-4 w-[450px]"></div>
-                <div class="h-12 bg-gray-300 rounded-xl mt-4 w-[550px]"></div>
+                <div class="h-12 bg-gray-100 rounded-xl mt-4 w-[550px]"></div>
             </div>
             {{-- card 1 --}}
             <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-24 my-24 items-center">
                 @for ($i = 0; $i < 8; $i++)
                     <div class="animate-pulse">
-                        <div class="h-4 bg-gray-300 rounded mt-4"></div>
-                        <div class="h-4 bg-gray-300 mb-10 rounded mt-2 w-2/3"></div>
-                        <div class="w-72 h-52 bg-gray-300 rounded-2xl"></div>
-                        <div class="h-8 w-28 bg-gray-300 rounded-2xl mt-4"></div>
+                        <div class="h-4 bg-gray-100 rounded mt-4"></div>
+                        <div class="h-4 bg-gray-100 mb-10 rounded mt-2 w-2/3"></div>
+                        <div class="w-72 h-52 bg-gray-100 rounded-2xl"></div>
+                        <div class="h-8 w-28 bg-gray-100 rounded-2xl mt-4"></div>
                     </div>
                 @endfor
             </div>
@@ -238,7 +236,7 @@
             setTimeout(() => {
                 skeleton.classList.add("hidden");
                 content.classList.remove("hidden");
-            }, 250);//250 ms
+            }, 250); //250 ms
         });
 
         // add event listener 
