@@ -177,6 +177,7 @@
                     }
                 };
 
+<<<<<<< HEAD
                 const monthlyChart = new ApexCharts(document.querySelector("#monthly-recap-chart"), monthlyOptions);
                 monthlyChart.render();
             @else
@@ -294,3 +295,13 @@
 
 
 @endsection
+=======
+                        const combinedChart = new ApexCharts(document.querySelector("#combined-chart"), combinedOptions);
+                        combinedChart.render();
+                    @else
+                        document.querySelector("#combined-chart").innerHTML = '<p class="text-center text-red-500">Tidak ada data untuk grafik gabungan.</p>';
+                    @endif
+    });
+</script>
+@endsection
+>>>>>>> 824fbdc733387a791c6a6762f4efa8e15d0579d3

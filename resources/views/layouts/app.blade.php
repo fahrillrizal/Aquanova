@@ -57,16 +57,21 @@
         }
 
         .navbar-item:hover {
-            background-color: #6fc1f7; 
+            background-color: #6fc1f7;
             color: white;
             border-radius: 20px;
             padding: 10px;
         }
+
         .active-link {
             border-radius: 20px;
             padding: 10px;
             background-color: #6fc1f7;
             color: white;
+        }
+
+        .custom-cursor {
+            cursor: url('/assets/img/png/pencil.cur'), pointer;
         }
     </style>
 </head>
@@ -75,7 +80,22 @@
     <!-- Navigation -->
     <nav class="fixed top-0 left-0 w-full px-8 py-4 text-sm font-medium bg-white bg-opacity-20 backdrop-blur-sm z-10">
         <div class="container mx-auto flex justify-between items-center">
-            <img src="/assets/img/png/logo.png" alt="" class="w-8 h-8">
+            <div class="hidden md:block">
+                <img src="/assets/img/png/logo.png" alt="Logo" class="w-8 h-8">
+            </div>
+
+            <!-- <div class="carousel-container relative flex justify-center items-center sm:block md:hidden">
+                <div id="carousel-logo" class="carousel-item">
+                    <img src="/assets/img/png/logo.png" alt="Logo" class="w-8 h-8">
+                </div>
+                <div id="carousel-weather" class="carousel-item hidden">
+                    <div id="loading">Loading...</div>
+                    <div id="weatherData" style="display: none;">
+                        <img class="w-8" id="weatherIcon" alt="Weather Icon">
+                        <p><span class="text-xs" id="temperature"></span></p>
+                    </div>
+                </div>
+            </div> -->
 
             <!-- Hamburger Menu for Mobile -->
             <div class="md:hidden">
@@ -120,21 +140,21 @@
                             x-transition:leave-end="transform opacity-0 scale-95"
                             class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
 
-                            <div class="px-4 py-2 text-sm text-gray-500 border-b">
+                            <div class="px-4 py-2 text-sm m-2 text-gray-500 border-b">
                                 {{ Auth::user()->name }}
                             </div>
 
                             <a href="{{ route('profile') }}"
                                 id="profile"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-[#6fc1f7] flex items-center navbar-item">
+                                class="block px-4 py-2 text-sm m-2 text-gray-700 hover:bg-[#6fc1f7] hover:text-white {{ request()->routeIs('profile') ? 'bg-[#6fc1f7] text-white' : '' }} flex items-center navbar-item">
                                 <ion-icon name="person-outline" class="mr-2 text-lg"></ion-icon>
                                 Profile
                             </a>
 
-                            <form method="POST" action="{{ route('logout') }}">
+                            <form class="m-2" method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit"
-                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-[#6fc1f7] flex items-center navbar-item">
+                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-[#6fc1f7] hover:text-white flex items-center navbar-item">
                                     <ion-icon name="log-out-outline" class="mr-2 text-lg"></ion-icon>
                                     Logout
                                 </button>
@@ -149,27 +169,37 @@
         {{-- Mobile Menu (Initially hidden) --}}
         <div id="mobile-menu" class="hidden md:hidden mt-4">
             <ul class="flex flex-col space-y-4 text-gray-700 items-center">
-                <li><a href="/">Home</a></li>
+                <li>
+                    <a href="/" class="hover:bg-[#6fc1f7] hover:text-white {{ request()->is('/') ? 'bg-[#6fc1f7] text-white' : '' }} py-2 px-4 rounded-xl">Home</a>
+                </li>
                 @auth
-                <li><a href="{{ route('monitoring') }}">Monitoring</a></li>
-                <li><a href="{{ route('recap') }}">Recap</a></li>
+                <li>
+                    <a href="{{ route('monitoring') }}" class="hover:bg-[#6fc1f7] hover:text-white {{ request()->routeIs('monitoring') ? 'bg-[#6fc1f7] text-white' : '' }} py-2 px-4 rounded-xl">Monitoring</a>
+                </li>
+                <li>
+                    <a href="{{ route('recap') }}" class="hover:bg-[#6fc1f7] hover:text-white {{ request()->routeIs('recap') ? 'bg-[#6fc1f7] text-white' : '' }} py-2 px-4 rounded-xl">Recap</a>
+                </li>
                 @endauth
-                <li><a href="{{ route('recom') }}">Recommendation</a></li>                
+                <li>
+                    <a href="{{ route('recom') }}" class="hover:bg-[#6fc1f7] hover:text-white {{ request()->routeIs('recom') ? 'bg-[#6fc1f7] text-white' : '' }} py-2 px-4 rounded-xl">Recommendation</a>
+                </li>
                 @guest
-                <li><a href="{{ route('login') }}">Login</a></li>
+                <li>
+                    <a href="{{ route('login') }}" class="hover:bg-[#6fc1f7] hover:text-white {{ request()->routeIs('login') ? 'bg-[#6fc1f7] text-white' : '' }} py-2 px-4 rounded-xl">Login</a>
+                </li>
                 @endguest
 
                 {{-- <!-- Profile Dropdown for Mobile --> --}}
                 @auth
                 <li>
-                    <a href="javascript:void(0)" class="flex items-center">
+                    <a href="javascript:void(0)" class="flex items-center hover:bg-[#6fc1f7] hover:text-white {{ request()->is('profile') ? 'bg-[#6fc1f7] text-white' : '' }} py-2 px-4 rounded-xl">
                         <img src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/img/png/profile.png') }}"
                             alt="Profile" class="w-10 h-10 mr-2">
                         {{ Auth::user()->name }}
                     </a>
                     <ul class="pl-10">
                         <li>
-                            <a href="{{ route('profile') }}" class="flex items-center py-2 text-sm">
+                            <a href="{{ route('profile') }}" class="flex items-center py-2 px-4 text-sm hover:bg-[#6fc1f7] hover:text-white {{ request()->routeIs('profile') ? 'bg-[#6fc1f7] text-white' : '' }} rounded-xl">
                                 <ion-icon name="person-outline" class="mr-2 text-lg"></ion-icon>
                                 Profile
                             </a>
@@ -177,7 +207,7 @@
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="flex items-center py-2 text-sm w-full">
+                                <button type="submit" class="flex items-center py-2 px-4 text-sm w-full hover:bg-[#6fc1f7] hover:text-white rounded-xl">
                                     <ion-icon name="log-out-outline" class="mr-2 text-lg"></ion-icon>
                                     Logout
                                 </button>
@@ -253,7 +283,7 @@
                                     d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
                             </svg>
                         </span>
-                        New York, NY 10012, US
+                        Sepuluh Nopember Institute of Technology, Jl. Raya ITS, Keputih, Sukolilo, Surabaya, East Java 60111
                     </p>
                     <p class="mb-4 flex items-center justify-start">
                         <span class="me-3 [&>svg]:h-5 [&>svg]:w-5">
@@ -274,7 +304,7 @@
                                     clip-rule="evenodd" />
                             </svg>
                         </span>
-                        + 01 234 567 88
+                        +62 812 345 6789
                     </p>
                     <p class="flex items-center justify-start">
                         <span class="me-3 [&>svg]:h-5 [&>svg]:w-5">
@@ -284,7 +314,7 @@
                                     clip-rule="evenodd" />
                             </svg>
                         </span>
-                        + 01 234 567 89
+                        +62 812 345 6789
                     </p>
                 </div>
             </div>
@@ -300,6 +330,24 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const logo = document.getElementById('carousel-logo');
+            const weather = document.getElementById('carousel-weather');
+
+            let isLogoVisible = true;
+
+            setInterval(() => {
+                if (isLogoVisible) {
+                    logo.classList.add('hidden');
+                    weather.classList.remove('hidden');
+                } else {
+                    logo.classList.remove('hidden');
+                    weather.classList.add('hidden');
+                }
+                isLogoVisible = !isLogoVisible;
+            }, 3000); // Mengganti item setiap 3 detik
+        });
+
         document.addEventListener("DOMContentLoaded", function() {
             const scrollUpButton = document.getElementById("scroll-up");
 
@@ -398,13 +446,11 @@
             const weatherDataDiv = document.getElementById('weatherData');
             const temperatureElem = document.getElementById('temperature');
             const weatherIconElem = document.getElementById('weatherIcon');
-
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
                     const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}&aqi=no`;
-
                     fetch(url)
                         .then(response => {
                             if (!response.ok) {
@@ -414,11 +460,9 @@
                         })
                         .then(data => {
                             temperatureElem.textContent = `${data.current.temp_c}°C`;
-
                             const conditionText = data.current.condition.text.toLowerCase();
                             weatherIconElem.src = getWeatherIcon(conditionText);
                             weatherIconElem.style.display = 'block';
-
                             loadingDiv.style.display = 'none';
                             weatherDataDiv.style.display = 'block';
                         })
@@ -435,20 +479,17 @@
                 alert("Geolocation tidak didukung oleh browser Anda.");
             }
         }
-
         function getWeatherIcon(condition) {
-            if (condition.includes("clear")) return '{{ asset('assets/gif/clear.gif') }}';
-            if (condition.includes("partly cloudy")) return '{{ asset('assets/gif/pcloudy.gif') }}';
-            if (condition.includes("overcast")) return '{{ asset('assets/gif/overcas.gif') }}';
-            if (condition.includes("rain")) return '{{ asset('assets/gif/rain.gif') }}';
-            if (condition.includes("thunderstorm")) return '{{ asset('assets/gif/storm.gif') }}';
-            // if (condition.includes("snow")) return '{{ asset('assets/images/snow.png') }}';
-            if (condition.includes("mist") || condition.includes("fog")) return '{{ asset('assets/gif/kabut.gif') }}';
-            if (condition.includes("haze")) return '{{ asset('assets/gif/kabut.gif') }}';
-            if (condition.includes("windy")) return '{{ asset('assets/gif/windy.gif') }}';
-            return '{{ asset('assets/gif/clear.gif') }}';
+            if (condition.includes("clear")) return '{{ asset("assets/gif/clear.gif") }}';
+            if (condition.includes("partly cloudy")) return '{{ asset("assets/gif/pcloudy.gif")  }}';
+            if (condition.includes("overcast")) return '{{ asset("assets/gif/overcas.gif") }}';
+            if (condition.includes("rain")) return '{{ asset("assets/gif/rain.gif") }}';
+            if (condition.includes("thunderstorm")) return '{{ asset("assets/gif/storm.gif") }}';
+            if (condition.includes("mist") || condition.includes("fog")) return '{{ asset("assets/gif/kabut.gif") }}';
+            if (condition.includes("haze")) return '{{ asset("assets/gif/kabut.gif") }}';
+            if (condition.includes("windy")) return '{{ asset("assets/gif/windy.gif") }}';
+            return '{{ asset("assets/gif/clear.gif") }}';
         }
-
         window.onload = function() {
             fetchWeatherData();
         }
