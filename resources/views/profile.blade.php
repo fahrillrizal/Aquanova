@@ -100,11 +100,12 @@
 
         <!-- Buttons for Google Connect and Logout -->
         <div class="absolute sm:right-[60px] sm:top-[250px] lg:right-20 lg:top-[350px] flex space-x-4 hidden sm:flex">
-            <button
-                class="bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 rounded shadow-sm flex items-center">
-                <img src="https://www.google.com/favicon.ico" alt="Google Icon" class="w-5 h-5 mr-2">
-                Connect with Google
-            </button>
+        <button
+            class="bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 rounded shadow-sm flex items-center"
+            onclick="window.location.href='{{ route('auth.google') }}'">
+            <img src="https://www.google.com/favicon.ico" alt="Google Icon" class="w-5 h-5 mr-2">
+            Connect with Google
+        </button>
             <form id="logoutForm" action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button id="lg" type="submit"

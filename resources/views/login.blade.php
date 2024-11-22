@@ -66,7 +66,7 @@
                     </div>
                     <a href="{{ route('password.request') }}" class="text-blue-500 hover:underline">Forgot password?</a>
                 </div>
-                <a href="{{ route('google.login') }}" class="flex items-center justify-center w-full py-2 bg-white border border-gray-300 text-gray-600 rounded-lg shadow-md hover:bg-gray-100 mb-4">
+                <a href="{{ route('auth.google') }}" class="flex items-center justify-center w-full py-2 bg-white border border-gray-300 text-gray-600 rounded-lg shadow-md hover:bg-gray-100 mb-4">
                     <img src="https://www.google.com/favicon.ico" alt="Google Icon" class="w-5 h-5 mr-2">
                     Login with Google
                 </a>

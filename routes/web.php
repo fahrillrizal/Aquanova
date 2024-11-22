@@ -7,14 +7,23 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\RecapController;
+use App\Http\Controllers\SocialiteController;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', fn() => view('home'))->name('home');
 
 Route::get('/recom', fn() => view('recom'))->name('recom');
 
 // Rute Google Login
-Route::get('auth/redirect', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
-Route::get('auth/callback', [GoogleController::class, 'handleGoogleCallback']);
+Route::controller(SocialiteController::class)->group(function () {
+    Route::get('auth/google', 'googleLogin')->name('auth.google');
+    Route::get('auth/google-callback', 'googleAuthentication')->name('auth.google-callback');
+});
+
+
+
+
+
 
 // Rute Forgot Password
 Route::middleware('guest')->group(function () {

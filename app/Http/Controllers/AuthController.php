@@ -18,20 +18,20 @@ class AuthController extends Controller
     // Menangani pendaftaran pengguna baru
     public function regis(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'confirmed',
-                'regex:/^(?=.*[A-Z])(?=.*[0-9]).*$/',
-            ],
-        ], [
-            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one number.',
-            'email.regex' => 'Email must be a valid Gmail or Yahoo address.',
-        ]);
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|string|email|max:255|unique:users',
+        //     'password' => [
+        //         'required',
+        //         'string',
+        //         'min:8',
+        //         'confirmed',
+        //         'regex:/^(?=.*[A-Z])(?=.*[0-9]).*$/',
+        //     ],
+        // ], [
+        //     'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one number.',
+        //     'email.regex' => 'Email must be a valid Gmail or Yahoo address.',
+        // ]);
 
         $user = User::create([
             'name' => $request->name,
