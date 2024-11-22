@@ -268,7 +268,7 @@
             <div class="relative bg-white rounded-lg shadow white:bg-white-700">
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-dark-600">
                     <h3 class="text-xl font-semibold text-dark-900 dark:text-dark">
-                        Edit Profile Image
+                        Change Password
                     </h3>
                     <button type="button"
                         class="end-2.5 text-dark-400 bg-transparent hover:bg-white-200 hover:text-white-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -282,31 +282,27 @@
                     </button>
                 </div>
                 <div class="p-4 md:p-5">
-                    <form class="space-y-4" action="#">
-                        <div class="relative w-24 h-24 mx-auto overflow-hidden mb-4">
-                            <img id="photoPreview"
-                                src="{{ Auth::user()->foto ? asset('storage/pp/' . Auth::user()->foto) : asset('assets/img/png/profile.png') }}"
-                                alt="Profile Image" class="w-full h-full object-cover">
+                    <form action="{{ route('password.update') }}" method="POST">
+                        @csrf
+                        <div class="mb-4 relative">
+                            <label class="block text-sm font-medium text-gray-700">Current Password</label>
+                            <input type="password" id="current_password" name="current_password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="••••••••" autocomplete="off">
+                            <ion-icon name="eye-off-outline" id="password-toggle1" class="absolute text-sky-400 right-3 top-12 -translate-y-1/2 transform origin-center cursor-pointer"></ion-icon>
                         </div>
-                        <div id="fileButtons" class="flex flex-col items-center mb-4">
-                            <input type="file" id="photoInput" class="hidden" accept=".jpeg, .png, .jpg, .heic">
-                            <label for="photoInput"
-                                class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md cursor-pointer mb-3">Ganti
-                                Foto</label>
-                            @if (Auth::user()->foto)
-                                <button type="button" onclick="showDeleteConfirmation()"
-                                    class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md">
-                                    Hapus Foto
-                                </button>
-                            @endif
+                        <div class="mb-4 relative">
+                            <label class="block text-sm font-medium text-gray-700">New Password</label>
+                            <input type="password" id="new_password" name="new_password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="••••••••" autocomplete="off">
+                            <ion-icon name="eye-off-outline" id="password-toggle2" class="absolute text-sky-400 right-3 top-12 -translate-y-1/2 transform origin-center cursor-pointer"></ion-icon>
                         </div>
-                        <div id="actionButtons" class="flex justify-center space-x-4 mb-4 hidden">
-                            <button id="cancelPhotoButton" type="button"
-                                class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md"
-                                onclick="cancelPhoto()">Cancel</button>
-                            <button id="savePhotoButton" type="button"
-                                class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded shadow-md"
-                                onclick="cropImage()">Save</button>
+                        <div class="mb-4 relative">
+                            <label class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+                            <input type="password" id="new_password_confirmation" name="new_password_confirmation" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="••••••••" autocomplete="off">
+                            <ion-icon name="eye-off-outline" id="password-toggle3" class="absolute text-sky-400 right-3 top-12 -translate-y-1/2 transform origin-center cursor-pointer"></ion-icon>
+                        </div>
+
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" onclick="closeModal('changePasswordModal')" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cancel</button>
+                            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Save Changes</button>
                         </div>
                     </form>
                 </div>
@@ -480,39 +476,57 @@
         });
 
         // Change Password
-        document.getElementById('changePasswordModal').addEventListener('submit', async function(event) {
+        document.querySelector('#changePasswordModal form').addEventListener('submit', async function (event) {
             event.preventDefault();
 
+            const currentPassword = document.getElementById('current_password').value.trim();
+            const newPassword = document.getElementById('new_password').value.trim();
+            const confirmPassword = document.getElementById('new_password_confirmation').value.trim();
+
+            if (!currentPassword) {
+                alert('Current password is required.');
+                return;
+            }
+            if (newPassword.length < 8) {
+                alert('New password must be at least 8 characters.');
+                return;
+            }
+            if (newPassword !== confirmPassword) {
+                alert('New password and confirmation do not match.');
+                return;
+            }
+
+            // Jika lolos validasi, kirim permintaan ke server
             try {
                 const formData = new FormData(this);
                 const response = await fetch(this.action, {
                     method: 'POST',
                     body: formData,
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    },
                 });
 
+                const result = await response.json();
                 if (response.ok) {
-                    document.getElementById('changePasswordModal').classList.add('hidden');
-                    const modalBody = document.querySelector('#alertChangeModal');
-                    modalBody.classList.remove('hidden');
+                    const alertModal = document.getElementById('alertChangeModal');
+                    
+                    // Tampilkan modal
+                    alertModal.classList.remove('hidden');
+
+                    // Sembunyikan modal setelah 2 detik dan reload halaman
                     setTimeout(() => {
-                        modalBody.classList.add('hidden');
-                        location.reload();
-                    }, 1500);
+                        alertModal.classList.add('hidden');
+                        location.reload(); // Reload halaman setelah sukses
+                    }, 2000);
                 } else {
-                    throw new Error('Gagal menyimpan data.');
+                    alert(result.message || 'Failed to update password.');
                 }
             } catch (error) {
-                document.getElementById('changePasswordModal').classList.add('hidden');
-                const modalBody = document.querySelector('#alertChangeModal');
-                modalBody.classList.remove('hidden');
-                setTimeout(() => {
-                    modalBody.classList.add('hidden');
-                }, 1500);
+                alert('An error occurred. Please try again later.');
             }
         });
+
 
         // alert modals edit
         document.getElementById('editProfileForm').addEventListener('submit', async function(event) {
