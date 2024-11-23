@@ -46,11 +46,13 @@
 
             <!-- Buttons for Google Connect and Logout -->
             <div class="flex justify-end space-x-4 mb-6">
+            @if (auth()->user()->google_id === null)
                 <button
                     class="bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold py-2 px-3 rounded-lg flex items-center">
                     <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google Icon" class="w-4 h-4 mr-2">
                     Connect with Email
                 </button>
+            @endif
                 <form id="logoutForm" action="{{ route('logout') }}" method="POST" class="flex">
                     @csrf
                     <button id="lg"
@@ -100,12 +102,14 @@
 
         <!-- Buttons for Google Connect and Logout -->
         <div class="absolute sm:right-[60px] sm:top-[250px] lg:right-20 lg:top-[350px] flex space-x-4 hidden sm:flex">
+        @if (auth()->user()->google_id === null)
         <button
             class="bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 rounded shadow-sm flex items-center"
             onclick="window.location.href='{{ route('auth.google') }}'">
             <img src="https://www.google.com/favicon.ico" alt="Google Icon" class="w-5 h-5 mr-2">
             Connect with Google
         </button>
+        @endif
             <form id="logoutForm" action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button id="lg" type="submit"
