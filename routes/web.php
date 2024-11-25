@@ -20,11 +20,6 @@ Route::controller(SocialiteController::class)->group(function () {
     Route::get('auth/google-callback', 'googleAuthentication')->name('auth.google-callback');
 });
 
-
-
-
-
-
 // Rute Forgot Password
 Route::middleware('guest')->group(function () {
     Route::get('/regis', [AuthController::class, 'showRegisterForm'])->name('regis');
