@@ -21,6 +21,13 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
+        html,
+        body {
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
         #scroll-up {
             background-color: #082F49;
             width: 45px;
@@ -121,7 +128,10 @@
                 <li><a href="{{ route('login') }}" id="recom" class="navbar-item tracking-wider">Login</a></li>
                 @endguest
                 <li>
-                    <div id="loading-desktop">Loading...</div>
+                    <div id="loading-desktop" class="flex justify-center items-center">
+                        <!-- Loader spinner menggunakan Tailwind CSS -->
+                        <div class="w-6 h-6 border-4 border-t-transparent border-blue-500 border-solid rounded-full animate-spin"></div>
+                    </div>
                     <div id="weatherData-desktop" style="display: none;">
                         <img class="w-12" id="weatherIcon-desktop" alt="Weather Icon">
                         <p><span id="temperature-desktop"></span></p>
@@ -489,11 +499,21 @@
                         })
                         .catch(error => {
                             console.error("Error in fetch:", error);
+                            // Tampilkan ikon gagal jika gagal mengambil data cuaca
+                            document.getElementById('weatherIcon-mobile').src = '{{ asset("assets/img/png/gagal.png") }}';
+                            document.getElementById('weatherIcon-mobile').style = 'width: 20px; height: 20px;';
+                            document.getElementById('weatherIcon-desktop').src = '{{ asset("assets/img/png/gagal.png") }}';
+                            document.getElementById('weatherIcon-desktop').style = 'width: 25px; height: 25px;';
                             document.getElementById('loading-mobile').textContent = 'Failed to load weather data.';
                             document.getElementById('loading-desktop').textContent = 'Failed to load weather data.';
                         });
                 }, error => {
                     console.error('Geolocation error:', error);
+                    // Tampilkan ikon gagal jika geolokasi gagal diakses
+                    document.getElementById('weatherIcon-mobile').src = '{{ asset("assets/img/png/gagal.png") }}';
+                    document.getElementById('weatherIcon-mobile').style = 'width: 20px; height: 20px;';
+                    document.getElementById('weatherIcon-desktop').src = '{{ asset("assets/img/png/gagal.png") }}';
+                    document.getElementById('weatherIcon-desktop').style = 'width: 25px; height: 25px;';
                     document.getElementById('loading-mobile').textContent = 'Error accessing location.';
                     document.getElementById('loading-desktop').textContent = 'Error accessing location.';
                     alert("Geolocation error: Pastikan izin lokasi diberikan dan tersedia.");
@@ -513,13 +533,16 @@
             if (condition.includes("mist") || condition.includes("fog")) return '{{ asset("assets/gif/kabut.gif") }}';
             if (condition.includes("haze")) return '{{ asset("assets/gif/kabut.gif") }}';
             if (condition.includes("windy")) return '{{ asset("assets/gif/windy.gif") }}';
-            return '{{ asset("assets/gif/clear.gif") }}';
+
+            // Jika tidak ada kondisi yang cocok, tampilkan 'clear.gif' atau ikon default
+            return '{{ asset("assets/img/png/gagal.png") }}';
         }
 
         window.onload = function() {
             fetchWeatherData();
         };
     </script>
+
 </body>
 
 </html>
