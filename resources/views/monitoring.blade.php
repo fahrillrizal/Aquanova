@@ -590,7 +590,7 @@
             type: 'datetime'
         },
         yaxis: {
-            tickAmount: 3,
+            tickAmount: 2,
             min: -1,
             max: 1,
             labels: {
