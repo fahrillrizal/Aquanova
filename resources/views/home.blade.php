@@ -67,11 +67,7 @@
                 </h3>
             </div>
 
-            <div class="md:-mt-40">
-                <!-- Gambar untuk mobile -->
-                <img src="assets/img/svg/header_home_substract_mobile.svg" alt="Mobile Header"
-                    class="md:hidden w-full h-auto my-8">
-
+            <div class="md:-mt-40">            
                 <!-- Gambar untuk desktop -->
                 <img src="/assets/img/svg/header_home_substract.svg" alt="Desktop Header" class="hidden md:block md:w-full">
             </div>
